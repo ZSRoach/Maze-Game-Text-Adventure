@@ -1,41 +1,30 @@
 import sys
 from copy import copy
 import os
+import movement
+try:
+  import termios
+  import tty
+except:
+  import msvcrt
 
-#uses old 1980's programming crap to not buffer inputs from keyboard
-
+#uses old 1970's programming crap to not buffer inputs from keyboard
 def getchar():
+  if sys.platform == "win32":
+    return msvcrt.getch().decode("utf-8")
+  else:
+    fd = sys.stdin.fileno()
+    old_settings = termios.tcgetattr(fd)
     try:
-        import termios
-        import tty
-        fd = sys.stdin.fileno()
-        old_settings = termios.tcgetattr(fd)
-        try:
-            tty.setraw(fd)
-            ch = sys.stdin.read(1)
-        finally:
-            termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
-        return ch
-    except:
-        import msvcrt
-        return msvcrt.getch().decode("utf-8")
-
-#playing area size:
-playingHeight = 10
-playingWidth = 20
-#actual width: width set by user - 1
-#recommend changing width to double height
+      tty.setraw(fd)
+      ch = sys.stdin.read(1)
+    finally:
+      termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
+    return ch
 
 #player start position
 playercoords = [1,1]
 tobeplayercoords = [1,1]
-
-#add any obstacles here
-#change obstacles number the more you have
-obstacles = 3
-wall1 = [2,5]
-wall2 = [7,2]
-wall3 = [3,3]
 
 class Room:
 
@@ -81,32 +70,7 @@ dungeon_east1 = Room([
     '|  |   C       |',
     '|--------------|',
 ])
-"""
-if current_room.validmove(playercoords, tobeplayercoords):
-    save_coords()
-"""
 
-"""
-for i in range (playingWidth+2):
-        print ("-",end="")
-    print ("\n",end="")
-    for i in range (1,playingHeight):
-        if playercoords[1] == i:
-            print ("|",end="")
-            for j in range (playercoords[0]-1):
-                print ("",end=" ")
-            print ("P",end=" ")
-            for j in range (playingWidth - playercoords[0]-1):
-                print ("",end=" ")
-            print ("|")
-        else:
-            print ("|",end="")
-            for j in range (playingWidth):
-                print (" ",end="")
-            print ("|")
-    for i in range (playingWidth+2):
-        print ("-",end="")
-"""
 nerd = True
 while nerd:
     dungeon.print_room(playercoords)
