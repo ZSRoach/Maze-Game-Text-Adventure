@@ -1,19 +1,24 @@
 import sys
-import termios
-import tty
 from copy import copy
+import os
 
 #uses old 1980's programming crap to not buffer inputs from keyboard
-def getchar():
-    fd = sys.stdin.fileno()
-    old_settings = termios.tcgetattr(fd)
-    try:
-        tty.setraw(fd)
-        ch = sys.stdin.read(1)
-    finally:
-        termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
-    return ch
 
+def getchar():
+    try:
+        import termios
+        import tty
+        fd = sys.stdin.fileno()
+        old_settings = termios.tcgetattr(fd)
+        try:
+            tty.setraw(fd)
+            ch = sys.stdin.read(1)
+        finally:
+            termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
+        return ch
+    except:
+        import msvcrt
+        return msvcrt.getch().decode("utf-8")
 
 #playing area size:
 playingHeight = 10
@@ -33,10 +38,10 @@ wall2 = [7,2]
 wall3 = [3,3]
 
 class Room:
-    
+
     def __init__(self, layout):
         self.layout = layout
-        
+
     def print_room(self, playercoords):
         for lineno, line in enumerate(self.layout):
             playerline = line
@@ -49,7 +54,7 @@ class Room:
                         playerline_parts.append(char)
                 playerline = ''.join(playerline_parts)
             print(playerline)
-            
+
     def validmove(self, playercoords, tobeplayercoords):
         line_player_is_on = self.layout[tobeplayercoords[1]]
         print ('theline '+line_player_is_on)
@@ -109,21 +114,25 @@ while nerd:
     print (tobeplayercoords)
     print ("\n\n\nw, a, s, or d")
     movement = getchar()
+    print (movement)
     if movement == 'w':
         tobeplayercoords[1] -= 1
-        
+
     if movement == 'a':
         tobeplayercoords[0] -= 1
-        
+
     if movement == 's':
         tobeplayercoords[1] += 1
-        
+
     if movement == 'd':
         tobeplayercoords[0] += 1
-        
+
     if dungeon.validmove(playercoords,tobeplayercoords):
         playercoords = copy(tobeplayercoords)
     else:
         tobeplayercoords = copy(playercoords)
     x= input("he")
-    print("\033c", end="")
+    if sys.platform == "win32":
+        os.system('cls')
+    else:
+        os.system('clear')
