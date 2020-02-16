@@ -1,3 +1,4 @@
+
 import sys
 from copy import copy
 import os
@@ -6,7 +7,7 @@ try:
   import tty
 except:
   import msvcrt
-  
+
 #uses old 1970"s programming crap to not buffer inputs from keyboard
 def getchar():
   if sys.platform == "win32":
@@ -117,6 +118,7 @@ class Room:
         return False
 
 #All rooms go here:
+#left of 2, below 8, above 9
 startRoom = Room([
     "|--------------|",
     "|              |",
@@ -124,16 +126,43 @@ startRoom = Room([
     "|              ]",
     "|--------------|",
 ])
-
+#right of 1, below 7, above 6, left of 3
 room2 = Room([
     "|--------------|",
-    "|              |",
+    "|              ]",
     "|          |   |",
-    "[  |   C       |",
+    "[  |           |",
     "|--------------|",
 ])
+#right of 2, above 4, below 5
+room3 = Room([
+    "|---------------~-|",
+    "[    |    |       |",
+    "| ---|    |       |",
+    "|      |--|       |",
+    "|      |          |",
+    "|--------_--------|",
+])
+#below 3, above 10, right of 6
+room4 = Room([
+    "|--------~--------|",
+    "|                 |",
+    "|                 |",
+    "|                 |",
+    "|                 |",
+    "|-----------------|",
+])
+#TRE above 3, right of 7
+room5 = Room([
+    "|-----------------|",
+    "|                 |",
+    "|   |             |",
+    "|           |     |",
+    "[                 |",
+    "|---------------_-|",
 
-
+  
+])
 
 currentRoom = startRoom
 
