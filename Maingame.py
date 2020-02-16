@@ -163,12 +163,31 @@ room5 = Room([
 ])
 
 room6 = Room([
-    "|-----------------|"
+    "|-----------------|",
+    "|                 |",
+    "[                 |",
+    "|                 |",
+    "|                 |",
+    "|-----------------|",
 ])
+
 
 currentRoom = startRoom
 
 startRoom.setDoorEast(room2)
+room2.setDoorEast(room3)
+room3.setDoorNorth(room5)
+room3.setDoorSouth(room4)
+room4.setDoorSouth(room10)
+room10.setDoorWest(room11)
+room11.setDoorWest(room12)
+room12.setDoorNorth(room9)
+room9.setDoorEast(room6)
+room5.setDoorWest(room7)
+room7.setDoorWest(room8)
+room7.setDoorNorth(room14)
+room13.setDoorSouth(room8)
+room13.setDoorEast(room14)
 gameRunning = True
 while gameRunning:
     currentRoom.printRoom(playercoords)
