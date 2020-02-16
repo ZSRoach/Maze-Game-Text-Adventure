@@ -7,7 +7,7 @@ try:
 except:
   import msvcrt
 
-#uses old 1970's programming crap to not buffer inputs from keyboard
+#uses old 1970"s programming crap to not buffer inputs from keyboard
 def getchar():
   if sys.platform == "win32":
     return msvcrt.getch().decode("utf-8")
@@ -25,12 +25,63 @@ def getchar():
 playercoords = [1,1]
 tobeplayercoords = [1,1]
 
+
+
 class Room:
-    roomNumber = 0
+
     def __init__(self, layout):
         self.layout = layout
-        Room.roomNumber +=1
-        self.roomNumber = Room.roomNumber
+        self.south = None
+        self.north = None
+        self.east = None
+        self.west = None
+        self.eastEntrance = None
+        self.westEntrance = None
+        self.southEntrance = None
+        self.northEntrance = None
+        self.setDoorPositions()
+
+    def setDoorSouth(self,adjacentRoom):
+        self.south = adjacentRoom
+        adjacentRoom.north = self
+
+    def setDoorNorth(self,adjacentRoom):
+        self.north = adjacentRoom
+        adjacentRoom.south = self
+
+    def setDoorEast(self,adjacentRoom):
+        self.east = adjacentRoom
+        adjacentRoom.west = self
+
+    def setDoorWest(self,adjacentRoom):
+        self.west = adjacentRoom
+        adjacentRoom.east = self
+
+    def setDoorPositions(self):
+        for lineno, line in enumerate(self.layout):
+            #check north doors:
+            if lineno == 0:
+                for i in range(len(line)):
+                    space = line[i]
+                    if space == "~":
+                        self.northEntrance = [i,lineno+1]
+            #check south doors
+            if lineno == len(self.layout):
+                for i in range (len(line)):
+                    space = line[i]
+                    if space == "_":
+                        self.southEntrance = [i,lineno-1]
+            for i in range(len(line)):
+                #check west doors
+                space = line[i]
+                if i == 0:
+                    if space == "[":
+                        self.westEntrance = [i+1,lineno]
+                #check east doors
+                if i == len(line)-1:
+                    if space == "]":
+                        self.eastEntrance = [i-1,lineno]
+
 
     def printRoom(self, playercoords):
         for lineno, line in enumerate(self.layout):
@@ -39,65 +90,92 @@ class Room:
                 playerline_parts = []
                 for xval, char in enumerate(line):
                     if playercoords[0] == xval:
-                        playerline_parts.append('P')
+                        playerline_parts.append("P")
                     else:
                         playerline_parts.append(char)
-                playerline = ''.join(playerline_parts)
+                playerline = "".join(playerline_parts)
             print(playerline)
+
+    def roomSwitch(self, playercoords, tobeplayercoords, currentRoom):
+        line_player_is_on = self.layout[tobeplayercoords[1]]
+        space_player_is_on = line_player_is_on[tobeplayercoords[0]]
+        if space_player_is_on == "~":
+            return "north"
+        if space_player_is_on == "[":
+            return "west"
+        if space_player_is_on == "]":
+            return "east"
+        if space_player_is_on == "_":
+            return "south"
+        return False
 
     def validMove(self, playercoords, tobeplayercoords):
         line_player_is_on = self.layout[tobeplayercoords[1]]
         space_player_is_on = line_player_is_on[tobeplayercoords[0]]
-        if space_player_is_on == ']' or space_player_is_on == '[' or space_player_is_on == '_' or space_player_is_on == '~':
-            print("hi")
-        elif space_player_is_on == ' ':
+        if space_player_is_on == " ":
             return True
         return False
 
-
-dungeon = Room([
-    '|--------------|',
-    '|              |',
-    '|              ]',
-    '|              |',
-    '|--------------|',
-],)
-
-dungeon_east1 = Room([
-    '|--------------|',
-    '|              |',
-    '[          |   |',
-    '|  |   C       |',
-    '|--------------|',
+#All rooms go here:
+startRoom = Room([
+    "|--------------|",
+    "|              |",
+    "|              |",
+    "|              ]",
+    "|--------------|",
 ])
 
+room2 = Room([
+    "|--------------|",
+    "|              |",
+    "|          |   |",
+    "[  |   C       |",
+    "|--------------|",
+])
+
+
+
+currentRoom = startRoom
+
+startRoom.setDoorEast(room2)
 gameRunning = True
 while gameRunning:
-    dungeon.printRoom(playercoords)
-    print (dungeon.roomNumber)
-    print (dungeon_east1.roomNumber)
-    print (playercoords)
-    print (tobeplayercoords)
+    currentRoom.printRoom(playercoords)
     print ("\n\n\nw, a, s, or d")
     movement = getchar()
     print (movement)
-    if movement == 'w':
+    if movement == "w":
         tobeplayercoords[1] -= 1
 
-    if movement == 'a':
+    if movement == "a":
         tobeplayercoords[0] -= 1
 
-    if movement == 's':
+    if movement == "s":
         tobeplayercoords[1] += 1
 
-    if movement == 'd':
+    if movement == "d":
         tobeplayercoords[0] += 1
-
-    if dungeon.validMove(playercoords,tobeplayercoords):
+    if currentRoom.roomSwitch(playercoords,tobeplayercoords,currentRoom) == "north":
+        currentRoom = currentRoom.north
+        tobeplayercoords = copy(currentRoom.southEntrance)
+        playercoords = copy(tobeplayercoords)
+    elif currentRoom.roomSwitch(playercoords,tobeplayercoords,currentRoom) == "south":
+        currentRoom = currentRoom.south
+        tobeplayercoords = copy(currentRoom.northEntrance)
+        playercoords = copy(tobeplayercoords)
+    elif currentRoom.roomSwitch(playercoords,tobeplayercoords,currentRoom) == "east":
+        currentRoom = currentRoom.east
+        tobeplayercoords = copy(currentRoom.westEntrance)
+        playercoords = copy(tobeplayercoords)
+    elif currentRoom.roomSwitch(playercoords,tobeplayercoords,currentRoom) == "west":
+        currentRoom = currentRoom.west
+        tobeplayercoords = copy(currentRoom.eastEntrance)
+        playercoords = copy(tobeplayercoords)
+    elif currentRoom.validMove(playercoords,tobeplayercoords):
         playercoords = copy(tobeplayercoords)
     else:
         tobeplayercoords = copy(playercoords)
     if sys.platform == "win32":
-        os.system('cls')
+        os.system("cls")
     else:
-        os.system('clear')
+        os.system("clear")
