@@ -6,7 +6,7 @@ try:
   import tty
 except:
   import msvcrt
-
+  
 #uses old 1970"s programming crap to not buffer inputs from keyboard
 def getchar():
   if sys.platform == "win32":
