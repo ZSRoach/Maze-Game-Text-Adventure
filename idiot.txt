@@ -1,1 +1,3 @@
 https://www.anondraw.com/collab#private_y7r4v,1012,-473
+https://pypi.org/project/termcolor/
+https://www.programiz.com/python-programming/methods/built-in/len

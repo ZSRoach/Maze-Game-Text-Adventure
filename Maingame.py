@@ -2,6 +2,7 @@
 import sys
 from copy import copy
 import os
+from termcolor import colored
 try:
   import termios
   import tty
@@ -40,6 +41,8 @@ class Room:
         self.westEntrance = None
         self.southEntrance = None
         self.northEntrance = None
+        self.chestRoom = None
+        self.tRE = None
         self.setDoorPositions()
 
     def setDoorSouth(self,adjacentRoom):
@@ -67,7 +70,7 @@ class Room:
                     if space == "~":
                         self.northEntrance = [i,lineno+1]
             #check south doors
-            if lineno == len(self.layout):
+            if lineno == len(self.layout)-1:
                 for i in range (len(line)):
                     space = line[i]
                     if space == "_":
@@ -95,8 +98,8 @@ class Room:
                     else:
                         playerline_parts.append(char)
                 playerline = "".join(playerline_parts)
-            print(playerline)
-
+            print(colored(playerline, "white", attrs=["reverse"]))
+    
     def roomSwitch(self, playercoords, tobeplayercoords, currentRoom):
         line_player_is_on = self.layout[tobeplayercoords[1]]
         space_player_is_on = line_player_is_on[tobeplayercoords[0]]
@@ -161,7 +164,7 @@ room5 = Room([
     "[                 |",
     "|---------------_-|",
 ])
-
+# above 11, right of 9, left of 4, below 2
 room6 = Room([
     "|-----------------|",
     "|                 |",
@@ -170,7 +173,7 @@ room6 = Room([
     "|                 |",
     "|-----------------|",
 ])
-
+#above 2, below 14, right of 8, left of 5
 room7 = Room([
     "|-------------~---|",
     "|                 |",
@@ -180,7 +183,7 @@ room7 = Room([
     "[                 ]",
     "|-----------------|",
 ])
-
+#left of 7, above start, below 13
 room8 = Room([
     "|--------------~--|",
     "|                 |",
@@ -190,7 +193,7 @@ room8 = Room([
     "|                 ]",
     "|-----------------|",
 ])
-
+#above 12, below start, left of 6
 room9 = Room([
     "|-----------------|",
     "|                 |",
@@ -199,16 +202,16 @@ room9 = Room([
     "|                 |",
     "|-_---------------|",
 ])
-
+#below 4, right of 11
 room10 = Room([
-    "|--------_--------|",
+    "|--------~--------|",
     "|                 |",
     "|                 |",
     "|                 |",
     "[                 |",
     "|-----------------|",
 ])
-
+#below 6, right of 12, left of 10
 room11 = Room([
     "|-----------------|",
     "[                 |",
@@ -217,7 +220,7 @@ room11 = Room([
     "|                 ]",
     "|-----------------|",
 ])
-
+#below 9, left of 11
 room12 = Room([
     "|-~---------------|",
     "|                 ]",
@@ -226,7 +229,7 @@ room12 = Room([
     "|                 |",
     "|-----------------|",
 ])
-
+#above 8, left of 14
 room13 = Room([
     "|-----------------|",
     "|                 ]",
@@ -234,16 +237,16 @@ room13 = Room([
     "|                 |",
     "|--------------_--|",
 ])
-
+#right of 13, above 7
 room14 = Room([
-  "|-----------------|",
-  "[                 |",
-  "|                 |",
-  "|                 |",
-  "|-------------_---|",
+    "|-----------------|",
+    "[                 |",
+    "|                 |",
+    "|                 |",
+    "|-------------_---|",
 ])
 
-currentRoom = room4
+currentRoom = startRoom
 
 startRoom.setDoorEast(room2)
 room2.setDoorEast(room3)
@@ -262,9 +265,9 @@ room13.setDoorEast(room14)
 gameRunning = True
 while gameRunning:
     currentRoom.printRoom(playercoords)
-    print ("\n\n\nw, a, s, or d")
+    print (colored("\nAction Choices: \nW (up) \nA (left) \nS (down) \nD (right) \nE (interact - not implemented yet) \n", "white", attrs=["reverse"]))
+    print (colored("Map Key: \n","white",attrs=["reverse"])+colored("P", "blue", "on_white")+colored(" - your character \n[ - door going west \n_ - door going south \n] - door going east \n~ - door going north \n---- or ||| - wall/block","white", attrs=["reverse"]))
     movement = getchar()
-    print (movement)
     if movement == "w":
         tobeplayercoords[1] -= 1
 

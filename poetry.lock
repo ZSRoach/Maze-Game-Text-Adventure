@@ -1,0 +1,14 @@
+[[package]]
+category = "main"
+description = "ANSII Color formatting for output in terminal."
+name = "termcolor"
+optional = false
+python-versions = "*"
+version = "1.1.0"
+
+[metadata]
+content-hash = "60d9884a53fbc030effd2ba389dd4bac108fae88b5ec5768783008e5caa803b9"
+python-versions = "^3.7"
+
+[metadata.hashes]
+termcolor = ["1d6d69ce66211143803fbc56652b41d73b4a400a2891d7bf7a1cdf4c02de613b"]
