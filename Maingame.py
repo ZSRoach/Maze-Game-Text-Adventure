@@ -179,3 +179,4 @@ while gameRunning:
         os.system("cls")
     else:
         os.system("clear")
+#hello this is a thing that i am doing
