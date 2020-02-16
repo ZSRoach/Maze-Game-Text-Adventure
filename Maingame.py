@@ -99,7 +99,7 @@ class Room:
                         playerline_parts.append(char)
                 playerline = "".join(playerline_parts)
             print(colored(playerline, "white", attrs=["reverse"]))
-    
+
     def roomSwitch(self, playercoords, tobeplayercoords, currentRoom):
         line_player_is_on = self.layout[tobeplayercoords[1]]
         space_player_is_on = line_player_is_on[tobeplayercoords[0]]
