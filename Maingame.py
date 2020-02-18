@@ -1,4 +1,4 @@
-
+import entities
 import sys
 from copy import copy
 import os
@@ -263,6 +263,8 @@ room7.setDoorNorth(room14)
 room13.setDoorSouth(room8)
 room13.setDoorEast(room14)
 gameRunning = True
+player = Player()
+player.fool(player)
 while gameRunning:
     currentRoom.printRoom(playercoords)
     print (colored("\nAction Choices: \nW (up) \nA (left) \nS (down) \nD (right) \nE (interact - not implemented yet) \n", "white", attrs=["reverse"]))
