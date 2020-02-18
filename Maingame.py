@@ -5,6 +5,7 @@ from Entities import Rogue
 from Entities import Warrior
 from Entities import Necromancer
 from Entities import Goblin
+import random
 import sys
 from copy import copy
 import os

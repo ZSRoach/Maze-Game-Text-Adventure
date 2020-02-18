@@ -1,3 +1,4 @@
+import random
 class Entity():
     health = 0
     attack = 0
