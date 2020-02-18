@@ -5,6 +5,24 @@ from Entities import Rogue
 from Entities import Warrior
 from Entities import Necromancer
 from Entities import Goblin
+from rooms import Room
+from rooms import startRoom
+from rooms import room2
+from rooms import room3
+from rooms import room4
+from rooms import room5
+from rooms import room6
+from rooms import room7
+from rooms import room8
+from rooms import room9
+from rooms import room10
+from rooms import room11
+from rooms import room12
+from rooms import room13
+from rooms import room14
+from rooms import room15
+from rooms import room16
+from rooms import room17
 import random
 import sys
 from copy import copy
@@ -34,225 +52,6 @@ def getchar():
 playercoords = [1,1]
 tobeplayercoords = [1,1]
 
-
-
-class Room:
-
-    def __init__(self, layout):
-        self.layout = layout
-        self.south = None
-        self.north = None
-        self.east = None
-        self.west = None
-        self.eastEntrance = None
-        self.westEntrance = None
-        self.southEntrance = None
-        self.northEntrance = None
-        self.chestRoom = None
-        self.tRE = None
-        self.setDoorPositions()
-
-    def setDoorSouth(self,adjacentRoom):
-        self.south = adjacentRoom
-        adjacentRoom.north = self
-
-    def setDoorNorth(self,adjacentRoom):
-        self.north = adjacentRoom
-        adjacentRoom.south = self
-
-    def setDoorEast(self,adjacentRoom):
-        self.east = adjacentRoom
-        adjacentRoom.west = self
-
-    def setDoorWest(self,adjacentRoom):
-        self.west = adjacentRoom
-        adjacentRoom.east = self
-
-    def setDoorPositions(self):
-        for lineno, line in enumerate(self.layout):
-            #check north doors:
-            if lineno == 0:
-                for i in range(len(line)):
-                    space = line[i]
-                    if space == "~":
-                        self.northEntrance = [i,lineno+1]
-            #check south doors
-            if lineno == len(self.layout)-1:
-                for i in range (len(line)):
-                    space = line[i]
-                    if space == "_":
-                        self.southEntrance = [i,lineno-1]
-            for i in range(len(line)):
-                #check west doors
-                space = line[i]
-                if i == 0:
-                    if space == "[":
-                        self.westEntrance = [i+1,lineno]
-                #check east doors
-                if i == len(line)-1:
-                    if space == "]":
-                        self.eastEntrance = [i-1,lineno]
-
-
-    def printRoom(self, playercoords):
-        for lineno, line in enumerate(self.layout):
-            playerline = line
-            if playercoords[1] == lineno:
-                playerline_parts = []
-                for xval, char in enumerate(line):
-                    if playercoords[0] == xval:
-                        playerline_parts.append("P")
-                    else:
-                        playerline_parts.append(char)
-                playerline = "".join(playerline_parts)
-            print(colored(playerline, "white", attrs=["reverse"]))
-
-    def roomSwitch(self, playercoords, tobeplayercoords, currentRoom):
-        line_player_is_on = self.layout[tobeplayercoords[1]]
-        space_player_is_on = line_player_is_on[tobeplayercoords[0]]
-        if space_player_is_on == "~":
-            return "north"
-        if space_player_is_on == "[":
-            return "west"
-        if space_player_is_on == "]":
-            return "east"
-        if space_player_is_on == "_":
-            return "south"
-        return False
-
-    def validMove(self, playercoords, tobeplayercoords):
-        line_player_is_on = self.layout[tobeplayercoords[1]]
-        space_player_is_on = line_player_is_on[tobeplayercoords[0]]
-        if space_player_is_on == " ":
-            return True
-        return False
-
-#All rooms go here:
-#left of 2, below 8, above 9
-startRoom = Room([
-    "|--------------|",
-    "|              |",
-    "|              |",
-    "|              ]",
-    "|--------------|",
-])
-#right of 1, below 7, above 6, left of 3
-room2 = Room([
-    "|--------------|",
-    "|              ]",
-    "|          |   |",
-    "[  |           |",
-    "|--------------|",
-])
-#right of 2, above 4, below 5
-room3 = Room([
-    "|---------------~-|",
-    "[    |            |",
-    "| ---|    |       |",
-    "|      |--|       |",
-    "|      |          |",
-    "|--------_--------|",
-])
-#below 3, above 10, right of 6
-room4 = Room([
-    "|--------~--------|",
-    "|                 |",
-    "|                 |",
-    "|                 |",
-    "|                 |",
-    "|--------_--------|",
-])
-#TRE above 3, right of 7
-room5 = Room([
-    "|-----------------|",
-    "|                 |",
-    "|   |             |",
-    "|           |     |",
-    "[                 |",
-    "|---------------_-|",
-])
-# above 11, right of 9, left of 4, below 2
-room6 = Room([
-    "|-----------------|",
-    "|                 |",
-    "[                 |",
-    "|                 |",
-    "|                 |",
-    "|-----------------|",
-])
-#above 2, below 14, right of 8, left of 5
-room7 = Room([
-    "|-------------~---|",
-    "|                 |",
-    "|                 |",
-    "|-----------------|",
-    "|                 |",
-    "[                 ]",
-    "|-----------------|",
-])
-#left of 7, above start, below 13
-room8 = Room([
-    "|--------------~--|",
-    "|                 |",
-    "|                 |",
-    "|    -------------|",
-    "|                 |",
-    "|                 ]",
-    "|-----------------|",
-])
-#above 12, below start, left of 6
-room9 = Room([
-    "|-----------------|",
-    "|                 |",
-    "|                 ]",
-    "|                 |",
-    "|                 |",
-    "|-_---------------|",
-])
-#below 4, right of 11
-room10 = Room([
-    "|--------~--------|",
-    "|                 |",
-    "|                 |",
-    "|                 |",
-    "[                 |",
-    "|-----------------|",
-])
-#below 6, right of 12, left of 10
-room11 = Room([
-    "|-----------------|",
-    "[                 |",
-    "|                 |",
-    "|                 |",
-    "|                 ]",
-    "|-----------------|",
-])
-#below 9, left of 11
-room12 = Room([
-    "|-~---------------|",
-    "|                 ]",
-    "|                 |",
-    "|                 |",
-    "|                 |",
-    "|-----------------|",
-])
-#above 8, left of 14
-room13 = Room([
-    "|-----------------|",
-    "|                 ]",
-    "|                 |",
-    "|                 |",
-    "|--------------_--|",
-])
-#right of 13, above 7
-room14 = Room([
-    "|-----------------|",
-    "[                 |",
-    "|                 |",
-    "|                 |",
-    "|-------------_---|",
-])
-
 currentRoom = startRoom
 
 startRoom.setDoorEast(room2)
@@ -269,8 +68,11 @@ room7.setDoorWest(room8)
 room7.setDoorNorth(room14)
 room13.setDoorSouth(room8)
 room13.setDoorEast(room14)
+room9.setDoorWest(room15)
+room16.setDoorEast(room15)
+room16.setDoorSouth(room17)
 gameRunning = True
-player = Player("Gamer")
+player = Sorcerer("Gamer")
 player.fool(player)
 while gameRunning:
     currentRoom.printRoom(playercoords)
