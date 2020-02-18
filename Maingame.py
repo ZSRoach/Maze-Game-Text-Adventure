@@ -54,30 +54,15 @@ tobeplayercoords = [1,1]
 
 currentRoom = startRoom
 
-startRoom.setDoorEast(room2)
-room2.setDoorEast(room3)
-room3.setDoorNorth(room5)
-room3.setDoorSouth(room4)
-room4.setDoorSouth(room10)
-room10.setDoorWest(room11)
-room11.setDoorWest(room12)
-room12.setDoorNorth(room9)
-room9.setDoorEast(room6)
-room5.setDoorWest(room7)
-room7.setDoorWest(room8)
-room7.setDoorNorth(room14)
-room13.setDoorSouth(room8)
-room13.setDoorEast(room14)
-room9.setDoorWest(room15)
-room16.setDoorEast(room15)
-room16.setDoorSouth(room17)
+
 gameRunning = True
 player = Sorcerer("Gamer")
 player.fool(player)
 while gameRunning:
     currentRoom.printRoom(playercoords)
+    print (currentRoom.roomInfo)
     print (colored("\nAction Choices: \nW (up) \nA (left) \nS (down) \nD (right) \nE (interact - not implemented yet) \n", "white", attrs=["reverse"]))
-    print (colored("Map Key: \n","white",attrs=["reverse"])+colored("P", "blue", "on_white")+colored(" - your character \n[ - door going west \n_ - door going south \n] - door going east \n~ - door going north \n---- or ||| - wall/block","white", attrs=["reverse"]))
+    print (colored("Map Key: \n","white",attrs=["reverse"])+colored("Ö", "blue", "on_white")+colored(" - your character \n[ - door going west \n_ - door going south \n] - door going east \n~ - door going north \n---- or ||| - wall/block \n═ or ║ - locked door \n","white", attrs=["reverse"]))
     movement = getchar()
     if movement == "w":
         tobeplayercoords[1] -= 1

@@ -26,6 +26,7 @@ class Room:
         self.bossRoom = bossRoom
         self.restRoom = restRoom
         self.setDoorPositions()
+        self.roomInfo = None
 
     def setDoorSouth(self,adjacentRoom):
         self.south = adjacentRoom
@@ -76,7 +77,7 @@ class Room:
                 playerline_parts = []
                 for xval, char in enumerate(line):
                     if playercoords[0] == xval:
-                        playerline_parts.append("P")
+                        playerline_parts.append("Ö")
                     else:
                         playerline_parts.append(char)
                 playerline = "".join(playerline_parts)
@@ -111,6 +112,7 @@ startRoom = Room([
     "|              ]",
     "|--------------|",
     ], False, False, False, True)
+startRoom.
 #right of 1, below 7, above 6, left of 3
 room2 = Room([
     "|--------------|",
@@ -180,7 +182,7 @@ room9 = Room([
     "|-----------------|",
     "|                 |",
     "|                 ]",
-    "|                 |",
+    "[                 |",
     "|                 |",
     "|-_---------------|",
     ], False, False, True, False)
@@ -245,7 +247,7 @@ room16 = Room([
     "|                 |",
     "|---------_-------|",
     ], False, False, False, False)
-
+#below 16
 room17 = Room([
     "|---------~----------|",
     "|     |        |     |",
@@ -257,3 +259,24 @@ room17 = Room([
     "|     |        |     |",
     "|--------------------|",
     ], True, False, False, False)
+
+
+
+#Door declarations:
+startRoom.setDoorEast(room2)
+room2.setDoorEast(room3)
+room3.setDoorNorth(room5)
+room3.setDoorSouth(room4)
+room4.setDoorSouth(room10)
+room10.setDoorWest(room11)
+room11.setDoorWest(room12)
+room12.setDoorNorth(room9)
+room9.setDoorEast(room6)
+room5.setDoorWest(room7)
+room7.setDoorWest(room8)
+room7.setDoorNorth(room14)
+room13.setDoorSouth(room8)
+room13.setDoorEast(room14)
+room9.setDoorWest(room15)
+room16.setDoorEast(room15)
+room16.setDoorSouth(room17)

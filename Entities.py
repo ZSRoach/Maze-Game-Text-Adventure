@@ -27,7 +27,7 @@ class Player(Entity):
 
 #definition of sorcerer - player subclass - (inherits from entity, and player) - user class type
 class Sorcerer(Player):
-    mana = 3
+    mana = 
     spells = 0
 
 #definition of warrior - player subclass - (inherits from entity, and player) - user class type
@@ -37,16 +37,18 @@ class Warrior(Player):
 
 #definition of rogue - player subclass - (inherits from entity, and player) - user class type
 class Rogue(Player):
-    evadeChance = 5 #evasion calculation: random number 1 - 100; if random number  >= 100-evadechance, take no dmg
+    evadeChance = 3 #evasion calculation: random number 1 - 100; if random number  >= 100-evadechance, take no dmg
     stealth = 1
     
 #definition of necromancer - player subclass - (inherits from entity, and player) - user class type
 class Necromancer(Player):
-    minionTypes = 0
     maxMinions = 0
     currentMinions = 0
+    currentMinionsAlive = 0
     minionHealth = 0
     minionAttack = 0
+
+class Minion(Entity):
     
 #definition of goblin - main throwaway generic enemy - (inherits from entity) - enemy class type
 class Goblin(Entity):
