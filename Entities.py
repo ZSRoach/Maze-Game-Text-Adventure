@@ -11,7 +11,8 @@ class Entity():
 
 #definition of main player class (inherits traits from entity) - user character
 class Player(Entity):
-    name = "name"
+    def __init__(self, name):
+      self.name = name
     weapons = 0
     skills = 0
     level = 1
@@ -19,8 +20,8 @@ class Player(Entity):
     def levelUp(leveler):
         print ("You leveled up to level "+str((leveler.level)+1)+"!!")
         leveler.level += 1
-    def fool(fooled):
-        print("you've been fooled "+fooler)
+    def fool(self, fooled):
+        print("you've been fooled "+fooled.name)
     pass
 
 #definition of sorcerer - player subclass - (inherits from entity, and player) - user class type

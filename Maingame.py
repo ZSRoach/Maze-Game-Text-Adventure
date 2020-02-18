@@ -1,4 +1,10 @@
-import entities
+from Entities import Entity
+from Entities import Player
+from Entities import Sorcerer
+from Entities import Rogue
+from Entities import Warrior
+from Entities import Necromancer
+from Entities import Goblin
 import sys
 from copy import copy
 import os
@@ -263,7 +269,7 @@ room7.setDoorNorth(room14)
 room13.setDoorSouth(room8)
 room13.setDoorEast(room14)
 gameRunning = True
-player = Player()
+player = Player("Gamer")
 player.fool(player)
 while gameRunning:
     currentRoom.printRoom(playercoords)
