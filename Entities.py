@@ -27,7 +27,7 @@ class Player(Entity):
 
 #definition of sorcerer - player subclass - (inherits from entity, and player) - user class type
 class Sorcerer(Player):
-    mana = 
+    mana = 20
     spells = 0
 
 #definition of warrior - player subclass - (inherits from entity, and player) - user class type
@@ -49,7 +49,7 @@ class Necromancer(Player):
     minionAttack = 0
 
 class Minion(Entity):
-    
+    health = 0
 #definition of goblin - main throwaway generic enemy - (inherits from entity) - enemy class type
 class Goblin(Entity):
     hostile = False

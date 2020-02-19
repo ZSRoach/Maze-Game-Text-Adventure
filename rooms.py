@@ -27,6 +27,11 @@ class Room:
         self.restRoom = restRoom
         self.setDoorPositions()
         self.roomInfo = None
+    def hasLockedDoor(self, lockedLayout):
+        self.lockedLayout = lockedLayout
+        
+    def lockConditionCheck(self, condition):
+        self.lockCondition = condition
 
     def setDoorSouth(self,adjacentRoom):
         self.south = adjacentRoom
@@ -112,7 +117,6 @@ startRoom = Room([
     "|              ]",
     "|--------------|",
     ], False, False, False, True)
-startRoom.
 #right of 1, below 7, above 6, left of 3
 room2 = Room([
     "|--------------|",

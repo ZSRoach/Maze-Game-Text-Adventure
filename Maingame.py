@@ -1,28 +1,5 @@
-from Entities import Entity
-from Entities import Player
-from Entities import Sorcerer
-from Entities import Rogue
-from Entities import Warrior
-from Entities import Necromancer
-from Entities import Goblin
-from rooms import Room
-from rooms import startRoom
-from rooms import room2
-from rooms import room3
-from rooms import room4
-from rooms import room5
-from rooms import room6
-from rooms import room7
-from rooms import room8
-from rooms import room9
-from rooms import room10
-from rooms import room11
-from rooms import room12
-from rooms import room13
-from rooms import room14
-from rooms import room15
-from rooms import room16
-from rooms import room17
+import Entities
+import rooms
 import random
 import sys
 from copy import copy
@@ -52,12 +29,20 @@ def getchar():
 playercoords = [1,1]
 tobeplayercoords = [1,1]
 
-currentRoom = startRoom
+currentRoom = rooms.startRoom
 
 
-gameRunning = True
-player = Sorcerer("Gamer")
+
+player = Entities.Sorcerer("Gamer")
 player.fool(player)
+
+
+#Title Screen Loop - has start game button, load from save (experimental)
+
+#Character Creation Loop
+
+#Main Game Loop
+gameRunning = True
 while gameRunning:
     currentRoom.printRoom(playercoords)
     print (currentRoom.roomInfo)
