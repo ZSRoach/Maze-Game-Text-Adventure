@@ -46,6 +46,7 @@ gameRunning = True
 while gameRunning:
     currentRoom.printRoom(playercoords)
     print (currentRoom.roomInfo)
+    currentRoom.hasBeenVisited = True
     print (colored("\nAction Choices: \nW (up) \nA (left) \nS (down) \nD (right) \nE (interact - not implemented yet) \n", "white", attrs=["reverse"]))
     print (colored("Map Key: \n","white",attrs=["reverse"])+colored("Ö", "blue", "on_white")+colored(" - your character \n[ - door going west \n_ - door going south \n] - door going east \n~ - door going north \n---- or ||| - wall/block \n═ or ║ - locked door \n","white", attrs=["reverse"]))
     movement = getchar()

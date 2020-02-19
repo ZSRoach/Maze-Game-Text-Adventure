@@ -26,12 +26,19 @@ class Room:
         self.bossRoom = bossRoom
         self.restRoom = restRoom
         self.setDoorPositions()
-        self.roomInfo = None
+        self.hasBeenVisited =None
+
     def hasLockedDoor(self, lockedLayout):
         self.lockedLayout = lockedLayout
         
     def lockConditionCheck(self, condition):
         self.lockCondition = condition
+
+    def setRoomInfo(self, firstTime, secondTime):
+
+
+    def displayRoomInfo(self):
+
 
     def setDoorSouth(self,adjacentRoom):
         self.south = adjacentRoom
