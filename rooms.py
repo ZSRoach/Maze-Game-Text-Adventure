@@ -30,6 +30,16 @@ class Room:
         self.locked = False
         self.lockCondition = None
         self.chestLooted = False
+        self.chestLocation = None
+        self.setChestLocation()
+
+    
+    def setChestLocation(self):
+        for lineno, line in enumerate(self.layout):
+          for i in range(len(line)):
+            space = line[i]
+            if space == "■":
+              self.chestLocation = [i,lineno]
 
     def hasLockedDoor(self, lockedLayout, condition):
         self.lockedLayout = lockedLayout
@@ -141,6 +151,13 @@ class Room:
         return False
 
     def validMove(self, playercoords, tobeplayercoords):
+      if self.locked == True:
+        line_player_is_on = self.lockedLayout[tobeplayercoords[1]]
+        space_player_is_on = line_player_is_on[tobeplayercoords[0]]
+        if space_player_is_on == " ":
+            return True
+        return False
+      else:
         line_player_is_on = self.layout[tobeplayercoords[1]]
         space_player_is_on = line_player_is_on[tobeplayercoords[0]]
         if space_player_is_on == " ":
@@ -148,7 +165,7 @@ class Room:
         return False
 
 
-# ═
+
 #All rooms go here:
 #left of 2, below 8, above 9
 startRoom = Room([
@@ -207,7 +224,7 @@ room6 = Room([
 room7 = Room([
     "|-------------~---|",
     "|                 |",
-    "|                 |",
+    "|■                |",
     "|--------- -------|",
     "|                 |",
     "[                 ]",
@@ -306,7 +323,7 @@ room17 = Room([
     "|---------_----------|",
     ], True, False, False, False)
 
-
+# ════════════════════════        ║║║║║║║║║║║║║║║║║║║║
 #doors with locks:
 def conditionCheckAll():
 
@@ -317,17 +334,17 @@ def conditionCheckAll():
     "|      |--|       |",
     "|      |          |",
     "|--------═--------|",
-  ], room7.hasBeenVisited)
+  ], room7.chestLooted)
 
   room7.hasLockedDoor([
     "|-------------~---|",
     "|                 |",
-    "|                 |",
+    "|■                |",
     "|---------═-------|",
     "|                 |",
     "[                 ]",
     "|-----------------|",
-  ])
+  ], room7.chestLooted)
 
 
 

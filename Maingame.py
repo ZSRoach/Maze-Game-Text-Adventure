@@ -78,8 +78,8 @@ while gameRunning:
     currentRoom.printRoom(playercoords)
     currentRoom.displayRoomInfo
     currentRoom.hasBeenVisited = True
-    print (colored("\nAction Choices: \nW (up) \nA (left) \nS (down) \nD (right) \nE (interact - not implemented yet) \n", "white", attrs=["reverse"]))
-    print (colored("Map Key: \n","white",attrs=["reverse"])+colored("Ö", "blue", "on_white")+colored(" - your character \n[ - door going west \n_ - door going south \n] - door going east \n~ - door going north \n---- or ||| - wall/block \n═ or ║ - locked door \n","white", attrs=["reverse"]))
+    print (colored("\n Action Choices: \n W (up) \n A (left) \n S (down) \n D (right) \n E (interact - not implemented yet) \n", "white", attrs=["reverse"]))
+    print (colored(" Map Key: \n ","white",attrs=["reverse"])+colored("Ö", "blue", "on_white")+colored(" - your character \n [ - door going west \n _ - door going south \n ] - door going east \n ~ - door going north \n ---- or ||| - wall/block \n ═ or ║ - locked door \n ■ - chest \n δ - enemy \n Ω - boss","white", attrs=["reverse"]))
     action = getchar()
     if action == "w":
         tobeplayercoords[1] -= 1
