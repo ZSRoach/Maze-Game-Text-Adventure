@@ -8,6 +8,7 @@ yellow = chest
 red = Target Rich Environment (tRE)
 purple = start
 blue = locked door
+white = boss room
 ------------
 https://pypi.org/project/termcolor/
 https://www.programiz.com/python-programming/methods/built-in/len

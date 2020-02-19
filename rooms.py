@@ -26,19 +26,24 @@ class Room:
         self.bossRoom = bossRoom
         self.restRoom = restRoom
         self.setDoorPositions()
-        self.hasBeenVisited =None
+        self.hasBeenVisited = False
+        self.locked = False
+        self.lockCondition = None
 
-    def hasLockedDoor(self, lockedLayout):
+    def hasLockedDoor(self, lockedLayout, condition):
         self.lockedLayout = lockedLayout
-        
-    def lockConditionCheck(self, condition):
+        self.locked = True
         self.lockCondition = condition
+        
+    def lockConditionCheck(self):
+        if self.lockCondition == True:
+          self.locked = False
 
     def setRoomInfo(self, firstTime, secondTime):
-
+        print ("hi")
 
     def displayRoomInfo(self):
-
+        print ("hi")
 
     def setDoorSouth(self,adjacentRoom):
         self.south = adjacentRoom
@@ -83,6 +88,19 @@ class Room:
 
 
     def printRoom(self, playercoords):
+      if self.locked == True:
+        for lineno, line in enumerate(self.lockedLayout):
+            playerline = line
+            if playercoords[1] == lineno:
+                playerline_parts = []
+                for xval, char in enumerate(line):
+                    if playercoords[0] == xval:
+                        playerline_parts.append("Ö")
+                    else:
+                        playerline_parts.append(char)
+                playerline = "".join(playerline_parts)
+            print(colored(playerline, "white", attrs=["reverse"]))
+      else:
         for lineno, line in enumerate(self.layout):
             playerline = line
             if playercoords[1] == lineno:
@@ -96,6 +114,19 @@ class Room:
             print(colored(playerline, "white", attrs=["reverse"]))
 
     def roomSwitch(self, playercoords, tobeplayercoords, currentRoom):
+      if self.locked == True:
+        line_player_is_on = self.lockedLayout[tobeplayercoords[1]]
+        space_player_is_on = line_player_is_on[tobeplayercoords[0]]
+        if space_player_is_on == "~":
+            return "north"
+        if space_player_is_on == "[":
+            return "west"
+        if space_player_is_on == "]":
+            return "east"
+        if space_player_is_on == "_":
+            return "south"
+        return False
+      else:
         line_player_is_on = self.layout[tobeplayercoords[1]]
         space_player_is_on = line_player_is_on[tobeplayercoords[0]]
         if space_player_is_on == "~":
@@ -115,6 +146,8 @@ class Room:
             return True
         return False
 
+
+# ═
 #All rooms go here:
 #left of 2, below 8, above 9
 startRoom = Room([
@@ -130,7 +163,7 @@ room2 = Room([
     "|              ]",
     "|          |   |",
     "[  |           |",
-    "|--------------|",
+    "|-------_------|",
     ], False, False, False, False)
 #right of 2, above 4, below 5
 room3 = Room([
@@ -141,6 +174,7 @@ room3 = Room([
     "|      |          |",
     "|--------_--------|",
     ], False, False, False, False)
+
 #below 3, above 10, right of 6
 room4 = Room([
     "|--------~--------|",
@@ -173,7 +207,7 @@ room7 = Room([
     "|-------------~---|",
     "|                 |",
     "|                 |",
-    "|-----------------|",
+    "|--------- -------|",
     "|                 |",
     "[                 ]",
     "|-----------------|",
@@ -268,8 +302,23 @@ room17 = Room([
     "|     |        |     |",
     "|     |        |     |",
     "|     |        |     |",
-    "|--------------------|",
+    "|---------_----------|",
     ], True, False, False, False)
+
+
+#doors with locks:
+def conditionCheckAll():
+
+  room3.hasLockedDoor([
+    "|---------------~-|",
+    "[    |            |",
+    "| ---|    |       |",
+    "|      |--|       |",
+    "|      |          |",
+    "|--------═--------|",
+  ], room7.hasBeenVisited)
+
+
 
 
 
