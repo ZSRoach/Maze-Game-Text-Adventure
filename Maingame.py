@@ -1,5 +1,6 @@
 import Entities
 import rooms
+import titlescreen
 import random
 import sys
 from copy import copy
@@ -32,14 +33,42 @@ tobeplayercoords = [1,1]
 currentRoom = rooms.startRoom
 
 
+    #Title Screen Loop - has start game button, load from save (experimental)
 
-player = Entities.Sorcerer("Gamer")
-player.fool(player)
+titleScreen = True
+cursorPos = 1
 
+#clears screen before running
+if sys.platform == "win32":
+  os.system("cls")
+else:
+  os.system("clear")
 
-#Title Screen Loop - has start game button, load from save (experimental)
+while titleScreen:
+  titlescreen.printTitleScreen(cursorPos)
+  titleMovement = getchar()
+  if titleMovement == "w":
+    if cursorPos == 1:
+      cursorPos = 2
+    else:
+     cursorPos = 1
+  
+  elif titleMovement == "s":
+    if cursorPos == 1:
+      cursorPos = 2
+    else:
+      cursorPos = 1
 
-#Character Creation Loop
+  elif titleMovement == "\r":
+    if cursorPos == 1:
+      titleScreen = False
+
+  if sys.platform == "win32":
+        os.system("cls")
+  else:
+      os.system("clear")
+
+#Character Creation Loop 
 
 #Main Game Loop
 gameRunning = True
@@ -51,17 +80,17 @@ while gameRunning:
     currentRoom.hasBeenVisited = True
     print (colored("\nAction Choices: \nW (up) \nA (left) \nS (down) \nD (right) \nE (interact - not implemented yet) \n", "white", attrs=["reverse"]))
     print (colored("Map Key: \n","white",attrs=["reverse"])+colored("Ö", "blue", "on_white")+colored(" - your character \n[ - door going west \n_ - door going south \n] - door going east \n~ - door going north \n---- or ||| - wall/block \n═ or ║ - locked door \n","white", attrs=["reverse"]))
-    movement = getchar()
-    if movement == "w":
+    action = getchar()
+    if action == "w":
         tobeplayercoords[1] -= 1
 
-    if movement == "a":
+    if action == "a":
         tobeplayercoords[0] -= 1
 
-    if movement == "s":
+    if action == "s":
         tobeplayercoords[1] += 1
 
-    if movement == "d":
+    if action == "d":
         tobeplayercoords[0] += 1
     if currentRoom.roomSwitch(playercoords,tobeplayercoords,currentRoom) == "north":
         currentRoom = currentRoom.north

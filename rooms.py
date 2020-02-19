@@ -29,6 +29,7 @@ class Room:
         self.hasBeenVisited = False
         self.locked = False
         self.lockCondition = None
+        self.chestLooted = False
 
     def hasLockedDoor(self, lockedLayout, condition):
         self.lockedLayout = lockedLayout
@@ -317,6 +318,16 @@ def conditionCheckAll():
     "|      |          |",
     "|--------═--------|",
   ], room7.hasBeenVisited)
+
+  room7.hasLockedDoor([
+    "|-------------~---|",
+    "|                 |",
+    "|                 |",
+    "|---------═-------|",
+    "|                 |",
+    "[                 ]",
+    "|-----------------|",
+  ])
 
 
 
