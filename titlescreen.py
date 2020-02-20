@@ -1,3 +1,4 @@
+from termcolor import colored
 titleScreenLayout1 = [
   "                                              ",
   "                                              ",
@@ -21,7 +22,10 @@ titleScreenLayout2 = [
 def printTitleScreen(position):
   if position == 1:
     for lineno, line in enumerate(titleScreenLayout1):
-      print (titleScreenLayout1[lineno])
+      print (colored(titleScreenLayout1[lineno], "white", attrs=["reverse"]))
   elif position == 2:
     for lineno, line in enumerate(titleScreenLayout2):
-      print (titleScreenLayout2[lineno])
+      print (colored(titleScreenLayout2[lineno], "white", attrs=["reverse"]))
+
+def saveScreen():
+  print ("")

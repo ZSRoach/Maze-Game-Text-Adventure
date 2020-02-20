@@ -68,60 +68,63 @@ while titleScreen:
   elif titleMovement == "\x1b":
     gameRunning = False
     titleScreen = False
+    print ()
   if sys.platform == "win32":
-        os.system("cls")
+    os.system("cls")
   else:
-      os.system("clear")
+    os.system("clear")
 
 #Character Creation Loop
 
 #Main Game Loop
 
 while gameRunning:
-    rooms.conditionCheckAll()
-    currentRoom.lockConditionCheck()
-    currentRoom.printRoom(playercoords)
-    currentRoom.displayRoomInfo()
-    currentRoom.hasBeenVisited = True
-    print (colored("\n Action Choices: \n W (up) \n A (left) \n S (down) \n D (right) \n E (interact - not implemented yet) \n", "white", attrs=["reverse"]))
-    print (colored(" Map Key: \n ","white",attrs=["reverse"])+colored("Ö", "blue", "on_white")+colored(" - your character \n [ - door going west \n _ - door going south \n ] - door going east \n ~ - door going north \n ---- or ||| - wall/block \n ═ or ║ - locked door \n ■ - chest \n δ - enemy \n Ω - boss","white", attrs=["reverse"]))
-    action = getchar()
-    if action == "w":
-        tobeplayercoords[1] -= 1
+  rooms.conditionCheckAll()
+  currentRoom.lockConditionCheck()
+  currentRoom.printRoom(playercoords)
+  currentRoom.displayRoomInfo()
+  currentRoom.hasBeenVisited = True
+  print (colored("\n Action Choices: \n W (up) \n A (left) \n S (down) \n D (right) \n E (interact - not implemented yet) \n", "white", attrs=["reverse"]))
+  print (colored(" Map Key: \n ","white",attrs=["reverse"])+colored("Ö", "blue", "on_white")+colored(" - your character \n [ - door going west \n _ - door going south \n ] - door going east \n ~ - door going north \n ---- or ||| - wall/block \n ═ or ║ - locked door \n ■ - chest \n δ - enemy \n Ω - boss","white", attrs=["reverse"]))
+  action = getchar()
+  if action == "w":
+    tobeplayercoords[1] -= 1
 
-    if action == "a":
-        tobeplayercoords[0] -= 1
+  if action == "a":
+    tobeplayercoords[0] -= 1
 
-    if action == "s":
-        tobeplayercoords[1] += 1
+  if action == "s":
+    tobeplayercoords[1] += 1
 
-    if action == "d":
-        tobeplayercoords[0] += 1
-    if action == "\x1b":
-      gameRunning = False
-      break
-    if currentRoom.roomSwitch(playercoords,tobeplayercoords,currentRoom) == "north":
-        currentRoom = currentRoom.north
-        tobeplayercoords = copy(currentRoom.southEntrance)
-        playercoords = copy(tobeplayercoords)
-    elif currentRoom.roomSwitch(playercoords,tobeplayercoords,currentRoom) == "south":
-        currentRoom = currentRoom.south
-        tobeplayercoords = copy(currentRoom.northEntrance)
-        playercoords = copy(tobeplayercoords)
-    elif currentRoom.roomSwitch(playercoords,tobeplayercoords,currentRoom) == "east":
-        currentRoom = currentRoom.east
-        tobeplayercoords = copy(currentRoom.westEntrance)
-        playercoords = copy(tobeplayercoords)
-    elif currentRoom.roomSwitch(playercoords,tobeplayercoords,currentRoom) == "west":
-        currentRoom = currentRoom.west
-        tobeplayercoords = copy(currentRoom.eastEntrance)
-        playercoords = copy(tobeplayercoords)
-    elif currentRoom.validMove(playercoords,tobeplayercoords):
-        playercoords = copy(tobeplayercoords)
-    else:
-        tobeplayercoords = copy(playercoords)
-    if sys.platform == "win32":
-        os.system("cls")
-    else:
-        os.system("clear")
+  if action == "d":
+    tobeplayercoords[0] += 1
+  if action == "\x1b":
+    gameRunning = False
+    break
+  
+  if currentRoom.roomSwitch(playercoords,tobeplayercoords,currentRoom) == "north":
+    currentRoom = currentRoom.north
+    tobeplayercoords = copy(currentRoom.southEntrance)
+    playercoords = copy(tobeplayercoords)
+  elif currentRoom.roomSwitch(playercoords,tobeplayercoords,currentRoom) == "south":
+    currentRoom = currentRoom.south
+    tobeplayercoords = copy(currentRoom.northEntrance)
+    playercoords = copy(tobeplayercoords)
+  elif currentRoom.roomSwitch(playercoords,tobeplayercoords,currentRoom) == "east":
+    currentRoom = currentRoom.east
+    tobeplayercoords = copy(currentRoom.westEntrance)
+    playercoords = copy(tobeplayercoords)
+  elif currentRoom.roomSwitch(playercoords,tobeplayercoords,currentRoom) == "west":
+    currentRoom = currentRoom.west
+    tobeplayercoords = copy(currentRoom.eastEntrance)
+    playercoords = copy(tobeplayercoords)
+  elif currentRoom.validMove(playercoords,tobeplayercoords):
+    playercoords = copy(tobeplayercoords)
+  else:
+    tobeplayercoords = copy(playercoords)
+  
+  if sys.platform == "win32":
+    os.system("cls")
+  else:
+    os.system("clear")
 #hello this is a thing that i am doing

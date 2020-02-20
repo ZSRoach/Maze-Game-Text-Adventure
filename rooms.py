@@ -10,159 +10,158 @@ except:
   import msvcrt
 
 class Room:
-
-    def __init__(self, layout, chestRoom, tRE, bossRoom, restRoom):
-        self.layout = layout
-        self.south = None
-        self.north = None
-        self.east = None
-        self.west = None
-        self.eastEntrance = None
-        self.westEntrance = None
-        self.southEntrance = None
-        self.northEntrance = None
-        self.chestRoom = chestRoom
-        self.tRE = tRE
-        self.bossRoom = bossRoom
-        self.restRoom = restRoom
-        self.setDoorPositions()
-        self.hasBeenVisited = False
-        self.locked = False
-        self.lockCondition = None
-        self.chestLooted = False
-        self.chestLocation = None
-        self.setChestLocation()
+  def __init__(self, layout, chestRoom, tRE, bossRoom, restRoom):
+    self.layout = layout
+    self.south = None
+    self.north = None
+    self.east = None
+    self.west = None
+    self.eastEntrance = None
+    self.westEntrance = None
+    self.southEntrance = None
+    self.northEntrance = None
+    self.chestRoom = chestRoom
+    self.tRE = tRE
+    self.bossRoom = bossRoom
+    self.restRoom = restRoom
+    self.setDoorPositions()
+    self.hasBeenVisited = False
+    self.locked = False
+    self.lockCondition = None
+    self.chestLooted = False
+    self.chestLocation = None
+    self.setChestLocation()
 
     
-    def setChestLocation(self):
-        for lineno, line in enumerate(self.layout):
+  def setChestLocation(self):
+      for lineno, line in enumerate(self.layout):
+        for i in range(len(line)):
+          space = line[i]
+          if space == "■":
+            self.chestLocation = [i,lineno]
+
+  def hasLockedDoor(self, lockedLayout, condition):
+      self.lockedLayout = lockedLayout
+      self.locked = True
+      self.lockCondition = condition
+      
+  def lockConditionCheck(self):
+      if self.lockCondition == True:
+        self.locked = False
+
+  def setRoomInfo(self, firstTime, secondTime):
+      print ("hi")
+
+  def displayRoomInfo(self):
+      print ("hi")
+
+  def setDoorSouth(self,adjacentRoom):
+      self.south = adjacentRoom
+      adjacentRoom.north = self
+
+  def setDoorNorth(self,adjacentRoom):
+      self.north = adjacentRoom
+      adjacentRoom.south = self
+
+  def setDoorEast(self,adjacentRoom):
+      self.east = adjacentRoom
+      adjacentRoom.west = self
+
+  def setDoorWest(self,adjacentRoom):
+      self.west = adjacentRoom
+      adjacentRoom.east = self
+
+  def setDoorPositions(self):
+      for lineno, line in enumerate(self.layout):
+          #check north doors:
+          if lineno == 0:
+              for i in range(len(line)):
+                  space = line[i]
+                  if space == "~":
+                      self.northEntrance = [i,lineno+1]
+          #check south doors
+          if lineno == len(self.layout)-1:
+              for i in range (len(line)):
+                  space = line[i]
+                  if space == "_":
+                      self.southEntrance = [i,lineno-1]
           for i in range(len(line)):
-            space = line[i]
-            if space == "■":
-              self.chestLocation = [i,lineno]
-
-    def hasLockedDoor(self, lockedLayout, condition):
-        self.lockedLayout = lockedLayout
-        self.locked = True
-        self.lockCondition = condition
-        
-    def lockConditionCheck(self):
-        if self.lockCondition == True:
-          self.locked = False
-
-    def setRoomInfo(self, firstTime, secondTime):
-        print ("hi")
-
-    def displayRoomInfo(self):
-        print ("hi")
-
-    def setDoorSouth(self,adjacentRoom):
-        self.south = adjacentRoom
-        adjacentRoom.north = self
-
-    def setDoorNorth(self,adjacentRoom):
-        self.north = adjacentRoom
-        adjacentRoom.south = self
-
-    def setDoorEast(self,adjacentRoom):
-        self.east = adjacentRoom
-        adjacentRoom.west = self
-
-    def setDoorWest(self,adjacentRoom):
-        self.west = adjacentRoom
-        adjacentRoom.east = self
-
-    def setDoorPositions(self):
-        for lineno, line in enumerate(self.layout):
-            #check north doors:
-            if lineno == 0:
-                for i in range(len(line)):
-                    space = line[i]
-                    if space == "~":
-                        self.northEntrance = [i,lineno+1]
-            #check south doors
-            if lineno == len(self.layout)-1:
-                for i in range (len(line)):
-                    space = line[i]
-                    if space == "_":
-                        self.southEntrance = [i,lineno-1]
-            for i in range(len(line)):
-                #check west doors
-                space = line[i]
-                if i == 0:
-                    if space == "[":
-                        self.westEntrance = [i+1,lineno]
-                #check east doors
-                if i == len(line)-1:
-                    if space == "]":
-                        self.eastEntrance = [i-1,lineno]
+              #check west doors
+              space = line[i]
+              if i == 0:
+                  if space == "[":
+                      self.westEntrance = [i+1,lineno]
+              #check east doors
+              if i == len(line)-1:
+                  if space == "]":
+                      self.eastEntrance = [i-1,lineno]
 
 
-    def printRoom(self, playercoords):
-      if self.locked == True:
-        for lineno, line in enumerate(self.lockedLayout):
-            playerline = line
-            if playercoords[1] == lineno:
-                playerline_parts = []
-                for xval, char in enumerate(line):
-                    if playercoords[0] == xval:
-                        playerline_parts.append("Ö")
-                    else:
-                        playerline_parts.append(char)
-                playerline = "".join(playerline_parts)
-            print(colored(playerline, "white", attrs=["reverse"]))
-      else:
-        for lineno, line in enumerate(self.layout):
-            playerline = line
-            if playercoords[1] == lineno:
-                playerline_parts = []
-                for xval, char in enumerate(line):
-                    if playercoords[0] == xval:
-                        playerline_parts.append("Ö")
-                    else:
-                        playerline_parts.append(char)
-                playerline = "".join(playerline_parts)
-            print(colored(playerline, "white", attrs=["reverse"]))
+  def printRoom(self, playercoords):
+    if self.locked == True:
+      for lineno, line in enumerate(self.lockedLayout):
+          playerline = line
+          if playercoords[1] == lineno:
+              playerline_parts = []
+              for xval, char in enumerate(line):
+                  if playercoords[0] == xval:
+                      playerline_parts.append("Ö")
+                  else:
+                      playerline_parts.append(char)
+              playerline = "".join(playerline_parts)
+          print(colored(playerline, "white", attrs=["reverse"]))
+    else:
+      for lineno, line in enumerate(self.layout):
+          playerline = line
+          if playercoords[1] == lineno:
+              playerline_parts = []
+              for xval, char in enumerate(line):
+                  if playercoords[0] == xval:
+                      playerline_parts.append("Ö")
+                  else:
+                      playerline_parts.append(char)
+              playerline = "".join(playerline_parts)
+          print(colored(playerline, "white", attrs=["reverse"]))
 
-    def roomSwitch(self, playercoords, tobeplayercoords, currentRoom):
-      if self.locked == True:
-        line_player_is_on = self.lockedLayout[tobeplayercoords[1]]
-        space_player_is_on = line_player_is_on[tobeplayercoords[0]]
-        if space_player_is_on == "~":
-            return "north"
-        if space_player_is_on == "[":
-            return "west"
-        if space_player_is_on == "]":
-            return "east"
-        if space_player_is_on == "_":
-            return "south"
-        return False
-      else:
-        line_player_is_on = self.layout[tobeplayercoords[1]]
-        space_player_is_on = line_player_is_on[tobeplayercoords[0]]
-        if space_player_is_on == "~":
-            return "north"
-        if space_player_is_on == "[":
-            return "west"
-        if space_player_is_on == "]":
-            return "east"
-        if space_player_is_on == "_":
-            return "south"
-        return False
+  def roomSwitch(self, playercoords, tobeplayercoords, currentRoom):
+    if self.locked == True:
+      line_player_is_on = self.lockedLayout[tobeplayercoords[1]]
+      space_player_is_on = line_player_is_on[tobeplayercoords[0]]
+      if space_player_is_on == "~":
+          return "north"
+      if space_player_is_on == "[":
+          return "west"
+      if space_player_is_on == "]":
+          return "east"
+      if space_player_is_on == "_":
+          return "south"
+      return False
+    else:
+      line_player_is_on = self.layout[tobeplayercoords[1]]
+      space_player_is_on = line_player_is_on[tobeplayercoords[0]]
+      if space_player_is_on == "~":
+          return "north"
+      if space_player_is_on == "[":
+          return "west"
+      if space_player_is_on == "]":
+          return "east"
+      if space_player_is_on == "_":
+          return "south"
+      return False
 
-    def validMove(self, playercoords, tobeplayercoords):
-      if self.locked == True:
-        line_player_is_on = self.lockedLayout[tobeplayercoords[1]]
-        space_player_is_on = line_player_is_on[tobeplayercoords[0]]
-        if space_player_is_on == " ":
-            return True
-        return False
-      else:
-        line_player_is_on = self.layout[tobeplayercoords[1]]
-        space_player_is_on = line_player_is_on[tobeplayercoords[0]]
-        if space_player_is_on == " ":
-            return True
-        return False
+  def validMove(self, playercoords, tobeplayercoords):
+    if self.locked == True:
+      line_player_is_on = self.lockedLayout[tobeplayercoords[1]]
+      space_player_is_on = line_player_is_on[tobeplayercoords[0]]
+      if space_player_is_on == " ":
+          return True
+      return False
+    else:
+      line_player_is_on = self.layout[tobeplayercoords[1]]
+      space_player_is_on = line_player_is_on[tobeplayercoords[0]]
+      if space_player_is_on == " ":
+          return True
+      return False
 
 
 
@@ -213,7 +212,7 @@ room5 = Room([
     ], False, True, False, False)
 # above 11, right of 9, left of 4, below 2
 room6 = Room([
-    "|-----------------|",
+    "|--------~--------|",
     "|                 |",
     "[                 |",
     "|                 |",
@@ -368,3 +367,4 @@ room13.setDoorEast(room14)
 room9.setDoorWest(room15)
 room16.setDoorEast(room15)
 room16.setDoorSouth(room17)
+room6.setDoorNorth(room2)
