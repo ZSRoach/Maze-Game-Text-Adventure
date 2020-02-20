@@ -11,4 +11,4 @@ blue = locked door
 white = boss room
 ------------
 https://pypi.org/project/termcolor/
-https://www.alt-codes.net/
+https://www.alt-codes.net/ ∞§§Θ ☼

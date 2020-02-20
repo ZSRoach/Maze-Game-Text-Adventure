@@ -75,12 +75,13 @@ while titleScreen:
     os.system("clear")
 
 #Character Creation Loop
+player = Entities.Sorcerer()
 
 #Main Game Loop
+interactables = 4
 
 while gameRunning:
   rooms.conditionCheckAll()
-  currentRoom.lockConditionCheck()
   currentRoom.printRoom(playercoords)
   currentRoom.displayRoomInfo()
   currentRoom.hasBeenVisited = True
@@ -100,7 +101,7 @@ while gameRunning:
     tobeplayercoords[0] += 1
 
   if action == "e":
-    currentRoom.interactAction(playercoords)
+    currentRoom.interactAction(playercoords, player, interactables, currentRoom)
 
   if action == "\x1b":
     gameRunning = False

@@ -163,12 +163,32 @@ class Room:
           return True
       return False
   
-  def interactAction(self, playercoords):
+  def interactAction(self, playercoords, player, interactables, currentRoom):
+    player.isInteracting = True
     for lineno, line in enumerate(self.layout):
-      space = line[i]
+      line_player_is_on = self.layout[playercoords[1]]
+      line_above_player = self.layout[playercoords[1]-1]
+      line_below_player = self.layout[playercoords[1]+1]
+      space_above_player = line_above_player[playercoords[0]]
+      space_left_player = line_player_is_on[playercoords[0]-1]
+      space_right_player = line_player_is_on[playercoords[0]+1]
+      space_below_player = line_below_player[playercoords[0]]
+      for i in range (4):
+        for x in range(interactables):
+          if i == 0:
+            
+    player.isInteracting = False
       
-
-
+  def chestLoot(self, player, currentRoom):
+    currentRoom.chestLooted = True
+    if player.isSorcerer == 1:
+      player.xp += (.2 * Entities.xpPerLevel[player.level])
+    elif player.isWarrior == 1:
+      player.xp += (.2 * Entities.xpPerLevel[player.level])
+    elif player.isRogue == 1:
+      player.xp += (.2 * Entities.xpPerLevel[player.level])
+    else:
+      player.xp += (.2 * Entities.xpPerLevel[player.level])
 
 #All rooms go here:
 #left of 2, below 8, above 9

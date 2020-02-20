@@ -28,4 +28,4 @@ def printTitleScreen(position):
       print (colored(titleScreenLayout2[lineno], "white", attrs=["reverse"]))
 
 def saveScreen():
-  print ("")
+  print ("saving... Wait 10 seconds before closing ")

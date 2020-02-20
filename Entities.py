@@ -19,6 +19,7 @@ class Player(Entity):
   level = 1
   xp = 0
   upgradePoints = 0
+  isInteracting = False
   def levelUp(leveler):
     print ("You leveled up to level "+str((leveler.level)+1)+"!!")
     leveler.level += 1
@@ -28,21 +29,25 @@ class Player(Entity):
 
 #definition of sorcerer - player subclass - (inherits from entity, and player) - user class type
 class Sorcerer(Player):
+  isSorcerer = 1
   mana = 20
   spells = 0
 
 #definition of warrior - player subclass - (inherits from entity, and player) - user class type
 class Warrior(Player):
+  isWarrior = 1
   oneHandedWeapons = 1
   twoHanded = False
 
 #definition of rogue - player subclass - (inherits from entity, and player) - user class type
 class Rogue(Player):
+  isRogue = 1
   evadeChance = 3 #evasion calculation: random number 1 - 100; if random number  >= 100-evadechance, take no dmg
   stealth = 1
     
 #definition of necromancer - player subclass - (inherits from entity, and player) - user class type
 class Necromancer(Player):
+  isNecromancer = 1
   maxMinions = 0
   currentMinions = 0
   currentMinionsAlive = 0
