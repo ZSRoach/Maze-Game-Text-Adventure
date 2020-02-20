@@ -3,6 +3,7 @@ import rooms
 import titlescreen
 import random
 import sys
+import json
 from copy import copy
 import os
 from termcolor import colored
@@ -36,6 +37,7 @@ currentRoom = rooms.startRoom
     #Title Screen Loop - has start game button, load from save (experimental)
 
 titleScreen = True
+gameRunning = True
 cursorPos = 1
 
 #clears screen before running
@@ -52,7 +54,7 @@ while titleScreen:
       cursorPos = 2
     else:
      cursorPos = 1
-  
+
   elif titleMovement == "s":
     if cursorPos == 1:
       cursorPos = 2
@@ -63,20 +65,23 @@ while titleScreen:
     if cursorPos == 1:
       titleScreen = False
 
+  elif titleMovement == "\x1b":
+    gameRunning = False
+    titleScreen = False
   if sys.platform == "win32":
         os.system("cls")
   else:
       os.system("clear")
 
-#Character Creation Loop 
+#Character Creation Loop
 
 #Main Game Loop
-gameRunning = True
+
 while gameRunning:
     rooms.conditionCheckAll()
     currentRoom.lockConditionCheck()
     currentRoom.printRoom(playercoords)
-    currentRoom.displayRoomInfo
+    currentRoom.displayRoomInfo()
     currentRoom.hasBeenVisited = True
     print (colored("\n Action Choices: \n W (up) \n A (left) \n S (down) \n D (right) \n E (interact - not implemented yet) \n", "white", attrs=["reverse"]))
     print (colored(" Map Key: \n ","white",attrs=["reverse"])+colored("Ö", "blue", "on_white")+colored(" - your character \n [ - door going west \n _ - door going south \n ] - door going east \n ~ - door going north \n ---- or ||| - wall/block \n ═ or ║ - locked door \n ■ - chest \n δ - enemy \n Ω - boss","white", attrs=["reverse"]))
@@ -92,6 +97,9 @@ while gameRunning:
 
     if action == "d":
         tobeplayercoords[0] += 1
+    if action == "\x1b":
+      gameRunning = False
+      break
     if currentRoom.roomSwitch(playercoords,tobeplayercoords,currentRoom) == "north":
         currentRoom = currentRoom.north
         tobeplayercoords = copy(currentRoom.southEntrance)
