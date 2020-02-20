@@ -16,7 +16,7 @@ titleScreenLayout2 = [
   "        Copyright © Z&S Productions 2020      ",
   "                                              ",
   "                     START                    ",
-  "                   SAVE CODE  ◄                ",
+  "                   SAVE CODE  ◄               ",
   "                                              ",
 ]
 def printTitleScreen(position):

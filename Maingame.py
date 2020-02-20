@@ -31,7 +31,7 @@ def getchar():
 playercoords = [1,1]
 tobeplayercoords = [1,1]
 
-currentRoom = rooms.startRoom
+currentRoom = rooms.room7
 
 
     #Title Screen Loop - has start game button, load from save (experimental)
@@ -75,19 +75,25 @@ while titleScreen:
     os.system("clear")
 
 #Character Creation Loop
-player = Entities.Sorcerer()
+player = Entities.Sorcerer("ZSRoach")
 
 #Main Game Loop
 interactables = 4
 
 while gameRunning:
-  rooms.conditionCheckAll()
+  print("")
+  rooms.conditionCheckAll(player)
   currentRoom.printRoom(playercoords)
   currentRoom.displayRoomInfo()
   currentRoom.hasBeenVisited = True
-  print (colored("\n Action Choices: \n W (up) \n A (left) \n S (down) \n D (right) \n E (interact - not implemented yet) \n", "white", attrs=["reverse"]))
+  print (colored("\n Action Choices: \n W (up) \n A (left) \n S (down) \n D (right) \n E (interact) \n", "white", attrs=["reverse"]))
   print (colored(" Map Key: \n ","white",attrs=["reverse"])+colored("Ö", "blue", "on_white")+colored(" - your character \n [ - door going west \n _ - door going south \n ] - door going east \n ~ - door going north \n ---- or ||| - wall/block \n ═ or ║ - locked door \n ■ - chest \n δ - enemy \n Ω - boss","white", attrs=["reverse"]))
   action = getchar()
+  if sys.platform == "win32":
+    os.system("cls")
+  else:
+    os.system("clear")
+  print(colored("Updates:\n----------------------------------------------------","white",attrs=["reverse"]))
   if action == "w":
     tobeplayercoords[1] -= 1
 
@@ -101,7 +107,7 @@ while gameRunning:
     tobeplayercoords[0] += 1
 
   if action == "e":
-    currentRoom.interactAction(playercoords, player, interactables, currentRoom)
+    currentRoom.interactAction(playercoords, player, interactables, currentRoom, Entities.xpPerLevel)
 
   if action == "\x1b":
     gameRunning = False
@@ -127,9 +133,4 @@ while gameRunning:
     playercoords = copy(tobeplayercoords)
   else:
     tobeplayercoords = copy(playercoords)
-  
-  if sys.platform == "win32":
-    os.system("cls")
-  else:
-    os.system("clear")
 #hello this is a thing that i am doing

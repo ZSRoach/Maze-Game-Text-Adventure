@@ -31,7 +31,6 @@ class Room:
     self.chestLooted = False
     self.chestLocation = None
     self.setChestLocation()
-
     
   def setChestLocation(self):
       for lineno, line in enumerate(self.layout):
@@ -40,12 +39,17 @@ class Room:
           if space == "■":
             self.chestLocation = [i,lineno]
 
-  def hasLockedDoor(self, lockedLayout, condition):
+  def hasLockedDoor(self, lockedLayout, condition, player):
       self.lockedLayout = lockedLayout
-      self.locked = True
       self.lockCondition = condition
+      if self.lockCondition == True and player.isInteracting == True:
+        self.locked = False
+      elif self.lockCondition == True and self.locked != True:
+        self.locked = False
+      else: 
+        self.locked = True
       
-  def lockConditionCheck(self):
+  def lockConditionCheck(self, player):
       if self.lockCondition == True:
         self.locked = False
 
@@ -95,7 +99,6 @@ class Room:
               if i == len(line)-1:
                   if space == "]":
                       self.eastEntrance = [i-1,lineno]
-
 
   def printRoom(self, playercoords):
     if self.locked == True:
@@ -163,33 +166,111 @@ class Room:
           return True
       return False
   
-  def interactAction(self, playercoords, player, interactables, currentRoom):
+  def interactAction(self, playercoords, player, interactables, currentRoom, xpPerLevel):
     player.isInteracting = True
-    for lineno, line in enumerate(self.layout):
-      line_player_is_on = self.layout[playercoords[1]]
-      line_above_player = self.layout[playercoords[1]-1]
-      line_below_player = self.layout[playercoords[1]+1]
-      space_above_player = line_above_player[playercoords[0]]
-      space_left_player = line_player_is_on[playercoords[0]-1]
-      space_right_player = line_player_is_on[playercoords[0]+1]
-      space_below_player = line_below_player[playercoords[0]]
-      for i in range (4):
-        for x in range(interactables):
-          if i == 0:
-            
+    line_player_is_on = self.layout[playercoords[1]]
+    line_above_player = self.layout[playercoords[1]-1]
+    line_below_player = self.layout[playercoords[1]+1]
+    space_above_player = line_above_player[playercoords[0]]
+    space_left_player = line_player_is_on[playercoords[0]-1]
+    space_right_player = line_player_is_on[playercoords[0]+1]
+    space_below_player = line_below_player[playercoords[0]]
+    try:
+      line_player_is_on_locked = self.lockedLayout[playercoords[1]]
+      line_above_player_locked = self.lockedLayout[playercoords[1]-1]
+      line_below_player_locked = self.lockedLayout[playercoords[1]+1]
+      space_above_player_locked = line_above_player_locked[playercoords[0]]
+      space_left_player_locked = line_player_is_on_locked[playercoords[0]-1]
+      space_right_player_locked = line_player_is_on_locked[playercoords[0]+1]
+      space_below_player_locked = line_below_player_locked[playercoords[0]]
+    except AttributeError as err:
+      space_above_player_locked = space_above_player
+      space_left_player_locked = space_left_player
+      space_right_player_locked = space_right_player
+      space_below_player_locked = space_below_player
+
+    for i in range (4):
+      if i == 0:
+        if space_above_player == "■":
+          if currentRoom.chestLooted == True:
+            print (colored("That chest has been looted already.", "white",attrs=["reverse"]))
+          else:
+            print (colored("You looted the chest above you", "white",attrs=["reverse"]))
+            currentRoom.chestLoot(player, currentRoom, xpPerLevel)
+        if space_above_player_locked == "═":
+          currentRoom.lockConditionCheck(player)
+          if currentRoom.locked == False:
+            print (colored("You insert the key into the door above you and it unlocks.","white",attrs=["reverse"]))
+          else:
+            print (colored("The door above you is locked. Maybe you can find a key somewhere...", "white",attrs=["reverse"]))
+        if space_above_player == "☼":
+          currentRoom.useHealingStation(player, currentRoom)
+
+      if i == 1:
+        if space_below_player == "■":
+          if currentRoom.chestLooted == True:
+            print (colored("That chest has been looted already.", "white",attrs=["reverse"]))
+          else:
+            print (colored("You looted the chest below you", "white",attrs=["reverse"]))
+            currentRoom.chestLoot(player, currentRoom, xpPerLevel)
+        if space_below_player_locked == "═":
+          currentRoom.lockConditionCheck(player)
+          if currentRoom.locked == False:
+            print (colored("You insert the key into the door below you and it unlocks.","white",attrs=["reverse"]))
+          else:
+            print (colored("The door below you is locked. Maybe you can find a key somewhere...", "white",attrs=["reverse"]))
+        if space_below_player == "☼":
+          currentRoom.useHealingStation(player, currentRoom)
+      
+      if i == 2:
+        if space_left_player == "■":
+          if currentRoom.chestLooted == True:
+            print (colored("That chest has been looted already.", "white",attrs=["reverse"]))
+          else:
+            print (colored("You looted the chest to your left", "white",attrs=["reverse"]))
+            currentRoom.chestLoot(player, currentRoom, xpPerLevel)
+        if space_left_player_locked == "║":
+          currentRoom.lockConditionCheck(player)
+          if currentRoom.locked == False:
+            print (colored("You insert the key into the door to your left and it unlocks.","white",attrs=["reverse"]))
+            currentRoom.locked = False
+          else:
+            print (colored("The door to your left is locked. Maybe you can find a key somewhere...", "white",attrs=["reverse"]))
+        if space_left_player == "☼":
+          currentRoom.useHealingStation(player, currentRoom)
+
+      if i == 3:
+        if space_right_player == "■":
+          if currentRoom.chestLooted == True:
+            print (colored("That chest has been looted already.", "white",attrs=["reverse"]))
+          else:
+            print (colored("You looted the chest to your right", "white",attrs=["reverse"]))
+            currentRoom.chestLoot(player, currentRoom, xpPerLevel)
+        if space_right_player_locked == "║":
+          currentRoom.lockConditionCheck(player)
+          if currentRoom.locked == False:
+            print (colored("You insert the key into the door to your right and it unlocks.","white",attrs=["reverse"]))
+          else:
+            print (colored("The door to your right is locked. Maybe you can find a key somewhere...", "white",attrs=["reverse"]))
+        if space_right_player == "☼":
+          currentRoom.useHealingStation(player, currentRoom)
     player.isInteracting = False
       
-  def chestLoot(self, player, currentRoom):
+  def chestLoot(self, player, currentRoom, xpPerLevel):
     currentRoom.chestLooted = True
     if player.isSorcerer == 1:
-      player.xp += (.2 * Entities.xpPerLevel[player.level])
+      player.xp += (.2 * int(xpPerLevel[player.level - 1]))
     elif player.isWarrior == 1:
-      player.xp += (.2 * Entities.xpPerLevel[player.level])
+      player.xp += (.2 * int(xpPerLevel[player.level - 1]))
     elif player.isRogue == 1:
-      player.xp += (.2 * Entities.xpPerLevel[player.level])
+      player.xp += (.2 * int(xpPerLevel[player.level - 1]))
     else:
-      player.xp += (.2 * Entities.xpPerLevel[player.level])
+      player.xp += (.2 * int(xpPerLevel[player.level - 1]))
 
+  def useHealingStation(self, player, currentRoom):
+    print ("this is temporary holder")
+
+#═══════════ ║║║║║║║║║║║║║║║║║║║║
 #All rooms go here:
 #left of 2, below 8, above 9
 startRoom = Room([
@@ -349,7 +430,7 @@ room17 = Room([
 
 # ════════════════════════        ║║║║║║║║║║║║║║║║║║║║
 #doors with locks:
-def conditionCheckAll():
+def conditionCheckAll(player):
 
   room3.hasLockedDoor([
     "|---------------~-|",
@@ -358,7 +439,7 @@ def conditionCheckAll():
     "|      |--|       |",
     "|      |          |",
     "|--------═--------|",
-  ], room7.chestLooted)
+  ], room7.chestLooted, player)
 
   room7.hasLockedDoor([
     "|-------------~---|",
@@ -368,7 +449,7 @@ def conditionCheckAll():
     "|                 |",
     "[                 ]",
     "|-----------------|",
-  ], room7.chestLooted)
+  ], room7.chestLooted, player)
 
 
 
