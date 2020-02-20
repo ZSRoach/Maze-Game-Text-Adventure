@@ -98,6 +98,10 @@ while gameRunning:
 
   if action == "d":
     tobeplayercoords[0] += 1
+
+  if action == "e":
+    currentRoom.interactAction(playercoords)
+
   if action == "\x1b":
     gameRunning = False
     break

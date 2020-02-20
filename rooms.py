@@ -162,6 +162,11 @@ class Room:
       if space_player_is_on == " ":
           return True
       return False
+  
+  def interactAction(self, playercoords):
+    for lineno, line in enumerate(self.layout):
+      space = line[i]
+      
 
 
 
