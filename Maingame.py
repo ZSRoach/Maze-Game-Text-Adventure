@@ -31,7 +31,7 @@ def getchar():
 playercoords = [1,1]
 tobeplayercoords = [1,1]
 
-currentRoom = rooms.room7
+currentRoom = rooms.startRoom
 
 
     #Title Screen Loop - has start game button, load from save (experimental)
