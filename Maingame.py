@@ -133,4 +133,3 @@ while gameRunning:
     playercoords = copy(tobeplayercoords)
   else:
     tobeplayercoords = copy(playercoords)
-#hello this is a thing that i am doing

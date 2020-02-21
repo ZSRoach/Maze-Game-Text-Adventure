@@ -1,5 +1,5 @@
 import random
-xpPerLevel = ["100","250"]
+xpPerLevel = ["100","200",]
 class Entity():
   health = 0
   attack = 0

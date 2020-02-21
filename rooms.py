@@ -319,10 +319,10 @@ room5 = Room([
 # above 11, right of 9, left of 4, below 2
 room6 = Room([
     "|--------~--------|",
-    "|                 |",
-    "[                 |",
-    "|                 |",
-    "|                 |",
+    "|----|            |",
+    "[    |   |-|----| |",
+    "|    |   |■|----| |",
+    "|        |        |",
     "|-----------------|",
     ], True, False, False, False)
 #above 2, below 14, right of 8, left of 5
@@ -450,6 +450,23 @@ def conditionCheckAll(player):
     "[                 ]",
     "|-----------------|",
   ], room7.chestLooted, player)
+
+  room2.hasLockedDoor([
+    "|--------------|",
+    "|              ]",
+    "|          |   |",
+    "[  |           |",
+    "|-------═------|",
+  ], room6.chestLooted, player)
+
+  room6.hasLockedDoor([
+    "|--------═--------|",
+    "|----|            |",
+    "[    |   |-|----| |",
+    "|    |   |■|----| |",
+    "|        |        |",
+    "|-----------------|",
+  ], room6.chestLooted, player)
 
 
 
