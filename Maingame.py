@@ -17,10 +17,12 @@ except:
 
 
 def nextLine():
+
   pos = stdscr.getyx()
   ypos = pos[0]
   xpos= pos[1]
-  stdscr.move(ypos+1,0)
+  ypos+=1
+  stdscr.move(ypos,0)
 #uses old 1970"s programming crap to not buffer inputs from keyboard
 def getchar():
   if sys.platform == "win32":
@@ -74,7 +76,7 @@ while titleScreen:
   elif titleMovement == "\x1b":
     gameRunning = False
     titleScreen = False
-  stdscr.clear()
+  stdscr.move(0,0)
 
 #Character Creation Loop
 player = Entities.Sorcerer("ZSRoach")
@@ -88,21 +90,33 @@ while gameRunning:
   currentRoom.printRoom(playercoords)
   currentRoom.displayRoomInfo()
   currentRoom.hasBeenVisited = True
+  nextLine()
   stdscr.addstr ("\n Action Choices: \n W (up) \n A (left) \n S (down) \n D (right) \n E (interact) \n")
+  nextLine()
   stdscr.addstr (" Map Key: ")
+  nextLine()
   stdscr.addstr(" Ö - your character ")
+  nextLine()
   stdscr.addstr(" [ - door going west ")
+  nextLine()
   stdscr.addstr(" _ - door going south ")
+  nextLine()
   stdscr.addstr(" ] - door going east ")
+  nextLine()
   stdscr.addstr(" ~ - door going north ")
+  nextLine()
   stdscr.addstr(" ---- or ||| - wall/block ")
+  nextLine()
   stdscr.addstr(" ═ or ║ - locked door ")
+  nextLine()
   stdscr.addstr(" ■ - chest ")
+  nextLine()
   stdscr.addstr(" δ - enemy ")
+  nextLine()
   stdscr.addstr(" Ω - boss ")
   stdscr.refresh()
   action = getchar()
-  stdscr.clear()
+  stdscr.move(0,0)
   stdscr.addstr("Updates:\n----------------------------------------------------")
   if action == "w":
     tobeplayercoords[1] -= 1

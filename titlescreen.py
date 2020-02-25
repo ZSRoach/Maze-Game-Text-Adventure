@@ -27,14 +27,16 @@ def printTitleScreen(position):
      pos = stdscr.getyx()
      ypos = pos[0]
      xpos= pos[1]
-     stdscr.move(ypos+1,0)
+     ypos+=1
+     stdscr.move(ypos,0)
   elif position == 2:
     for lineno, line in enumerate(titleScreenLayout2):
      stdscr.addstr (titleScreenLayout2[lineno])
      pos = stdscr.getyx()
      ypos = pos[0]
      xpos= pos[1]
-     stdscr.move(ypos+1,0)
+     ypos+=1
+     stdscr.move(ypos,0)
 
 def saveScreen():
  stdscr.addstr ("saving... Wait 10 seconds before closing ")

@@ -9,6 +9,7 @@ try:
 except:
   import msvcrt
 
+
 class Room:
   def __init__(self, layout, chestRoom, tRE, bossRoom, restRoom):
     self.layout = layout
@@ -58,9 +59,12 @@ class Room:
       self.roomInfoSecond = secondTime
   def displayRoomInfo(self):
     from Maingame import stdscr
+    from Maingame import nextLine
     if self.hasBeenVisited == True:
+      nextLine()
       stdscr.addstr (self.roomInfoSecond)
     else:
+      nextLine()
       stdscr.addstr (self.roomInfoFirst)
 
   def setDoorSouth(self,adjacentRoom):
@@ -106,6 +110,7 @@ class Room:
 
   def printRoom(self, playercoords):
     from Maingame import stdscr
+    from Maingame import nextLine
     if self.locked == True:
       for lineno, line in enumerate(self.lockedLayout):
           playerline = line
@@ -117,7 +122,17 @@ class Room:
                   else:
                       playerline_parts.append(char)
               playerline = "".join(playerline_parts)
+          spacesToAdd = []
+          if len(self.roomInfoFirst) > len(self.roomInfoSecond):
+            for i in range(len(self.roomInfoFirst)):
+              spacesToAdd.append(" ")
+          else:
+            for i in range (len(self.roomInfoSecond)):
+              spacesToAdd.append(" ")
+          spacesLine = "".join(spacesToAdd)
+          nextLine()
           stdscr.addstr(playerline)
+          stdscr.addstr(spacesLine)
     else:
       for lineno, line in enumerate(self.layout):
           playerline = line
@@ -129,7 +144,17 @@ class Room:
                   else:
                       playerline_parts.append(char)
               playerline = "".join(playerline_parts)
+          spacesToAdd = []
+          if len(self.roomInfoFirst) > len(self.roomInfoSecond):
+            for i in range(len(self.roomInfoFirst)):
+              spacesToAdd.append(" ")
+          else:
+            for i in range (len(self.roomInfoSecond)):
+              spacesToAdd.append(" ")
+          spacesLine = "".join(spacesToAdd)
+          nextLine()
           stdscr.addstr(playerline)
+          stdscr.addstr(spacesLine)
 
   def roomSwitch(self, playercoords, tobeplayercoords, currentRoom):
     if self.locked == True:
@@ -172,6 +197,7 @@ class Room:
       return False
   
   def interactAction(self, playercoords, player, interactables, currentRoom, xpPerLevel):
+    from Maingame import nextLine
     from Maingame import stdscr
     player.isInteracting = True
     line_player_is_on = self.layout[playercoords[1]]
@@ -199,15 +225,19 @@ class Room:
       if i == 0:
         if space_above_player == "■":
           if currentRoom.chestLooted == True:
+            nextLine()
             stdscr.addstr ("That chest has been looted already.")
           else:
+            nextLine()
             stdscr.addstr ("You looted the chest above you")
             currentRoom.chestLoot(player, currentRoom, xpPerLevel)
         if space_above_player_locked == "═":
           currentRoom.lockConditionCheck(player)
           if currentRoom.locked == False:
+            nextLine()
             stdscr.addstr ("You insert the key into the door above you and it unlocks.")
           else:
+            nextLine()
             stdscr.addstr ("The door above you is locked. Maybe you can find a key somewhere...")
         if space_above_player == "☼":
           currentRoom.useHealingStation(player, currentRoom)
@@ -215,15 +245,19 @@ class Room:
       if i == 1:
         if space_below_player == "■":
           if currentRoom.chestLooted == True:
+            nextLine()
             stdscr.addstr ("That chest has been looted already.")
           else:
+            nextLine()
             stdscr.addstr ("You looted the chest below you")
             currentRoom.chestLoot(player, currentRoom, xpPerLevel)
         if space_below_player_locked == "═":
           currentRoom.lockConditionCheck(player)
           if currentRoom.locked == False:
+            nextLine()
             stdscr.addstr ("You insert the key into the door below you and it unlocks.")
           else:
+            nextLine()
             stdscr.addstr ("The door below you is locked. Maybe you can find a key somewhere...")
         if space_below_player == "☼":
           currentRoom.useHealingStation(player, currentRoom)
@@ -231,16 +265,20 @@ class Room:
       if i == 2:
         if space_left_player == "■":
           if currentRoom.chestLooted == True:
+            nextLine()
             stdscr.addstr ("That chest has been looted already.")
           else:
+            nextLine()
             stdscr.addstr ("You looted the chest to your left")
             currentRoom.chestLoot(player, currentRoom, xpPerLevel)
         if space_left_player_locked == "║":
           currentRoom.lockConditionCheck(player)
           if currentRoom.locked == False:
+            nextLine()
             stdscr.addstr ("You insert the key into the door to your left and it unlocks.")
             currentRoom.locked = False
           else:
+            nextLine()
             stdscr.addstr ("The door to your left is locked. Maybe you can find a key somewhere...")
         if space_left_player == "☼":
           currentRoom.useHealingStation(player, currentRoom)
@@ -248,15 +286,19 @@ class Room:
       if i == 3:
         if space_right_player == "■":
           if currentRoom.chestLooted == True:
+            nextLine()
             stdscr.addstr ("That chest has been looted already.")
           else:
+            nextLine()
             stdscr.addstr ("You looted the chest to your right")
             currentRoom.chestLoot(player, currentRoom, xpPerLevel)
         if space_right_player_locked == "║":
           currentRoom.lockConditionCheck(player)
           if currentRoom.locked == False:
+            nextLine()
             stdscr.addstr ("You insert the key into the door to your right and it unlocks.")
           else:
+            nextLine()
             stdscr.addstr ("The door to your right is locked. Maybe you can find a key somewhere...")
         if space_right_player == "☼":
           currentRoom.useHealingStation(player, currentRoom)
@@ -275,6 +317,8 @@ class Room:
 
   def useHealingStation(self, player, currentRoom):
     from Maingame import stdscr
+    from Maingame import nextLine
+    nextLine()
     stdscr.addstr ("this is temporary holder")
 
 #═══════════ ║║║║║║║║║║║║║║║║║║║║
