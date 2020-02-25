@@ -1,3 +1,6 @@
+import curses
+stdscr = curses.initscr()
+curses.noecho()
 import Entities
 import rooms
 import titlescreen
@@ -6,7 +9,6 @@ import sys
 import json
 from copy import copy
 import os
-from termcolor import colored
 try:
   import termios
   import tty
@@ -34,20 +36,18 @@ tobeplayercoords = [1,1]
 currentRoom = rooms.startRoom
 
 
-    #Title Screen Loop - has start game button, load from save (experimental)
+#Title Screen Loop - has start game button, load from save (experimental)
 
 titleScreen = True
 gameRunning = True
 cursorPos = 1
 
 #clears screen before running
-if sys.platform == "win32":
-  os.system("cls")
-else:
-  os.system("clear")
+stdscr.refresh()
 
 while titleScreen:
   titlescreen.printTitleScreen(cursorPos)
+  stdscr.refresh()
   titleMovement = getchar()
   if titleMovement == "w":
     if cursorPos == 1:
@@ -68,11 +68,8 @@ while titleScreen:
   elif titleMovement == "\x1b":
     gameRunning = False
     titleScreen = False
-    print ()
-  if sys.platform == "win32":
-    os.system("cls")
-  else:
-    os.system("clear")
+    stdscr.addstr ()
+  stdscr.refresh()
 
 #Character Creation Loop
 player = Entities.Sorcerer("ZSRoach")
@@ -81,19 +78,16 @@ player = Entities.Sorcerer("ZSRoach")
 interactables = 4
 
 while gameRunning:
-  print("")
+  stdscr.addstr("")
   rooms.conditionCheckAll(player)
   currentRoom.printRoom(playercoords)
   currentRoom.displayRoomInfo()
   currentRoom.hasBeenVisited = True
-  print (colored("\n Action Choices: \n W (up) \n A (left) \n S (down) \n D (right) \n E (interact) \n", "white", attrs=["reverse"]))
-  print (colored(" Map Key: \n ","white",attrs=["reverse"])+colored("Ö", "blue", "on_white")+colored(" - your character \n [ - door going west \n _ - door going south \n ] - door going east \n ~ - door going north \n ---- or ||| - wall/block \n ═ or ║ - locked door \n ■ - chest \n δ - enemy \n Ω - boss","white", attrs=["reverse"]))
+  stdscr.addstr ("\n Action Choices: \n W (up) \n A (left) \n S (down) \n D (right) \n E (interact) \n")
+  stdscr.addstr (" Map Key: \n "+"Ö", "blue", "on_white"+" - your character \n [ - door going west \n _ - door going south \n ] - door going east \n ~ - door going north \n ---- or ||| - wall/block \n ═ or ║ - locked door \n ■ - chest \n δ - enemy \n Ω - boss")
   action = getchar()
-  if sys.platform == "win32":
-    os.system("cls")
-  else:
-    os.system("clear")
-  print(colored("Updates:\n----------------------------------------------------","white",attrs=["reverse"]))
+  stdscr.refresh()
+  stdscr.addstr("Updates:\n----------------------------------------------------")
   if action == "w":
     tobeplayercoords[1] -= 1
 
@@ -133,3 +127,8 @@ while gameRunning:
     playercoords = copy(tobeplayercoords)
   else:
     tobeplayercoords = copy(playercoords)
+
+curses.nocbreak()
+stdscr.keypad(False)
+curses.echo()
+curses.endwin()
