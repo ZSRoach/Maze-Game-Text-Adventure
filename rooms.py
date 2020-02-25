@@ -477,7 +477,7 @@ def conditionCheckAll(player):
 startRoom.setRoomInfo("You awake in a dark room. You see a small fire in the center, along with a door on the East wall.", "It's the room you first awoke in. The fire seems to still be burning. Maybe you should rest a while.")
 room2.setRoomInfo("You travel to the next room, and see another door on the East wall and a locked door on the South wall. Where could it lead?", "Returning here, you feel the pull of the campfire drawing you to rest.")
 room3.setRoomInfo("What","What?")
-room4.setRoomInfo("")
+room4.setRoomInfo("Why","Why?!?")
 #Door declarations:
 startRoom.setDoorEast(room2)
 room2.setDoorEast(room3)
