@@ -15,6 +15,12 @@ try:
 except:
   import msvcrt
 
+
+def nextLine():
+  pos = stdscr.getyx()
+  ypos = pos[0]
+  xpos= pos[1]
+  stdscr.move(ypos+1,0)
 #uses old 1970"s programming crap to not buffer inputs from keyboard
 def getchar():
   if sys.platform == "win32":
@@ -68,8 +74,7 @@ while titleScreen:
   elif titleMovement == "\x1b":
     gameRunning = False
     titleScreen = False
-    stdscr.addstr ()
-  stdscr.refresh()
+  stdscr.clear()
 
 #Character Creation Loop
 player = Entities.Sorcerer("ZSRoach")
@@ -84,9 +89,20 @@ while gameRunning:
   currentRoom.displayRoomInfo()
   currentRoom.hasBeenVisited = True
   stdscr.addstr ("\n Action Choices: \n W (up) \n A (left) \n S (down) \n D (right) \n E (interact) \n")
-  stdscr.addstr (" Map Key: \n "+"Ö", "blue", "on_white"+" - your character \n [ - door going west \n _ - door going south \n ] - door going east \n ~ - door going north \n ---- or ||| - wall/block \n ═ or ║ - locked door \n ■ - chest \n δ - enemy \n Ω - boss")
-  action = getchar()
+  stdscr.addstr (" Map Key: ")
+  stdscr.addstr(" Ö - your character ")
+  stdscr.addstr(" [ - door going west ")
+  stdscr.addstr(" _ - door going south ")
+  stdscr.addstr(" ] - door going east ")
+  stdscr.addstr(" ~ - door going north ")
+  stdscr.addstr(" ---- or ||| - wall/block ")
+  stdscr.addstr(" ═ or ║ - locked door ")
+  stdscr.addstr(" ■ - chest ")
+  stdscr.addstr(" δ - enemy ")
+  stdscr.addstr(" Ω - boss ")
   stdscr.refresh()
+  action = getchar()
+  stdscr.clear()
   stdscr.addstr("Updates:\n----------------------------------------------------")
   if action == "w":
     tobeplayercoords[1] -= 1

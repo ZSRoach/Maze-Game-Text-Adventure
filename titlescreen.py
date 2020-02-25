@@ -1,5 +1,4 @@
 from termcolor import colored
-from Maingame import stdscr
 titleScreenLayout1 = [
   "                                              ",
   "                                              ",
@@ -21,12 +20,21 @@ titleScreenLayout2 = [
   "                                              ",
 ]
 def printTitleScreen(position):
+  from Maingame import stdscr
   if position == 1:
     for lineno, line in enumerate(titleScreenLayout1):
-     stdscr.addstr (colored(titleScreenLayout1[lineno], "white", attrs=["reverse"]))
+     stdscr.addstr (titleScreenLayout1[lineno])
+     pos = stdscr.getyx()
+     ypos = pos[0]
+     xpos= pos[1]
+     stdscr.move(ypos+1,0)
   elif position == 2:
     for lineno, line in enumerate(titleScreenLayout2):
-     stdscr.addstr (colored(titleScreenLayout2[lineno], "white", attrs=["reverse"]))
+     stdscr.addstr (titleScreenLayout2[lineno])
+     pos = stdscr.getyx()
+     ypos = pos[0]
+     xpos= pos[1]
+     stdscr.move(ypos+1,0)
 
 def saveScreen():
  stdscr.addstr ("saving... Wait 10 seconds before closing ")

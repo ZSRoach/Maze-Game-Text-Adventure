@@ -8,7 +8,6 @@ try:
   import tty
 except:
   import msvcrt
-from Maingame import stdscr
 
 class Room:
   def __init__(self, layout, chestRoom, tRE, bossRoom, restRoom):
@@ -58,10 +57,11 @@ class Room:
       self.roomInfoFirst = firstTime
       self.roomInfoSecond = secondTime
   def displayRoomInfo(self):
-      if self.hasBeenVisited == True:
-        stdscr.addstr (self.roomInfoSecond)
-      else:
-        stdscr.addstr (self.roomInfoFirst)
+    from Maingame import stdscr
+    if self.hasBeenVisited == True:
+      stdscr.addstr (self.roomInfoSecond)
+    else:
+      stdscr.addstr (self.roomInfoFirst)
 
   def setDoorSouth(self,adjacentRoom):
       self.south = adjacentRoom
@@ -105,6 +105,7 @@ class Room:
                       self.eastEntrance = [i-1,lineno]
 
   def printRoom(self, playercoords):
+    from Maingame import stdscr
     if self.locked == True:
       for lineno, line in enumerate(self.lockedLayout):
           playerline = line
@@ -171,6 +172,7 @@ class Room:
       return False
   
   def interactAction(self, playercoords, player, interactables, currentRoom, xpPerLevel):
+    from Maingame import stdscr
     player.isInteracting = True
     line_player_is_on = self.layout[playercoords[1]]
     line_above_player = self.layout[playercoords[1]-1]
@@ -204,7 +206,7 @@ class Room:
         if space_above_player_locked == "═":
           currentRoom.lockConditionCheck(player)
           if currentRoom.locked == False:
-            stdscr.addstr ("You insert the key into the door above you and it unlocks.","white",attrs=["reverse"]))
+            stdscr.addstr ("You insert the key into the door above you and it unlocks.")
           else:
             stdscr.addstr ("The door above you is locked. Maybe you can find a key somewhere...")
         if space_above_player == "☼":
@@ -220,7 +222,7 @@ class Room:
         if space_below_player_locked == "═":
           currentRoom.lockConditionCheck(player)
           if currentRoom.locked == False:
-            stdscr.addstr ("You insert the key into the door below you and it unlocks.","white",attrs=["reverse"]))
+            stdscr.addstr ("You insert the key into the door below you and it unlocks.")
           else:
             stdscr.addstr ("The door below you is locked. Maybe you can find a key somewhere...")
         if space_below_player == "☼":
@@ -236,7 +238,7 @@ class Room:
         if space_left_player_locked == "║":
           currentRoom.lockConditionCheck(player)
           if currentRoom.locked == False:
-            stdscr.addstr ("You insert the key into the door to your left and it unlocks.","white",attrs=["reverse"]))
+            stdscr.addstr ("You insert the key into the door to your left and it unlocks.")
             currentRoom.locked = False
           else:
             stdscr.addstr ("The door to your left is locked. Maybe you can find a key somewhere...")
@@ -253,7 +255,7 @@ class Room:
         if space_right_player_locked == "║":
           currentRoom.lockConditionCheck(player)
           if currentRoom.locked == False:
-            stdscr.addstr ("You insert the key into the door to your right and it unlocks.","white",attrs=["reverse"]))
+            stdscr.addstr ("You insert the key into the door to your right and it unlocks.")
           else:
             stdscr.addstr ("The door to your right is locked. Maybe you can find a key somewhere...")
         if space_right_player == "☼":
@@ -272,6 +274,7 @@ class Room:
       player.xp += (.2 * int(xpPerLevel[player.level - 1]))
 
   def useHealingStation(self, player, currentRoom):
+    from Maingame import stdscr
     stdscr.addstr ("this is temporary holder")
 
 #═══════════ ║║║║║║║║║║║║║║║║║║║║
