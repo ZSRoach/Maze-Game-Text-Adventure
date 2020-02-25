@@ -23,10 +23,10 @@ class Player(Entity):
   upgradePoints = 0
   isInteracting = False
   def levelUp(leveler):
-    print ("You leveled up to level "+str((leveler.level)+1)+"!!")
+    stdscr.addstr ("You leveled up to level "+str((leveler.level)+1)+"!!")
     leveler.level += 1
   def fool(self, fooled):
-    print("you've been fooled "+fooled.name)
+    stdscr.addstr("you've been fooled "+fooled.name)
   pass
 
 #definition of sorcerer - player subclass - (inherits from entity, and player) - user class type
