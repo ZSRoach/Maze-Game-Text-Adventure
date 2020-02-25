@@ -26,7 +26,10 @@ def nextLine():
 #uses old 1970"s programming crap to not buffer inputs from keyboard
 def getchar():
   if sys.platform == "win32":
-    return msvcrt.getch().decode("utf-8")
+    try:
+      return msvcrt.getch().decode("utf-8")
+    except UnicodeDecodeError:
+      return None
   else:
     fd = sys.stdin.fileno()
     old_settings = termios.tcgetattr(fd)
@@ -137,7 +140,7 @@ while gameRunning:
   if action == "\x1b":
     gameRunning = False
     break
-  
+
   if currentRoom.roomSwitch(playercoords,tobeplayercoords,currentRoom) == "north":
     currentRoom = currentRoom.north
     tobeplayercoords = copy(currentRoom.southEntrance)
