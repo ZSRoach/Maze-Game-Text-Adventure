@@ -76,7 +76,8 @@ while titleScreen:
   elif titleMovement == "\x1b":
     gameRunning = False
     titleScreen = False
-  stdscr.move(0,0)
+    stdscr.erase()
+  stdscr.erase()
 
 #Character Creation Loop
 player = Entities.Sorcerer("ZSRoach")
@@ -116,7 +117,7 @@ while gameRunning:
   stdscr.addstr(" Ω - boss ")
   stdscr.refresh()
   action = getchar()
-  stdscr.move(0,0)
+  stdscr.erase()
   stdscr.addstr("Updates:\n----------------------------------------------------")
   if action == "w":
     tobeplayercoords[1] -= 1

@@ -122,17 +122,8 @@ class Room:
                   else:
                       playerline_parts.append(char)
               playerline = "".join(playerline_parts)
-          spacesToAdd = []
-          if len(self.roomInfoFirst) > len(self.roomInfoSecond):
-            for i in range(len(self.roomInfoFirst)):
-              spacesToAdd.append(" ")
-          else:
-            for i in range (len(self.roomInfoSecond)):
-              spacesToAdd.append(" ")
-          spacesLine = "".join(spacesToAdd)
           nextLine()
           stdscr.addstr(playerline)
-          stdscr.addstr(spacesLine)
     else:
       for lineno, line in enumerate(self.layout):
           playerline = line
@@ -144,17 +135,8 @@ class Room:
                   else:
                       playerline_parts.append(char)
               playerline = "".join(playerline_parts)
-          spacesToAdd = []
-          if len(self.roomInfoFirst) > len(self.roomInfoSecond):
-            for i in range(len(self.roomInfoFirst)):
-              spacesToAdd.append(" ")
-          else:
-            for i in range (len(self.roomInfoSecond)):
-              spacesToAdd.append(" ")
-          spacesLine = "".join(spacesToAdd)
           nextLine()
           stdscr.addstr(playerline)
-          stdscr.addstr(spacesLine)
 
   def roomSwitch(self, playercoords, tobeplayercoords, currentRoom):
     if self.locked == True:

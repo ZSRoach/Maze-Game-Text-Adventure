@@ -39,4 +39,5 @@ def printTitleScreen(position):
      stdscr.move(ypos,0)
 
 def saveScreen():
+  from Maingame import stdscr
  stdscr.addstr ("saving... Wait 10 seconds before closing ")
