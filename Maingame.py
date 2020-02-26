@@ -22,9 +22,8 @@ def nextLine():
   pos = stdscr.getyx()
   ypos = pos[0]
   xpos= pos[1]
-  ypos+=1
-  stdscr.addstr(str(curses.LINES))
-  stdscr.move(ypos,0)
+  stdscr.addstr(str(ypos))
+  stdscr.move(ypos+1,0)
 #uses old 1970"s programming crap to not buffer inputs from keyboard
 def getchar():
   if sys.platform == "win32":
@@ -86,11 +85,7 @@ player = Entities.Sorcerer("ZSRoach")
 
 #Main Game Loop
 interactables = 4
-stdscr.move(0,0)
 while gameRunning:
-  rooms.conditionCheckAll(player)
-  currentRoom.printRoom(playercoords)
-  currentRoom.displayRoomInfo()
   mapInfo = [" ",
   "Action Choices:",
   "W (up)",
@@ -110,6 +105,16 @@ while gameRunning:
   "δ - enemy",
   "Ω - boss",
   ]
+  rooms.conditionCheckAll(player)
+  currentRoom.printRoom(playercoords)
+  nextLine()
+  if currentRoom.hasBeenVisited:
+    for i in range (len(currentRoom.roomInfoSecond)):
+      stdscr.addstr(" ", curses.color_pair(1))
+  else:
+    for i in range (len(currentRoom.roomInfoFirst)):
+      stdscr.addstr(" ", curses.color_pair(1))
+  currentRoom.displayRoomInfo()
   for i in range (len(mapInfo)):
     nextLine()
 
@@ -141,7 +146,8 @@ while gameRunning:
       stdscr.addstr(" ", curses.color_pair(1))
 
   nextLine()
-  nextLine()
+  for i in range(len(currentRoom.roomInfoSecond)):
+    stdscr.addstr(" ", curses.color_pair(1))
   if action == "w":
     tobeplayercoords[1] -= 1
 

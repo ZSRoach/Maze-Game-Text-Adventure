@@ -65,11 +65,16 @@ class Room:
     if self.hasBeenVisited == True:
       nextLine()
       stdscr.addstr("Room Info:", curses.color_pair(1))
+      for i in range (len(self.roomInfoSecond) - len("Room Info:")):
+        stdscr.addstr(" ", curses.color_pair(1))
       nextLine()
       stdscr.addstr (self.roomInfoSecond, curses.color_pair(1))
+      
     else:
       nextLine()
       stdscr.addstr("Room Info:", curses.color_pair(1))
+      for i in range (len(self.roomInfoFirst) - len("Room Info:")):
+        stdscr.addstr(" ", curses.color_pair(1))
       nextLine()
       stdscr.addstr (self.roomInfoFirst, curses.color_pair(1))
 
@@ -129,8 +134,8 @@ class Room:
                   else:
                       playerline_parts.append(char)
               playerline = "".join(playerline_parts)
-          stdscr.addstr(playerline, curses.color_pair(1))
           nextLine()
+          stdscr.addstr(playerline, curses.color_pair(1))
     else:
       for lineno, line in enumerate(self.layout):
           playerline = line
@@ -142,8 +147,8 @@ class Room:
                   else:
                       playerline_parts.append(char)
               playerline = "".join(playerline_parts)
-          stdscr.addstr(playerline, curses.color_pair(1))
           nextLine()
+          stdscr.addstr(playerline, curses.color_pair(1))
 
   def roomSwitch(self, playercoords, tobeplayercoords, currentRoom):
     if self.locked == True:
