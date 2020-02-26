@@ -21,9 +21,11 @@ titleScreenLayout2 = [
 ]
 def printTitleScreen(position):
   from Maingame import stdscr
+  from Maingame import curses
+  curses.init_pair(1, curses.COLOR_BLACK, curses.COLOR_WHITE)
   if position == 1:
     for lineno, line in enumerate(titleScreenLayout1):
-     stdscr.addstr (titleScreenLayout1[lineno])
+     stdscr.addstr (titleScreenLayout1[lineno], curses.color_pair(1))
      pos = stdscr.getyx()
      ypos = pos[0]
      xpos= pos[1]
@@ -31,7 +33,7 @@ def printTitleScreen(position):
      stdscr.move(ypos,0)
   elif position == 2:
     for lineno, line in enumerate(titleScreenLayout2):
-     stdscr.addstr (titleScreenLayout2[lineno])
+     stdscr.addstr (titleScreenLayout2[lineno], curses.color_pair(1))
      pos = stdscr.getyx()
      ypos = pos[0]
      xpos= pos[1]
@@ -40,4 +42,6 @@ def printTitleScreen(position):
 
 def saveScreen():
   from Maingame import stdscr
-  stdscr.addstr ("saving... Wait 10 seconds before closing ")
+  from Maingame import curses
+  curses.init_pair(1, curses.COLOR_BLACK, curses.COLOR_WHITE)
+  stdscr.addstr ("saving... Wait 10 seconds before closing ", curses.color_pair(1))

@@ -32,7 +32,7 @@ class Room:
     self.chestLooted = False
     self.chestLocation = None
     self.setChestLocation()
-    
+
   def setChestLocation(self):
       for lineno, line in enumerate(self.layout):
         for i in range(len(line)):
@@ -47,9 +47,9 @@ class Room:
         self.locked = False
       elif self.lockCondition == True and self.locked != True:
         self.locked = False
-      else: 
+      else:
         self.locked = True
-      
+
   def lockConditionCheck(self, player):
       if self.lockCondition == True:
         self.locked = False
@@ -57,15 +57,21 @@ class Room:
   def setRoomInfo(self, firstTime, secondTime):
       self.roomInfoFirst = firstTime
       self.roomInfoSecond = secondTime
+
   def displayRoomInfo(self):
     from Maingame import stdscr
+    from Maingame import curses
     from Maingame import nextLine
     if self.hasBeenVisited == True:
       nextLine()
-      stdscr.addstr (self.roomInfoSecond)
+      stdscr.addstr("Room Info:", curses.color_pair(1))
+      nextLine()
+      stdscr.addstr (self.roomInfoSecond, curses.color_pair(1))
     else:
       nextLine()
-      stdscr.addstr (self.roomInfoFirst)
+      stdscr.addstr("Room Info:", curses.color_pair(1))
+      nextLine()
+      stdscr.addstr (self.roomInfoFirst, curses.color_pair(1))
 
   def setDoorSouth(self,adjacentRoom):
       self.south = adjacentRoom
@@ -110,6 +116,7 @@ class Room:
 
   def printRoom(self, playercoords):
     from Maingame import stdscr
+    from Maingame import curses
     from Maingame import nextLine
     if self.locked == True:
       for lineno, line in enumerate(self.lockedLayout):
@@ -122,8 +129,8 @@ class Room:
                   else:
                       playerline_parts.append(char)
               playerline = "".join(playerline_parts)
+          stdscr.addstr(playerline, curses.color_pair(1))
           nextLine()
-          stdscr.addstr(playerline)
     else:
       for lineno, line in enumerate(self.layout):
           playerline = line
@@ -135,8 +142,8 @@ class Room:
                   else:
                       playerline_parts.append(char)
               playerline = "".join(playerline_parts)
+          stdscr.addstr(playerline, curses.color_pair(1))
           nextLine()
-          stdscr.addstr(playerline)
 
   def roomSwitch(self, playercoords, tobeplayercoords, currentRoom):
     if self.locked == True:
@@ -177,10 +184,11 @@ class Room:
       if space_player_is_on == " ":
           return True
       return False
-  
+
   def interactAction(self, playercoords, player, interactables, currentRoom, xpPerLevel):
     from Maingame import nextLine
     from Maingame import stdscr
+    from Maingame import curses
     player.isInteracting = True
     line_player_is_on = self.layout[playercoords[1]]
     line_above_player = self.layout[playercoords[1]-1]
@@ -208,19 +216,19 @@ class Room:
         if space_above_player == "■":
           if currentRoom.chestLooted == True:
             nextLine()
-            stdscr.addstr ("That chest has been looted already.")
+            stdscr.addstr ("That chest has been looted already.", curses.color_pair(1))
           else:
             nextLine()
-            stdscr.addstr ("You looted the chest above you")
+            stdscr.addstr ("You looted the chest above you", curses.color_pair(1))
             currentRoom.chestLoot(player, currentRoom, xpPerLevel)
         if space_above_player_locked == "═":
           currentRoom.lockConditionCheck(player)
           if currentRoom.locked == False:
             nextLine()
-            stdscr.addstr ("You insert the key into the door above you and it unlocks.")
+            stdscr.addstr ("You insert the key into the door above you and it unlocks.", curses.color_pair(1))
           else:
             nextLine()
-            stdscr.addstr ("The door above you is locked. Maybe you can find a key somewhere...")
+            stdscr.addstr ("The door above you is locked. Maybe you can find a key somewhere...", curses.color_pair(1))
         if space_above_player == "☼":
           currentRoom.useHealingStation(player, currentRoom)
 
@@ -228,40 +236,40 @@ class Room:
         if space_below_player == "■":
           if currentRoom.chestLooted == True:
             nextLine()
-            stdscr.addstr ("That chest has been looted already.")
+            stdscr.addstr ("That chest has been looted already.", curses.color_pair(1))
           else:
             nextLine()
-            stdscr.addstr ("You looted the chest below you")
+            stdscr.addstr ("You looted the chest below you", curses.color_pair(1))
             currentRoom.chestLoot(player, currentRoom, xpPerLevel)
         if space_below_player_locked == "═":
           currentRoom.lockConditionCheck(player)
           if currentRoom.locked == False:
             nextLine()
-            stdscr.addstr ("You insert the key into the door below you and it unlocks.")
+            stdscr.addstr ("You insert the key into the door below you and it unlocks.", curses.color_pair(1))
           else:
             nextLine()
-            stdscr.addstr ("The door below you is locked. Maybe you can find a key somewhere...")
+            stdscr.addstr ("The door below you is locked. Maybe you can find a key somewhere...", curses.color_pair(1))
         if space_below_player == "☼":
           currentRoom.useHealingStation(player, currentRoom)
-      
+
       if i == 2:
         if space_left_player == "■":
           if currentRoom.chestLooted == True:
             nextLine()
-            stdscr.addstr ("That chest has been looted already.")
+            stdscr.addstr ("That chest has been looted already.", curses.color_pair(1))
           else:
             nextLine()
-            stdscr.addstr ("You looted the chest to your left")
+            stdscr.addstr ("You looted the chest to your left", curses.color_pair(1))
             currentRoom.chestLoot(player, currentRoom, xpPerLevel)
         if space_left_player_locked == "║":
           currentRoom.lockConditionCheck(player)
           if currentRoom.locked == False:
             nextLine()
-            stdscr.addstr ("You insert the key into the door to your left and it unlocks.")
+            stdscr.addstr ("You insert the key into the door to your left and it unlocks.", curses.color_pair(1))
             currentRoom.locked = False
           else:
             nextLine()
-            stdscr.addstr ("The door to your left is locked. Maybe you can find a key somewhere...")
+            stdscr.addstr ("The door to your left is locked. Maybe you can find a key somewhere...", curses.color_pair(1))
         if space_left_player == "☼":
           currentRoom.useHealingStation(player, currentRoom)
 
@@ -269,23 +277,23 @@ class Room:
         if space_right_player == "■":
           if currentRoom.chestLooted == True:
             nextLine()
-            stdscr.addstr ("That chest has been looted already.")
+            stdscr.addstr ("That chest has been looted already.", curses.color_pair(1))
           else:
             nextLine()
-            stdscr.addstr ("You looted the chest to your right")
+            stdscr.addstr ("You looted the chest to your right", curses.color_pair(1))
             currentRoom.chestLoot(player, currentRoom, xpPerLevel)
         if space_right_player_locked == "║":
           currentRoom.lockConditionCheck(player)
           if currentRoom.locked == False:
             nextLine()
-            stdscr.addstr ("You insert the key into the door to your right and it unlocks.")
+            stdscr.addstr ("You insert the key into the door to your right and it unlocks.", curses.color_pair(1))
           else:
             nextLine()
-            stdscr.addstr ("The door to your right is locked. Maybe you can find a key somewhere...")
+            stdscr.addstr ("The door to your right is locked. Maybe you can find a key somewhere...", curses.color_pair(1))
         if space_right_player == "☼":
           currentRoom.useHealingStation(player, currentRoom)
     player.isInteracting = False
-      
+
   def chestLoot(self, player, currentRoom, xpPerLevel):
     currentRoom.chestLooted = True
     if player.isSorcerer == 1:
@@ -299,9 +307,10 @@ class Room:
 
   def useHealingStation(self, player, currentRoom):
     from Maingame import stdscr
+    from Maingame import curses
     from Maingame import nextLine
     nextLine()
-    stdscr.addstr ("this is temporary holder")
+    stdscr.addstr ("this is temporary holder", curses.color_pair(1))
 
 #═══════════ ║║║║║║║║║║║║║║║║║║║║
 #All rooms go here:

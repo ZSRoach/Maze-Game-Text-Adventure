@@ -1,5 +1,7 @@
 import curses
 stdscr = curses.initscr()
+curses.start_color()
+curses.init_pair(1, curses.COLOR_BLACK, curses.COLOR_WHITE)
 curses.noecho()
 import Entities
 import rooms
@@ -17,12 +19,16 @@ except:
 
 
 def nextLine():
-
   pos = stdscr.getyx()
   ypos = pos[0]
   xpos= pos[1]
   ypos+=1
-  stdscr.move(ypos,0)
+  try:
+    stdscr.addstr(str(curses.LINES))
+    stdscr.move(ypos,0)
+  except:
+    stdscr.addstr("bad")
+    stdscr.refresh()
 #uses old 1970"s programming crap to not buffer inputs from keyboard
 def getchar():
   if sys.platform == "win32":
@@ -84,41 +90,62 @@ player = Entities.Sorcerer("ZSRoach")
 
 #Main Game Loop
 interactables = 4
-
+stdscr.move(0,0)
 while gameRunning:
-  stdscr.addstr("")
   rooms.conditionCheckAll(player)
   currentRoom.printRoom(playercoords)
   currentRoom.displayRoomInfo()
-  currentRoom.hasBeenVisited = True
-  nextLine()
-  stdscr.addstr ("\n Action Choices: \n W (up) \n A (left) \n S (down) \n D (right) \n E (interact) \n")
-  nextLine()
-  stdscr.addstr (" Map Key: ")
-  nextLine()
-  stdscr.addstr(" Ö - your character ")
-  nextLine()
-  stdscr.addstr(" [ - door going west ")
-  nextLine()
-  stdscr.addstr(" _ - door going south ")
-  nextLine()
-  stdscr.addstr(" ] - door going east ")
-  nextLine()
-  stdscr.addstr(" ~ - door going north ")
-  nextLine()
-  stdscr.addstr(" ---- or ||| - wall/block ")
-  nextLine()
-  stdscr.addstr(" ═ or ║ - locked door ")
-  nextLine()
-  stdscr.addstr(" ■ - chest ")
-  nextLine()
-  stdscr.addstr(" δ - enemy ")
-  nextLine()
-  stdscr.addstr(" Ω - boss ")
+  mapInfo = [" ",
+  "Action Choices:",
+  "W (up)",
+  "A (left)",
+  "S (down)",
+  "D (right)",
+  "E (interact)",
+  " ",
+  "Map Key:",
+  "Ö - your character",
+  "[ - door going west",
+  "_ - door going south",
+  "] - door going east",
+  "~ - door going north",
+  "---- or ||| - wall/block",
+  "■ - chest",
+  "δ - enemy",
+  "Ω - boss",
+  ]
+  for i in range (len(mapInfo)):
+    nextLine()
+
+    stdscr.addstr(mapInfo[i], curses.color_pair(1))
+    if currentRoom.hasBeenVisited == True:
+      spacesNeeded = len(currentRoom.roomInfoSecond)
+    else:
+      spacesNeeded = len(currentRoom.roomInfoFirst)
+    spacesNeeded = spacesNeeded - len(mapInfo[i])
+    for i in range(spacesNeeded):
+      stdscr.addstr(" ", curses.color_pair(1))
   stdscr.refresh()
+  currentRoom.hasBeenVisited = True
   action = getchar()
   stdscr.erase()
-  stdscr.addstr("Updates:\n----------------------------------------------------")
+  updateString = ["Updates:",
+  "",
+  ]
+  for i in range (len(updateString)):
+    if i != 0:
+      nextLine()
+    stdscr.addstr(updateString[i], curses.color_pair(1))
+    if currentRoom.hasBeenVisited == True:
+      spacesNeeded = len(currentRoom.roomInfoSecond)
+    else:
+      spacesNeeded = len(currentRoom.roomInfoFirst)
+    spacesNeeded = spacesNeeded - len(updateString[i])
+    for i in range(spacesNeeded):
+      stdscr.addstr(" ", curses.color_pair(1))
+
+  nextLine()
+  nextLine()
   if action == "w":
     tobeplayercoords[1] -= 1
 
