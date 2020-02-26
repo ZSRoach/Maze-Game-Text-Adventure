@@ -78,15 +78,8 @@ while titleScreen:
   elif titleMovement == "\x1b":
     gameRunning = False
     titleScreen = False
-    if sys.platform == "win32":
-      os.system('cls')
-    else:
-      os.system('clear')
     stdscr.erase()
-  if sys.platform == "win32":
-    os.system('cls')
-  else:
-    os.system('clear')
+    
   stdscr.erase()
 
 #Character Creation Loop
@@ -138,10 +131,6 @@ while gameRunning:
   stdscr.refresh()
   currentRoom.hasBeenVisited = True
   action = getchar()
-  if sys.platform == "win32":
-    os.system('cls')
-  else:
-    os.system('clear')
   stdscr.erase()
   updateString = ["Updates:",
   "",
