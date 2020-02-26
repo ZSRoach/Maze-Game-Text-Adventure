@@ -23,12 +23,8 @@ def nextLine():
   ypos = pos[0]
   xpos= pos[1]
   ypos+=1
-  try:
-    stdscr.addstr(str(curses.LINES))
-    stdscr.move(ypos,0)
-  except:
-    stdscr.addstr("bad")
-    stdscr.refresh()
+  stdscr.addstr(str(curses.LINES))
+  stdscr.move(ypos,0)
 #uses old 1970"s programming crap to not buffer inputs from keyboard
 def getchar():
   if sys.platform == "win32":
