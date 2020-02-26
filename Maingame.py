@@ -3,6 +3,8 @@ stdscr = curses.initscr()
 curses.start_color()
 curses.init_pair(1, curses.COLOR_BLACK, curses.COLOR_WHITE)
 curses.noecho()
+curses.cbreak()
+stdscr.keypad(True)
 import Entities
 import rooms
 import titlescreen
@@ -22,7 +24,6 @@ def nextLine():
   pos = stdscr.getyx()
   ypos = pos[0]
   xpos= pos[1]
-  stdscr.addstr(str(ypos))
   stdscr.move(ypos+1,0)
 #uses old 1970"s programming crap to not buffer inputs from keyboard
 def getchar():
@@ -51,7 +52,7 @@ titleScreen = True
 gameRunning = True
 cursorPos = 1
 
-#clears screen before running
+#erases screen before running
 stdscr.refresh()
 
 while titleScreen:
@@ -77,7 +78,15 @@ while titleScreen:
   elif titleMovement == "\x1b":
     gameRunning = False
     titleScreen = False
+    if sys.platform == "win32":
+      os.system('cls')
+    else:
+      os.system('clear')
     stdscr.erase()
+  if sys.platform == "win32":
+    os.system('cls')
+  else:
+    os.system('clear')
   stdscr.erase()
 
 #Character Creation Loop
@@ -129,6 +138,10 @@ while gameRunning:
   stdscr.refresh()
   currentRoom.hasBeenVisited = True
   action = getchar()
+  if sys.platform == "win32":
+    os.system('cls')
+  else:
+    os.system('clear')
   stdscr.erase()
   updateString = ["Updates:",
   "",

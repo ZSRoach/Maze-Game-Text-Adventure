@@ -2,7 +2,6 @@ import random
 import sys
 from copy import copy
 import os
-from termcolor import colored
 try:
   import termios
   import tty
@@ -62,21 +61,23 @@ class Room:
     from Maingame import stdscr
     from Maingame import curses
     from Maingame import nextLine
-    if self.hasBeenVisited == True:
-      nextLine()
-      stdscr.addstr("Room Info:", curses.color_pair(1))
-      for i in range (len(self.roomInfoSecond) - len("Room Info:")):
-        stdscr.addstr(" ", curses.color_pair(1))
-      nextLine()
-      stdscr.addstr (self.roomInfoSecond, curses.color_pair(1))
-      
-    else:
-      nextLine()
-      stdscr.addstr("Room Info:", curses.color_pair(1))
-      for i in range (len(self.roomInfoFirst) - len("Room Info:")):
-        stdscr.addstr(" ", curses.color_pair(1))
-      nextLine()
-      stdscr.addstr (self.roomInfoFirst, curses.color_pair(1))
+    try:
+      if self.hasBeenVisited == True:
+        nextLine()
+        stdscr.addstr("Room Info:", curses.color_pair(1))
+        for i in range (len(self.roomInfoSecond) - len("Room Info:")):
+          stdscr.addstr(" ", curses.color_pair(1))
+        nextLine()
+        stdscr.addstr (self.roomInfoSecond, curses.color_pair(1))
+      else:
+        nextLine()
+        stdscr.addstr("Room Info:", curses.color_pair(1))
+        for i in range (len(self.roomInfoFirst) - len("Room Info:")):
+          stdscr.addstr(" ", curses.color_pair(1))
+        nextLine()
+        stdscr.addstr (self.roomInfoFirst, curses.color_pair(1))
+    except AttributeError as err:
+      stdscr.addstr("There is no room info available", curses.color_pair(1))
 
   def setDoorSouth(self,adjacentRoom):
       self.south = adjacentRoom
@@ -522,6 +523,10 @@ startRoom.setRoomInfo("You awake in a dark room. You see a small fire in the cen
 room2.setRoomInfo("You travel to the next room, and see another door on the East wall and a locked door on the South wall. Where could it lead?", "Returning here, you feel the pull of the campfire drawing you to rest.")
 room3.setRoomInfo("What","What?")
 room4.setRoomInfo("Why","Why?!?")
+room5.setRoomInfo("Who","WHO!")
+room6.setRoomInfo("When","When!?!")
+room7.setRoomInfo("Zach","Roach")
+room8.setRoomInfo("spa", "ghet")
 #Door declarations:
 startRoom.setDoorEast(room2)
 room2.setDoorEast(room3)
