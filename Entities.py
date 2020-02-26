@@ -1,5 +1,6 @@
 import random
-xpPerLevel = ["100","250"]
+xpPerLevel = ["100","100","150","200","300","400","500","600","700","800","900","1000","1150","1300","1550","1750","1900","2000","2600"]
+xpAtLevel = ["0","100","200","350","550","850","1250","2350","3050","3850","4750","5750","6900","8200","9750","11500","13400","15400","18000"]
 class Entity():
   health = 0
   attack = 0
@@ -22,10 +23,10 @@ class Player(Entity):
   upgradePoints = 0
   isInteracting = False
   def levelUp(leveler):
-    print ("You leveled up to level "+str((leveler.level)+1)+"!!")
+    stdscr.addstr ("You leveled up to level "+str((leveler.level)+1)+"!!")
     leveler.level += 1
   def fool(self, fooled):
-    print("you've been fooled "+fooled.name)
+    stdscr.addstr("you've been fooled "+fooled.name)
   pass
 
 #definition of sorcerer - player subclass - (inherits from entity, and player) - user class type
