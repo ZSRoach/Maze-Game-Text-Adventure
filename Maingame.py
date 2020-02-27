@@ -84,7 +84,7 @@ while titleScreen:
 
 #Character Creation Loop
 player = Entities.Sorcerer("ZSRoach")
-
+firstClear = 1
 #Main Game Loop
 interactables = 4
 while gameRunning:
@@ -140,7 +140,9 @@ while gameRunning:
   currentRoom.hasBeenVisited = True
   action = getchar()
   stdscr.erase()
-  stdscr.move(0,0)
+  if firstClear == 1:
+    stdscr.clear()
+    firstClear = 0
   updateString = ["Updates:",
   "",
   ]
@@ -155,10 +157,7 @@ while gameRunning:
     spacesNeeded = spacesNeeded - len(updateString[i])
     for i in range(spacesNeeded):
       stdscr.addstr(" ", curses.color_pair(1))
-
   nextLine()
-  for i in range(len(currentRoom.roomInfoSecond)):
-    stdscr.addstr(" ", curses.color_pair(1))
   if action == "w":
     tobeplayercoords[1] -= 1
 
