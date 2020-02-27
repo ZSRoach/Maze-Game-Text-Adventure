@@ -61,23 +61,26 @@ class Room:
     from Maingame import stdscr
     from Maingame import curses
     from Maingame import nextLine
-    try:
-      if self.hasBeenVisited == True:
-        nextLine()
-        stdscr.addstr("Room Info:", curses.color_pair(1))
+    if self.hasBeenVisited == True:
+      nextLine()
+      stdscr.addstr("Room Info:", curses.color_pair(1))
+      try:
         for i in range (len(self.roomInfoSecond) - len("Room Info:")):
           stdscr.addstr(" ", curses.color_pair(1))
         nextLine()
         stdscr.addstr (self.roomInfoSecond, curses.color_pair(1))
-      else:
-        nextLine()
-        stdscr.addstr("Room Info:", curses.color_pair(1))
+      except AttributeError as err:
+        stdscr.addstr("There is no room info available", curses.color_pair(1))
+    else:
+      nextLine()
+      stdscr.addstr("Room Info:", curses.color_pair(1))
+      try:
         for i in range (len(self.roomInfoFirst) - len("Room Info:")):
           stdscr.addstr(" ", curses.color_pair(1))
         nextLine()
         stdscr.addstr (self.roomInfoFirst, curses.color_pair(1))
-    except AttributeError as err:
-      stdscr.addstr("There is no room info available", curses.color_pair(1))
+      except AttributeError as err:
+        stdscr.addstr("There is no room info available", curses.color_pair(1))
 
   def setDoorSouth(self,adjacentRoom):
       self.south = adjacentRoom

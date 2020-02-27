@@ -111,11 +111,19 @@ while gameRunning:
   currentRoom.printRoom(playercoords)
   nextLine()
   if currentRoom.hasBeenVisited:
-    for i in range (len(currentRoom.roomInfoSecond)):
-      stdscr.addstr(" ", curses.color_pair(1))
+    if len(currentRoom.roomInfoSecond) > len(max(mapInfo, key=len)):
+      for i in range (len(currentRoom.roomInfoSecond)):
+        stdscr.addstr(" ", curses.color_pair(1))
+    else:
+      for i in range (len(max(mapInfo, key=len))):
+        stdscr.addstr(" ", curses.color_pair(1))
   else:
-    for i in range (len(currentRoom.roomInfoFirst)):
-      stdscr.addstr(" ", curses.color_pair(1))
+    if len(currentRoom.roomInfoFirst) > len(max(mapInfo, key=len)):
+      for i in range (len(currentRoom.roomInfoFirst)):
+        stdscr.addstr(" ", curses.color_pair(1))
+    else:
+      for i in range (len(max(mapInfo, key=len))):
+        stdscr.addstr(" ", curses.color_pair(1))
   currentRoom.displayRoomInfo()
   for i in range (len(mapInfo)):
     nextLine()
@@ -132,6 +140,7 @@ while gameRunning:
   currentRoom.hasBeenVisited = True
   action = getchar()
   stdscr.erase()
+  stdscr.move(0,0)
   updateString = ["Updates:",
   "",
   ]
