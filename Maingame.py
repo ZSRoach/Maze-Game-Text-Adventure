@@ -50,6 +50,7 @@ currentRoom = rooms.startRoom
 
 titleScreen = True
 gameRunning = True
+battling = False
 cursorPos = 1
 
 #erases screen before running
@@ -87,116 +88,120 @@ player = Entities.Sorcerer("ZSRoach")
 firstClear = 1
 #Main Game Loop
 interactables = 4
-while gameRunning:
-  mapInfo = [" ",
-  "Action Choices:",
-  "W (up)",
-  "A (left)",
-  "S (down)",
-  "D (right)",
-  "E (interact)",
-  " ",
-  "Map Key:",
-  "Ö - your character",
-  "[ - door going west",
-  "_ - door going south",
-  "] - door going east",
-  "~ - door going north",
-  "---- or ||| - wall/block",
-  "■ - chest",
-  "δ - enemy",
-  "Ω - boss",
-  ]
-  rooms.conditionCheckAll(player)
-  currentRoom.printRoom(playercoords)
-  nextLine()
-  if currentRoom.hasBeenVisited:
-    if len(currentRoom.roomInfoSecond) > len(max(mapInfo, key=len)):
-      for i in range (len(currentRoom.roomInfoSecond)):
-        stdscr.addstr(" ", curses.color_pair(1))
-    else:
-      for i in range (len(max(mapInfo, key=len))):
-        stdscr.addstr(" ", curses.color_pair(1))
-  else:
-    if len(currentRoom.roomInfoFirst) > len(max(mapInfo, key=len)):
-      for i in range (len(currentRoom.roomInfoFirst)):
-        stdscr.addstr(" ", curses.color_pair(1))
-    else:
-      for i in range (len(max(mapInfo, key=len))):
-        stdscr.addstr(" ", curses.color_pair(1))
-  currentRoom.displayRoomInfo()
-  for i in range (len(mapInfo)):
+while gameRunning == True or battling == True:
+  while gameRunning:
+    mapInfo = [" ",
+    "Action Choices:",
+    "W (up)",
+    "A (left)",
+    "S (down)",
+    "D (right)",
+    "E (interact)",
+    " ",
+    "Map Key:",
+    "Ö - your character",
+    "[ - door going west",
+    "_ - door going south",
+    "] - door going east",
+    "~ - door going north",
+    "---- or ||| - wall/block",
+    "■ - chest",
+    "δ - enemy",
+    "Ω - boss",
+    ]
+    rooms.conditionCheckAll(player)
+    currentRoom.printRoom(playercoords)
     nextLine()
-
-    stdscr.addstr(mapInfo[i], curses.color_pair(1))
-    if currentRoom.hasBeenVisited == True:
-      spacesNeeded = len(currentRoom.roomInfoSecond)
+    if currentRoom.hasBeenVisited:
+      if len(currentRoom.roomInfoSecond) > len(max(mapInfo, key=len)):
+        for i in range (len(currentRoom.roomInfoSecond)):
+          stdscr.addstr(" ", curses.color_pair(1))
+      else:
+        for i in range (len(max(mapInfo, key=len))):
+          stdscr.addstr(" ", curses.color_pair(1))
     else:
-      spacesNeeded = len(currentRoom.roomInfoFirst)
-    spacesNeeded = spacesNeeded - len(mapInfo[i])
-    for i in range(spacesNeeded):
-      stdscr.addstr(" ", curses.color_pair(1))
-  stdscr.refresh()
-  currentRoom.hasBeenVisited = True
-  action = getchar()
-  stdscr.erase()
-  if firstClear == 1:
-    stdscr.clear()
-    firstClear = 0
-  updateString = ["Updates:",
-  "",
-  ]
-  for i in range (len(updateString)):
-    if i != 0:
+      if len(currentRoom.roomInfoFirst) > len(max(mapInfo, key=len)):
+        for i in range (len(currentRoom.roomInfoFirst)):
+          stdscr.addstr(" ", curses.color_pair(1))
+      else:
+        for i in range (len(max(mapInfo, key=len))):
+          stdscr.addstr(" ", curses.color_pair(1))
+    currentRoom.displayRoomInfo()
+    for i in range (len(mapInfo)):
       nextLine()
-    stdscr.addstr(updateString[i], curses.color_pair(1))
-    if currentRoom.hasBeenVisited == True:
-      spacesNeeded = len(currentRoom.roomInfoSecond)
+
+      stdscr.addstr(mapInfo[i], curses.color_pair(1))
+      if currentRoom.hasBeenVisited == True:
+        spacesNeeded = len(currentRoom.roomInfoSecond)
+      else:
+        spacesNeeded = len(currentRoom.roomInfoFirst)
+      spacesNeeded = spacesNeeded - len(mapInfo[i])
+      for i in range(spacesNeeded):
+        stdscr.addstr(" ", curses.color_pair(1))
+    stdscr.refresh()
+    currentRoom.hasBeenVisited = True
+    action = getchar()
+    stdscr.erase()
+    if firstClear == 1:
+      stdscr.clear()
+      firstClear = 0
+    updateString = ["Updates:",
+    "",
+    ]
+    for i in range (len(updateString)):
+      if i != 0:
+        nextLine()
+      stdscr.addstr(updateString[i], curses.color_pair(1))
+      if currentRoom.hasBeenVisited == True:
+        spacesNeeded = len(currentRoom.roomInfoSecond)
+      else:
+        spacesNeeded = len(currentRoom.roomInfoFirst)
+      spacesNeeded = spacesNeeded - len(updateString[i])
+      for i in range(spacesNeeded):
+        stdscr.addstr(" ", curses.color_pair(1))
+    nextLine()
+    if action == "w":
+      tobeplayercoords[1] -= 1
+
+    if action == "a":
+      tobeplayercoords[0] -= 1
+
+    if action == "s":
+      tobeplayercoords[1] += 1
+
+    if action == "d":
+      tobeplayercoords[0] += 1
+
+    if action == "e":
+      currentRoom.interactAction(playercoords, player, interactables, currentRoom, Entities.xpPerLevel)
+
+    if action == "\x1b":
+      gameRunning = False
+      break
+
+    if currentRoom.roomSwitch(playercoords,tobeplayercoords,currentRoom) == "north":
+      currentRoom = currentRoom.north
+      tobeplayercoords = copy(currentRoom.southEntrance)
+      playercoords = copy(tobeplayercoords)
+    elif currentRoom.roomSwitch(playercoords,tobeplayercoords,currentRoom) == "south":
+      currentRoom = currentRoom.south
+      tobeplayercoords = copy(currentRoom.northEntrance)
+      playercoords = copy(tobeplayercoords)
+    elif currentRoom.roomSwitch(playercoords,tobeplayercoords,currentRoom) == "east":
+      currentRoom = currentRoom.east
+      tobeplayercoords = copy(currentRoom.westEntrance)
+      playercoords = copy(tobeplayercoords)
+    elif currentRoom.roomSwitch(playercoords,tobeplayercoords,currentRoom) == "west":
+      currentRoom = currentRoom.west
+      tobeplayercoords = copy(currentRoom.eastEntrance)
+      playercoords = copy(tobeplayercoords)
+    elif currentRoom.validMove(playercoords,tobeplayercoords):
+      playercoords = copy(tobeplayercoords)
     else:
-      spacesNeeded = len(currentRoom.roomInfoFirst)
-    spacesNeeded = spacesNeeded - len(updateString[i])
-    for i in range(spacesNeeded):
-      stdscr.addstr(" ", curses.color_pair(1))
-  nextLine()
-  if action == "w":
-    tobeplayercoords[1] -= 1
-
-  if action == "a":
-    tobeplayercoords[0] -= 1
-
-  if action == "s":
-    tobeplayercoords[1] += 1
-
-  if action == "d":
-    tobeplayercoords[0] += 1
-
-  if action == "e":
-    currentRoom.interactAction(playercoords, player, interactables, currentRoom, Entities.xpPerLevel)
-
-  if action == "\x1b":
-    gameRunning = False
-    break
-
-  if currentRoom.roomSwitch(playercoords,tobeplayercoords,currentRoom) == "north":
-    currentRoom = currentRoom.north
-    tobeplayercoords = copy(currentRoom.southEntrance)
-    playercoords = copy(tobeplayercoords)
-  elif currentRoom.roomSwitch(playercoords,tobeplayercoords,currentRoom) == "south":
-    currentRoom = currentRoom.south
-    tobeplayercoords = copy(currentRoom.northEntrance)
-    playercoords = copy(tobeplayercoords)
-  elif currentRoom.roomSwitch(playercoords,tobeplayercoords,currentRoom) == "east":
-    currentRoom = currentRoom.east
-    tobeplayercoords = copy(currentRoom.westEntrance)
-    playercoords = copy(tobeplayercoords)
-  elif currentRoom.roomSwitch(playercoords,tobeplayercoords,currentRoom) == "west":
-    currentRoom = currentRoom.west
-    tobeplayercoords = copy(currentRoom.eastEntrance)
-    playercoords = copy(tobeplayercoords)
-  elif currentRoom.validMove(playercoords,tobeplayercoords):
-    playercoords = copy(tobeplayercoords)
-  else:
-    tobeplayercoords = copy(playercoords)
+      tobeplayercoords = copy(playercoords)
+  
+  while battling:
+    stdscr.addstr("Battling")
 
 curses.nocbreak()
 stdscr.keypad(False)
