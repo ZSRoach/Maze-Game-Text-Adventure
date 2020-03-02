@@ -1,4 +1,4 @@
-#Will eventually become the fighting mechnic
+#Will eventually become the fighting mechanic
 import random
 from Entities import Entity
 from Entities import Player

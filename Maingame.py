@@ -43,7 +43,7 @@ def getchar():
 playercoords = [1,1]
 tobeplayercoords = [1,1]
 
-currentRoom = rooms.startRoom
+currentRoom = rooms.room8
 
 
 #Title Screen Loop - has start game button, load from save (experimental)
@@ -109,33 +109,55 @@ while gameRunning == True or battling == True:
     "δ - enemy",
     "Ω - boss",
     ]
+    roomInfoException = "There is no room info"
     rooms.conditionCheckAll(player)
     currentRoom.printRoom(playercoords)
     nextLine()
     if currentRoom.hasBeenVisited:
-      if len(currentRoom.roomInfoSecond) > len(max(mapInfo, key=len)):
-        for i in range (len(currentRoom.roomInfoSecond)):
-          stdscr.addstr(" ", curses.color_pair(1))
-      else:
-        for i in range (len(max(mapInfo, key=len))):
-          stdscr.addstr(" ", curses.color_pair(1))
+      try:
+        if len(currentRoom.roomInfoSecond) > len(max(mapInfo, key=len)):
+          for i in range (len(currentRoom.roomInfoSecond)):
+            stdscr.addstr(" ", curses.color_pair(1))
+        else:
+          for i in range (len(max(mapInfo, key=len))):
+            stdscr.addstr(" ", curses.color_pair(1))
+      except AttributeError as err:
+        stdscr.addstr(roomInfoException)
+        if len(roomInfoException) > len(max(mapInfo, key=len)):
+          for i in range (len(roomInfoException)):
+            stdscr.addstr(" ", curses.color_pair(1))
+        else:
+          for i in range (len(max(mapInfo, key=len))):
+            stdscr.addstr(" ", curses.color_pair(1))
     else:
-      if len(currentRoom.roomInfoFirst) > len(max(mapInfo, key=len)):
-        for i in range (len(currentRoom.roomInfoFirst)):
-          stdscr.addstr(" ", curses.color_pair(1))
-      else:
-        for i in range (len(max(mapInfo, key=len))):
-          stdscr.addstr(" ", curses.color_pair(1))
+      try:
+        if len(currentRoom.roomInfoFirst) > len(max(mapInfo, key=len)):
+          for i in range (len(currentRoom.roomInfoFirst)):
+            stdscr.addstr(" ", curses.color_pair(1))
+        else:
+          for i in range (len(max(mapInfo, key=len))):
+            stdscr.addstr(" ", curses.color_pair(1))
+      except AttributeError as err:
+        stdscr.addstr(roomInfoException)
+        if len(roomInfoException) > len(max(mapInfo, key=len)):
+          for i in range (len(roomInfoException)):
+            stdscr.addstr(" ", curses.color_pair(1))
+        else:
+          for i in range (len(max(mapInfo, key=len))):
+            stdscr.addstr(" ", curses.color_pair(1))
     currentRoom.displayRoomInfo()
     for i in range (len(mapInfo)):
       nextLine()
-
       stdscr.addstr(mapInfo[i], curses.color_pair(1))
-      if currentRoom.hasBeenVisited == True:
-        spacesNeeded = len(currentRoom.roomInfoSecond)
-      else:
-        spacesNeeded = len(currentRoom.roomInfoFirst)
-      spacesNeeded = spacesNeeded - len(mapInfo[i])
+      try:
+        if currentRoom.hasBeenVisited == True:
+          spacesNeeded = len(currentRoom.roomInfoSecond)
+        else:
+          spacesNeeded = len(currentRoom.roomInfoFirst)
+        spacesNeeded = spacesNeeded - len(mapInfo[i])
+      except AttributeError as err:
+        spacesNeeded = len(max(mapInfo, key=len))
+        spacesNeeded = spacesNeeded - len(mapInfo[i])
       for i in range(spacesNeeded):
         stdscr.addstr(" ", curses.color_pair(1))
     stdscr.refresh()

@@ -1,2 +1,2 @@
-language = "python3"
+language = "java"
 run = "python Maingame.py"
