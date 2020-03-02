@@ -203,6 +203,8 @@ while gameRunning == True or battling == True:
   while battling:
     stdscr.addstr("Battling")
 
+
+
 curses.nocbreak()
 stdscr.keypad(False)
 curses.echo()
