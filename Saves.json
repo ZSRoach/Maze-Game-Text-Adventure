@@ -20,6 +20,6 @@ saves.append({
 with open("spaghetti", "w") as output:
   output.write(json.dumps(saves))
 
-pprint (saves)
-pprint(saves[0])
+print (saves)
+print(saves[0])
 print(saves[1]['player'])

@@ -23,10 +23,17 @@ class Player(Entity):
   upgradePoints = 0
   isInteracting = False
   def levelUp(leveler):
+    from Maingame import stdscr
     stdscr.addstr ("You leveled up to level "+str((leveler.level)+1)+"!!")
     leveler.level += 1
   def fool(self, fooled):
+    from Maingame import stdscr
     stdscr.addstr("you've been fooled "+fooled.name)
+  def attack(player, enemy):
+    attackChance = random.randint(1,self.attack)
+    defenseChance = random.randint(1,enemy.defense)
+    if attackChance > defenseChance:
+    damage = self.attack
   pass
 
 #definition of sorcerer - player subclass - (inherits from entity, and player) - user class type
@@ -34,7 +41,6 @@ class Sorcerer(Player):
   isSorcerer = 1
   mana = 20
   spells = 0
-
 #definition of warrior - player subclass - (inherits from entity, and player) - user class type
 class Warrior(Player):
   isWarrior = 1
