@@ -342,7 +342,7 @@ class Room:
 startRoom = Room([
     "|--------------|",
     "|              |",
-    "|              |",
+    "|       ☼      |",
     "|              ]",
     "|--------------|",
     ], False, False, False, True)
