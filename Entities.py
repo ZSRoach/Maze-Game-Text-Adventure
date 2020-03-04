@@ -31,9 +31,13 @@ class Player(Entity):
     stdscr.addstr("you've been fooled "+fooled.name)
   def attack(player, enemy):
     attackChance = random.randint(1,self.attack)
-    defenseChance = random.randint(1,enemy.defense)
+    defenseChance = enemy.defense
     if attackChance > defenseChance:
-    damage = self.attack
+      damage = self.attack * 3
+      damage -= enemy.defense
+      enemy.health -= damage
+    elif defenseChance > attackChance:
+      damage = self.attack -
   pass
 
 #definition of sorcerer - player subclass - (inherits from entity, and player) - user class type
