@@ -30,14 +30,17 @@ class Player(Entity):
     from Maingame import stdscr
     stdscr.addstr("you've been fooled "+fooled.name)
   def attack(player, enemy):
-    attackChance = random.randint(1,self.attack)
+    from Maingame import stdscr
+    attackChance = random.randint(1,player.attack)
     defenseChance = enemy.defense
-    if attackChance > defenseChance:
-      damage = self.attack * 3
+    if attackChance >= defenseChance:
+      damage = player.attack * 3
       damage -= enemy.defense
       enemy.health -= damage
-    elif defenseChance > attackChance:
-      damage = self.attack -
+    else:
+      damage = player.attack - (enemy.defense / 2)
+      enemy.health -= damage
+  stdscr.addstr("You attacked the "+enemy.name+" for "+str(damage)+" damage!")
   pass
 
 #definition of sorcerer - player subclass - (inherits from entity, and player) - user class type
@@ -71,3 +74,16 @@ class Minion(Entity):
 #definition of goblin - main throwaway generic enemy - (inherits from entity) - enemy class type
 class Goblin(Entity):
   hostile = False
+  name = "Goblini"
+#Definition of skeleton - ranged enemy - (Inherits from entitiy) - Enemy class type
+class Skeleton(Entity):
+  hostile = False
+  name = "Skeletini"
+#Def of zombie - Stronger version of Goblin - (Inherits from entity) - Enemy class type
+class Zombie(Entity):
+  hostile = False
+  name = "Zomboni"
+#Def of Ogre - Stronger version of Zombie - (Inherits from Entity) - enemy class type
+class Ogre(Entity):
+  hostile = False
+  name = "Shrek"
