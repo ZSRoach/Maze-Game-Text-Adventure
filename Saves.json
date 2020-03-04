@@ -1,12 +1,6 @@
 Experimental save file
 
-import json
-from pprint import pprint
-with open("spaghetti", "r") as reading:
-  try:
-    saves = json.loads(reading.read())
-  except json.decoder.JSONDecodeError as err:
-    saves = []
+
 
 saves.append({
   'player': 'Barth',
@@ -22,4 +16,4 @@ with open("spaghetti", "w") as output:
 
 print (saves)
 print(saves[0])
-print(saves[1]['player'])
+print(saves[1])

@@ -20,6 +20,23 @@ try:
 except:
   import msvcrt
 
+with open("saves", "r") as reading:
+  try:
+    saves = json.loads(reading.read())
+  except json.decoder.JSONDecodeError as err:
+    saves = []
+    saves.insert(0,{
+      "Used": False
+    })
+    saves.insert(1,{
+      "Used": False
+    })
+    saves.insert(2,{
+      "Used": False
+    })
+
+
+
 
 def nextLine():
   pos = stdscr.getyx()
@@ -40,11 +57,7 @@ def getchar():
       termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
     return ch
 
-#player start position
-playercoords = [1,1]
-tobeplayercoords = [1,1]
 
-currentRoom = rooms.startRoom
 
 
 #Title Screen Loop - has start game button, load from save (experimental)
@@ -76,6 +89,9 @@ while titleScreen:
   elif titleMovement == "\r":
     if cursorPos == 1:
       titleScreen = False
+    elif cursorPos == 2:
+      titleScreen = False
+      saveScreen = True
 
   elif titleMovement == "\x1b":
     gameRunning = False
@@ -87,6 +103,12 @@ while titleScreen:
 #Character Creation Loop
 player = Entities.Sorcerer("ZSRoach")
 firstClear = 1
+
+#player start position
+playercoords = [1,1]
+tobeplayercoords = [1,1]
+
+currentRoom = rooms.startRoom
 #Main Game Loop
 interactables = 4
 while gameRunning == True or battling == True:
