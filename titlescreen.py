@@ -4,8 +4,8 @@ titleScreenLayout1 = [
   "                 MAZE MASSACRE                ",
   "        Copyright © Z&S Productions 2020      ",
   "                                              ",
-  "                     START    ◄               ",
-  "                   SAVE CODE                  ",
+  "                   NEW SAVE   ◄               ",
+  "                  LOAD  SAVE                  ",
   "                                              ",
 ]
 titleScreenLayout2 = [
@@ -14,8 +14,8 @@ titleScreenLayout2 = [
   "                 MAZE MASSACRE                ",
   "        Copyright © Z&S Productions 2020      ",
   "                                              ",
-  "                     START                    ",
-  "                   SAVE CODE  ◄               ",
+  "                   NEW SAVE                   ",
+  "                  LOAD  SAVE  ◄               ",
   "                                              ",
 ]
 def printTitleScreen(position):

@@ -28,3 +28,13 @@ saveScreenLayout3 = [
   "                     Clear                    ",
   "                                              ",
 ]
+saveScreenLayout4 = [
+  "                                              ",
+  "                                              ",
+  "                                              ",
+  "       File 1       File 2       File 3       ",
+  "                                              ",
+  "                                              ",
+  "                     Clear ◄                  ",
+  "                                              ",
+]

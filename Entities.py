@@ -33,7 +33,7 @@ class Player(Entity):
     attackChance = random.randint(1,self.attack)
     defenseChance = random.randint(1,enemy.defense)
     if attackChance > defenseChance:
-    damage = self.attack
+      damage = self.attack
   pass
 
 #definition of sorcerer - player subclass - (inherits from entity, and player) - user class type

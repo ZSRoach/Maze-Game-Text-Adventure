@@ -2,7 +2,7 @@ import curses
 stdscr = curses.initscr()
 curses.start_color()
 curses.init_pair(1, curses.COLOR_BLACK, curses.COLOR_WHITE)
-stdscr.bkgset(" ", curses.color_pair(1))
+stdscr.bkgd(" ", curses.color_pair(1))
 curses.noecho()
 curses.cbreak()
 stdscr.keypad(True)
@@ -26,16 +26,14 @@ with open("saves", "r") as reading:
   except json.decoder.JSONDecodeError as err:
     saves = []
     saves.insert(0,{
-      "Used": False
+      "Used": False,
     })
     saves.insert(1,{
-      "Used": False
+      "Used": False,
     })
     saves.insert(2,{
-      "Used": False
+      "Used": False,
     })
-
-
 
 
 def nextLine():
@@ -102,14 +100,14 @@ while titleScreen:
 
 #Character Creation Loop
 player = Entities.Sorcerer("ZSRoach")
-firstClear = 1
 
 #player start position
 playercoords = [1,1]
 tobeplayercoords = [1,1]
-
 currentRoom = rooms.startRoom
+
 #Main Game Loop
+firstClear = 1
 interactables = 4
 while gameRunning == True or battling == True:
   while gameRunning:
