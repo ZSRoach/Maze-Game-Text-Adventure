@@ -48,10 +48,12 @@ class Sorcerer(Player):
   isSorcerer = 1
   mana = 20
   spells = 0
+  manaRegen = 5
+  spellDamage = 1
+
 #definition of warrior - player subclass - (inherits from entity, and player) - user class type
 class Warrior(Player):
   isWarrior = 1
-  oneHandedWeapons = 1
   twoHanded = False
 
 #definition of rogue - player subclass - (inherits from entity, and player) - user class type

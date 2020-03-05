@@ -5,7 +5,6 @@ curses.start_color()
 curses.init_pair(1, curses.COLOR_BLACK, curses.COLOR_WHITE)
 stdscr.bkgd(" ", curses.color_pair(1))
 curses.noecho()
-curses.cbreak()
 stdscr.keypad(True)
 import Entities
 import rooms
@@ -58,22 +57,42 @@ def getchar():
       termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
     return ch
 
-
-
+def saveInfo(player, currentRoom, saves, saveFile):
+  try:
+    saves[saveFile]["CurrentRoom"] = room
+    saves[saveFile]["XP"] = player.xp
+    saves[saveFile]["Health"] = player.health
+    saves[saveFile]["Attack"] = player.attack
+    saves[saveFile]["Defense"] = player.defense
+    saves[saveFile]["Speed"] = player.speed
+    saves[saveFile]["Name"] = player.name
+    saves[saveFile]["Mana"] = player.mana
+    saves[saveFile]["Spells"] = player.spells
+    saves[saveFile]["ManaRegen"] = player.manaRegen
+    saves[saveFile]["SpellDamage"] = player.spellDamage
+    saves[saveFile]["TwoHanded"] = player.twoHanded
+    saves[saveFile]["EvadeChance"] = player.evadeChance
+    saves[saveFile]["Stealth"] = player.stealth
+    saves[saveFile]["MaxMinions"] = player.maxMinions
+    saves[saveFile]["MinionsAlive"] = player.currentMinionsAlive
+    saves[saveFile]["CurrentMinionCount"] = player.currentMinions
+    saves[saveFile]["MinionHealth"] = player.minionHealth
+    saves[saveFile]["MinionAttack"] = player.minionAttack
+  except AttributeError as err:
+    worry = 1
 
 #Title Screen Loop - has start game button, load from save (experimental)
 
 titleScreen = True
 newScreen = False
 loadScreen = False
-characterMakingScreen = False
 gameRunning = True
 battling = False
 cursorPos = 1
-
+player = "character"
 #erases screen before running
 stdscr.refresh()
-while titleScreen or newScreen or loadScreen or characterMakingScreen:
+while titleScreen or newScreen or loadScreen:
   #Main Title Screen Loop
   while titleScreen:
     titlescreen.printTitleScreen(cursorPos)
@@ -158,8 +177,8 @@ while titleScreen or newScreen or loadScreen or characterMakingScreen:
           saves[0]["Used"] = True
           nextLine()
           stdscr.addstr("You have selected file 1", curses.color_pair(1))
+          charactermaking.classChoice(player)
           newScreen = False
-          characterMakingScreen = True
         else:
           nextLine()
           stdscr.addstr("That file already has a save in it", curses.color_pair(1))
@@ -170,6 +189,8 @@ while titleScreen or newScreen or loadScreen or characterMakingScreen:
           saves[1]["Used"] = True
           nextLine()
           stdscr.addstr("You have selected file 2", curses.color_pair(2))
+          charactermaking.classChoice(player)
+          newScreen = False
         else:
           nextLine()
           stdscr.addstr("That file already has a save in it", curses.color_pair(1))
@@ -180,6 +201,8 @@ while titleScreen or newScreen or loadScreen or characterMakingScreen:
           saves[2]["Used"] = True
           nextLine()
           stdscr.addstr("You have selected file 3", curses.color_pair(2))
+          charactermaking.classChoice(player)
+          newScreen = False
         else:
           nextLine()
           stdscr.addstr("That file already has a save in it", curses.color_pair(1))
@@ -195,16 +218,104 @@ while titleScreen or newScreen or loadScreen or characterMakingScreen:
       newScreen = False
       loadScreen = False
       stdscr.erase()
-      
-    stdscr.erase()
-
-  while characterMakingScreen:
-
-
+    stdscr.erase()    
+  
+  
+  stdscr.refresh()
+  cursorPos = 1
   while loadScreen:
-    buh
+    savescreen.printLoadScreen(cursorPos)
+    stdscr.refresh()
+    loadMovement = getchar()
+    if loadMovement == "w":
+      if cursorPos == 1 or cursorPos == 2:
+        cursorPos = 5
+      elif cursorPos == 3:
+        cursorPos = 4
+      elif cursorPos == 4:
+        cursorPos = 3
+      elif cursorPos == 5:
+        cursorPos = 1
 
-player = Entities.Sorcerer("ZSRoach")
+    elif loadMovement == "s":
+      if cursorPos == 1 or cursorPos == 2:
+        cursorPos = 5
+      elif cursorPos == 3:
+        cursorPos = 4
+      elif cursorPos == 4:
+        cursorPos = 3
+      elif cursorPos == 5:
+        cursorPos = 1
+
+    elif loadMovement == "a":
+      if cursorPos == 1:
+        cursorPos = 3
+      elif cursorPos == 2:
+        cursorPos = 1
+      elif cursorPos == 3:
+        cursorPos = 2
+      elif cursorPos == 4:
+        cursorPos = 5
+      elif cursorPos == 5:
+        cursorPos = 4
+
+    elif newMovement == "d":
+      if cursorPos == 1:
+        cursorPos = 2
+      elif cursorPos == 2:
+        cursorPos = 3
+      elif cursorPos == 3:
+        cursorPos = 1
+      elif cursorPos == 4:
+        cursorPos = 5
+      elif cursorPos == 5:
+        cursorPos = 4
+    
+     #if enter is pressed
+    elif newMovement == "\r":
+      if cursorPos == 1:
+        if saves[0]["Used"] == True:
+          currentSaveFile = 0
+          nextLine()
+          stdscr.addstr("You have selected file 1", curses.color_pair(1))
+          loadScreen = False
+        else:
+          nextLine()
+          stdscr.addstr("That file does not have a save in it", curses.color_pair(1))
+
+      elif cursorPos == 2:
+        if saves[1]["Used"] == True:
+          currentSaveFile = 1
+          nextLine()
+          stdscr.addstr("You have selected file 2", curses.color_pair(2))
+          loadScreen = False
+        else:
+          nextLine()
+          stdscr.addstr("That file does not have a save in it", curses.color_pair(1))
+
+      elif cursorPos == 3:
+        if saves[2]["Used"] == True:
+          currentSaveFile = 2
+          nextLine()
+          stdscr.addstr("You have selected file 3", curses.color_pair(2))
+          loadScreen = False
+        else:
+          nextLine()
+          stdscr.addstr("That file does not have a save in it", curses.color_pair(1))
+
+      elif cursorPos == 5:
+        titleScreen = True
+        newScreen = False
+        loadScreen = False
+
+    elif newMovement == "\x1b":
+      gameRunning = False
+      titleScreen = False
+      newScreen = False
+      loadScreen = False
+      stdscr.erase()
+
+    stdscr.erase()
 
 #player start position
 playercoords = [1,1]
@@ -216,6 +327,7 @@ firstClear = 1
 interactables = 4
 while gameRunning == True or battling == True:
   while gameRunning:
+    saveInfo(player, currentRoom, saves, currentSaveFile)
     mapInfo = [" ",
     "Action Choices:",
     "W (up)",
@@ -300,7 +412,6 @@ while gameRunning == True or battling == True:
   
   while battling:
     stdscr.addstr("Battling")
-
 
 
 curses.nocbreak()
