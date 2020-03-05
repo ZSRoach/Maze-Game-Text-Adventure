@@ -10,6 +10,8 @@ stdscr.keypad(True)
 import Entities
 import rooms
 import titlescreen
+import savescreen
+import charactermaking
 import random
 import sys
 import json
@@ -62,44 +64,146 @@ def getchar():
 #Title Screen Loop - has start game button, load from save (experimental)
 
 titleScreen = True
+newScreen = False
+loadScreen = False
+characterMakingScreen = False
 gameRunning = True
 battling = False
 cursorPos = 1
 
 #erases screen before running
 stdscr.refresh()
+while titleScreen or newScreen or loadScreen or characterMakingScreen:
+  #Main Title Screen Loop
+  while titleScreen:
+    titlescreen.printTitleScreen(cursorPos)
+    stdscr.refresh()
+    titleMovement = getchar()
+    if titleMovement == "w":
+      if cursorPos == 1:
+        cursorPos = 2
+      else:
+        cursorPos = 1
 
-while titleScreen:
-  titlescreen.printTitleScreen(cursorPos)
-  stdscr.refresh()
-  titleMovement = getchar()
-  if titleMovement == "w":
-    if cursorPos == 1:
-      cursorPos = 2
-    else:
-     cursorPos = 1
+    elif titleMovement == "s":
+      if cursorPos == 1:
+        cursorPos = 2
+      else:
+        cursorPos = 1
 
-  elif titleMovement == "s":
-    if cursorPos == 1:
-      cursorPos = 2
-    else:
-      cursorPos = 1
+    #when enter is pressed
+    elif titleMovement == "\r":
+      if cursorPos == 1:
+        titleScreen = False
+        loadScreen = False
+        newScreen = True
+      elif cursorPos == 2:
+        titleScreen = False
+        newScreen = False
+        loadScreen = True
 
-  elif titleMovement == "\r":
-    if cursorPos == 1:
+    elif titleMovement == "\x1b":
+      gameRunning = False
       titleScreen = False
-    elif cursorPos == 2:
-      titleScreen = False
-      saveScreen = True
-
-  elif titleMovement == "\x1b":
-    gameRunning = False
-    titleScreen = False
+      newScreen = False
+      loadScreen = False
+      stdscr.erase()
+      
     stdscr.erase()
-    
-  stdscr.erase()
 
-#Character Creation Loop
+  #Character New File Loop
+  stdscr.refresh()
+  cursorPos = 1
+  while newScreen:
+    savescreen.printNewScreen(cursorPos)
+    stdscr.refresh()
+    newMovement = getchar()
+    if newMovement == "w":
+      if cursorPos == 1 or cursorPos == 2 or cursorPos == 3:
+        cursorPos == 4
+      else:
+        cursorPos = 2
+
+    elif newMovement == "s":
+      if cursorPos == 1 or cursorPos == 2 or cursorPos == 3:
+        cursorPos = 4
+      else:
+        cursorPos = 2
+
+    elif newMovement == "a":
+      if cursorPos == 1:
+        cursorPos = 3
+      elif cursorPos == 2:
+        cursorPos = 1
+      elif cursorPos == 3:
+        cursorPos = 2
+      elif cursorPos == 4:
+        cursorPos = 1
+
+    elif newMovement == "d":
+      if cursorPos == 1:
+        cursorPos = 2
+      elif cursorPos == 2:
+        cursorPos = 3
+      elif cursorPos == 3:
+        cursorPos = 1
+      elif cursorPos == 4:
+        cursorPos = 3
+
+    #if enter is pressed
+    elif newMovement == "\r":
+      if cursorPos == 1:
+        if saves[0]["Used"] == False:
+          currentSaveFile = 0
+          saves[0]["Used"] = True
+          nextLine()
+          stdscr.addstr("You have selected file 1", curses.color_pair(1))
+          newScreen = False
+          characterMakingScreen = True
+        else:
+          nextLine()
+          stdscr.addstr("That file already has a save in it", curses.color_pair(1))
+
+      elif cursorPos == 2:
+        if saves[1]["Used"] == False:
+          currentSaveFile = 1
+          saves[1]["Used"] = True
+          nextLine()
+          stdscr.addstr("You have selected file 2", curses.color_pair(2))
+        else:
+          nextLine()
+          stdscr.addstr("That file already has a save in it", curses.color_pair(1))
+
+      elif cursorPos == 3:
+        if saves[2]["Used"] == False:
+          currentSaveFile = 2
+          saves[2]["Used"] = True
+          nextLine()
+          stdscr.addstr("You have selected file 3", curses.color_pair(2))
+        else:
+          nextLine()
+          stdscr.addstr("That file already has a save in it", curses.color_pair(1))
+
+      elif cursorPos == 4:
+        titleScreen = True
+        newScreen = False
+        loadScreen = False
+
+    elif newMovement == "\x1b":
+      gameRunning = False
+      titleScreen = False
+      newScreen = False
+      loadScreen = False
+      stdscr.erase()
+      
+    stdscr.erase()
+
+  while characterMakingScreen:
+
+
+  while loadScreen:
+    buh
+
 player = Entities.Sorcerer("ZSRoach")
 
 #player start position
