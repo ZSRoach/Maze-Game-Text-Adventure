@@ -22,6 +22,7 @@ class Player(Entity):
   xp = 0
   upgradePoints = 0
   isInteracting = False
+  isBlocking = False
   def levelUp(leveler):
     from Maingame import stdscr
     stdscr.addstr ("You leveled up to level "+str((leveler.level)+1)+"!!")
@@ -41,6 +42,15 @@ class Player(Entity):
       damage = player.attack - (enemy.defense / 2)
       enemy.health -= damage
     stdscr.addstr("You attacked the "+enemy.name+" for "+str(damage)+" damage!")
+  def block(player):
+    from Maingame import stdscr
+    from Maingame import getchar
+    from Maingame import curses
+    stdscr.addstr("Do you want to block? You'll take 3/4 damage but can't attack",curses.color_pair(1))
+    stdscr.addstr("1 if you want to block")
+    block = getchar()
+    if block == 1:
+      player.isBlocking = True
   pass
 
 #definition of sorcerer - player subclass - (inherits from entity, and player) - user class type

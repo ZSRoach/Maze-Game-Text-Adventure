@@ -1,5 +1,5 @@
 import Entities
-def classChoice(player):
+def classChoice():
   from Maingame import stdscr
   from Maingame import curses
   from Maingame import nextLine
@@ -19,34 +19,43 @@ def classChoice(player):
   nextLine()
   nextLine()
   stdscr.addstr("4) Necromancer",curses.color_pair(1))
+  stdscr.refresh()
   classChoice = getchar()
+  doLoop = True
   while doLoop:
-    global player
     if classChoice == "1":
       nextLine()
       nextLine()
       stdscr.addstr("Name your warrior: ",curses.color_pair(1))
-      nameChoice = curses.getstr()
+      stdscr.refresh()
+      nameChoice = stdscr.getstr()
       player = Entities.Warrior(nameChoice)
       doLoop = False
+      return player
     elif classChoice == "2":
       nextLine()
       nextLine()
       stdscr.addstr("Name your sorcerer: ",curses.color_pair(1))
-      nameChoice = curses.getstr()
+      stdscr.refresh()
+      nameChoice = stdscr.getstr()
       player = Entities.Sorcerer(nameChoice)
       doLoop = False
+      return player
     elif classChoice == "3":
       nextLine()
       nextLine()
       stdscr.addstr("Name your rogue: ",curses.color_pair(1))
-      nameChoice = curses.getstr()
+      stdscr.refresh()
+      nameChoice = stdscr.getstr()
       player = Entities.Rogue(nameChoice)
       doLoop = False
+      return player
     elif classChoice == "4":
       nextLine()
       nextLine()
       stdscr.addstr("Name your necromancer: ",curses.color_pair(1))
-      nameChoice = curses.getstr()
+      stdscr.refresh()
+      nameChoice = stdscr.getstr()
       player = Entities.Necromancer(nameChoice)
       doLoop = False
+      return player
