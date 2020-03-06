@@ -29,6 +29,7 @@ def classChoice():
       stdscr.addstr("Name your warrior: ",curses.color_pair(1))
       stdscr.refresh()
       nameChoice = stdscr.getstr()
+      nameChoice = nameChoice.decode("utf-8")
       player = Entities.Warrior(nameChoice)
       doLoop = False
       return player
@@ -38,6 +39,7 @@ def classChoice():
       stdscr.addstr("Name your sorcerer: ",curses.color_pair(1))
       stdscr.refresh()
       nameChoice = stdscr.getstr()
+      nameChoice = nameChoice.decode("utf-8")
       player = Entities.Sorcerer(nameChoice)
       doLoop = False
       return player
@@ -47,6 +49,7 @@ def classChoice():
       stdscr.addstr("Name your rogue: ",curses.color_pair(1))
       stdscr.refresh()
       nameChoice = stdscr.getstr()
+      nameChoice = nameChoice.decode("utf-8")
       player = Entities.Rogue(nameChoice)
       doLoop = False
       return player
@@ -56,6 +59,7 @@ def classChoice():
       stdscr.addstr("Name your necromancer: ",curses.color_pair(1))
       stdscr.refresh()
       nameChoice = stdscr.getstr()
+      nameChoice = nameChoice.decode("utf-8") 
       player = Entities.Necromancer(nameChoice)
       doLoop = False
       return player

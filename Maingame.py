@@ -63,6 +63,9 @@ if __name__ == "__main__":
   import savescreen
   import charactermaking
 
+  def playerSet(saves, currentSaveFile):
+
+
   with open("saves", "r") as reading:
     try:
       saves = json.loads(reading.read())
@@ -330,7 +333,7 @@ if __name__ == "__main__":
             currentSaveFile = 2
             nextLine()
             stdscr.addstr("You have selected file 3", curses.color_pair(1))
-            print (saves[currentSaveFile]["Name"])
+
             loadScreen = False
           else:
             nextLine()

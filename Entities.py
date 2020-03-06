@@ -30,7 +30,7 @@ class Player(Entity):
   def fool(self, fooled):
     from Maingame import stdscr
     stdscr.addstr("you've been fooled "+fooled.name)
-  def attack(player, enemy):
+  def normalAttack(player, enemy):
     from Maingame import stdscr
     attackChance = random.randint(1,player.attack)
     defenseChance = enemy.defense
