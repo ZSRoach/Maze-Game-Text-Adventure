@@ -20,7 +20,9 @@ def classChoice():
   nextLine()
   stdscr.addstr("4) Necromancer",curses.color_pair(1))
   stdscr.refresh()
-  classChoice = getchar()
+  classChoice = str(getchar())
+  if classChoice != "1" or classChoice != "2" or classChoice != "3" or classChoice !="4":
+    classChoice = str(getchar())
   doLoop = True
   while doLoop:
     if classChoice == "1":

@@ -33,40 +33,40 @@ class Room:
     self.chestLocation = None
     self.setChestLocation()
   
-  def roomInfoSave(self, roomName, saves, currentSaveFile):
+  def roomInfoSave(self, saves, currentSaveFile):
     try:
-      saves[currentSaveFile]["roomInfo"][roomName] = {}
+      saves[currentSaveFile]["roomInfo"][self.roomName] = {}
     except KeyError as err:
       saves[currentSaveFile]["roomInfo"] = {}
-      saves[currentSaveFile]["roomInfo"][roomName] = {}
-    saves[currentSaveFile]["roomInfo"][roomName]["hasBeenVisited"] = self.hasBeenVisited
+      saves[currentSaveFile]["roomInfo"][self.roomName] = {}
+    saves[currentSaveFile]["roomInfo"][self.roomName]["hasBeenVisited"] = self.hasBeenVisited
     try:
-      saves[currentSaveFile]["roomInfo"][roomName]["locked"] = self.locked
+      saves[currentSaveFile]["roomInfo"][self.roomName]["locked"] = self.locked
     except AttributeError as err:
       worry = 1
     try:
-      saves[currentSaveFile]["roomInfo"][roomName]["chestLooted"] = self.chestLooted
+      saves[currentSaveFile]["roomInfo"][self.roomName]["chestLooted"] = self.chestLooted
     except AttributeError as err:
       worry = 1
 
   def roomSaveAll(saves, currentSaveFile):
-    startRoom.roomInfoSave(self.roomName, saves, currentSaveFile)
-    room2.roomInfoSave(self.roomName, saves, currentSaveFile)
-    room3.roomInfoSave(self.roomName, saves, currentSaveFile)
-    room4.roomInfoSave(self.roomName, saves, currentSaveFile)
-    room5.roomInfoSave(self.roomName, saves, currentSaveFile)
-    room6.roomInfoSave(self.roomName, saves, currentSaveFile)
-    room7.roomInfoSave(self.roomName, saves, currentSaveFile)
-    room8.roomInfoSave(self.roomName, saves, currentSaveFile)
-    room9.roomInfoSave(self.roomName, saves, currentSaveFile)
-    room10.roomInfoSave(self.roomName, saves, currentSaveFile)
-    room11.roomInfoSave(self.roomName, saves, currentSaveFile)
-    room12.roomInfoSave(self.roomName, saves, currentSaveFile)
-    room13.roomInfoSave(self.roomName, saves, currentSaveFile)
-    room14.roomInfoSave(self.roomName, saves, currentSaveFile)
-    room15.roomInfoSave(self.roomName, saves, currentSaveFile)
-    room16.roomInfoSave(self.roomName, saves, currentSaveFile)
-    room17.roomInfoSave(self.roomName, saves, currentSaveFile)
+    startRoom.roomInfoSave(saves, currentSaveFile)
+    room2.roomInfoSave(saves, currentSaveFile)
+    room3.roomInfoSave(saves, currentSaveFile)
+    room4.roomInfoSave(saves, currentSaveFile)
+    room5.roomInfoSave(saves, currentSaveFile)
+    room6.roomInfoSave(saves, currentSaveFile)
+    room7.roomInfoSave(saves, currentSaveFile)
+    room8.roomInfoSave(saves, currentSaveFile)
+    room9.roomInfoSave(saves, currentSaveFile)
+    room10.roomInfoSave(saves, currentSaveFile)
+    room11.roomInfoSave(saves, currentSaveFile)
+    room12.roomInfoSave(saves, currentSaveFile)
+    room13.roomInfoSave(saves, currentSaveFile)
+    room14.roomInfoSave(saves, currentSaveFile)
+    room15.roomInfoSave(saves, currentSaveFile)
+    room16.roomInfoSave(saves, currentSaveFile)
+    room17.roomInfoSave(saves, currentSaveFile)
 
   def roomInfoLoad(self, saves, currentSaveFile):
     self.hasBeenVisited = saves[currentSaveFile]["roomInfo"][self.roomName]["hasBeenVisited"]

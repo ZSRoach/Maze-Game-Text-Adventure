@@ -57,6 +57,7 @@ def getchar():
     return ch
 
 if __name__ == "__main__":
+  loadedFile = 0
   import Entities
   import rooms
   import titlescreen
@@ -89,8 +90,9 @@ if __name__ == "__main__":
       saves.insert(2,{
         "Used": False,
       })
-
-  def saveInfo(player, currentRoom, saves, saveFile):
+  
+  def saveInfo(player, currentRoom, playercoords, saves, saveFile):
+    saves[saveFile]["coords"] = playercoords
     try:
       if player.isSorcerer == 1:
         saves[saveFile]["Sorcerer"] = True
@@ -395,6 +397,7 @@ if __name__ == "__main__":
             stdscr.addstr("You have selected file 1", curses.color_pair(1))
             player = playerSet(saves, currentSaveFile)
             rooms.Room.roomLoadAll(saves, currentSaveFile)
+            loadedFile = 1
             loadScreen = False
           else:
             nextLine()
@@ -407,6 +410,7 @@ if __name__ == "__main__":
             stdscr.addstr("You have selected file 2", curses.color_pair(1))
             player = playerSet(saves, currentSaveFile)
             rooms.Room.roomLoadAll(saves, currentSaveFile)
+            loadedFile = 1
             loadScreen = False
           else:
             nextLine()
@@ -419,6 +423,7 @@ if __name__ == "__main__":
             stdscr.addstr("You have selected file 3", curses.color_pair(1))
             player = playerSet(saves, currentSaveFile)
             rooms.Room.roomLoadAll(saves, currentSaveFile)
+            loadedFile = 1
             loadScreen = False
           else:
             nextLine()
@@ -443,8 +448,13 @@ if __name__ == "__main__":
 
   stdscr.clear()
   #player start position
+  """
+  if loadedFile != 1:
+    playercoords = [1,1]
+    """
   playercoords = [1,1]
-  tobeplayercoords = [1,1]
+  tobeplayercoords = copy(playercoords)
+
   currentRoom = rooms.startRoom
 
   #Main Game Loop
@@ -452,8 +462,8 @@ if __name__ == "__main__":
   interactables = 4
   while gameRunning == True or battling == True:
     while gameRunning:
-      saveInfo(player, currentRoom, saves, currentSaveFile)
-      currentRoom.roomInfoSave(currentRoom.roomName, saves, currentSaveFile)
+      saveInfo(player, currentRoom, saves, playercoords, currentSaveFile)
+      rooms.Room.roomSaveAll(saves, currentSaveFile)
       roomInfoException = "There is no room info"
       rooms.conditionCheckAll(player)
       currentRoom.printRoom(playercoords)
