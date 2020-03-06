@@ -394,6 +394,7 @@ if __name__ == "__main__":
             nextLine()
             stdscr.addstr("You have selected file 1", curses.color_pair(1))
             player = playerSet(saves, currentSaveFile)
+            rooms.Room.roomLoadAll(saves, currentSaveFile)
             loadScreen = False
           else:
             nextLine()
@@ -405,6 +406,7 @@ if __name__ == "__main__":
             nextLine()
             stdscr.addstr("You have selected file 2", curses.color_pair(1))
             player = playerSet(saves, currentSaveFile)
+            rooms.Room.roomLoadAll(saves, currentSaveFile)
             loadScreen = False
           else:
             nextLine()
@@ -416,6 +418,7 @@ if __name__ == "__main__":
             nextLine()
             stdscr.addstr("You have selected file 3", curses.color_pair(1))
             player = playerSet(saves, currentSaveFile)
+            rooms.Room.roomLoadAll(saves, currentSaveFile)
             loadScreen = False
           else:
             nextLine()
@@ -449,8 +452,8 @@ if __name__ == "__main__":
   interactables = 4
   while gameRunning == True or battling == True:
     while gameRunning:
-      stdscr.addstr(currentRoom.__name__)
       saveInfo(player, currentRoom, saves, currentSaveFile)
+      currentRoom.roomInfoSave(currentRoom.roomName, saves, currentSaveFile)
       roomInfoException = "There is no room info"
       rooms.conditionCheckAll(player)
       currentRoom.printRoom(playercoords)

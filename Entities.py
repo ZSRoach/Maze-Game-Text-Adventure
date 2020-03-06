@@ -10,6 +10,7 @@ class Entity():
   #definition of basic entity methods 
   def basicAttack(attacker, target):
     dmg = (random.randint(3,attacker.attack))
+    target.health -= dmg
   pass
 
 #definition of main player class (inherits traits from entity) - user character
@@ -37,6 +38,9 @@ class Player(Entity):
     if attackChance >= defenseChance:
       damage = player.attack * 3
       damage -= enemy.defense
+      if enemy.isBlocking == True:
+        damage *= 0.75
+        damage = int(damage)
       enemy.health -= damage
     else:
       damage = player.attack - (enemy.defense / 2)
@@ -83,24 +87,47 @@ class Necromancer(Player):
 
 class Minion(Entity):
   health = 0
+
 #definition of goblin - main throwaway generic enemy - (inherits from entity) - enemy class type
 class Goblin(Entity):
   hostile = False
   name = "Goblini"
+  health = 50
+  attack = 8
+  defense = 8
+  speed = 5
 #Definition of skeleton - ranged enemy - (Inherits from entitiy) - Enemy class type
 class Skeleton(Entity):
   hostile = False
   name = "Skeletini"
+  health = 75
+  attack = 15
+  defense = 20
+  speed = 10
 #Def of zombie - Stronger version of Goblin - (Inherits from entity) - Enemy class type
 class Zombie(Entity):
   hostile = False
   name = "Zombini"
+  health = 115
+  attack = 25
+  defense = 25
+  speed = 12
 #Def of Golem - Stronger version of Zombie - (Inherits from Entity) - enemy class type
 class Golem(Entity):
   hostile = False
   name = "Golini"
+  health = 250
+  attack = 32
+  defense = 35
+  speed = 15
 class Boss(Entity):
-  name1 = "Turkey Panini"
-  name2 = "Parmesan Tortellini"
-  name3 = "Spinach Fettuccine"
-  final = "Spicy Pasta Linguine"
+  def __init__(self, health, attack, defense, speed, name):
+    self.health = health
+    self.attack = attack
+    self.defense = defense
+    self.speed = speed
+    self.name = name
+#name1 = "Turkey Panini"
+#name2 = "Parmesan Tortellini"
+#name3 = "Spinach Fettuccine"
+#final = "Spicy Pasta Linguine"
