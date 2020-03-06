@@ -31,31 +31,43 @@ class Room:
     self.chestLooted = False
     self.chestLocation = None
     self.setChestLocation()
+  
+  def roomInfoSave(self, roomName, saves, currentSaveFile):
+    try:
+      if saves[currentSaveFile]["RoomInfo"][roomName]["hasInfo"] == True:
+        saves[currentSaveFile]["RoomInfo"][roomName]["visited"] = self.hasBeenVisited
+    except:
+      saves = [{},{},{}]
+      try:
+        saves.append(currentSaveFile["RoomInfo"],)
+      except:
+        saves.append(currentSaveFile[{}],)
+
 
   def setChestLocation(self):
-      for lineno, line in enumerate(self.layout):
-        for i in range(len(line)):
-          space = line[i]
-          if space == "■":
-            self.chestLocation = [i,lineno]
+    for lineno, line in enumerate(self.layout):
+      for i in range(len(line)):
+        space = line[i]
+        if space == "■":
+          self.chestLocation = [i,lineno]
 
   def hasLockedDoor(self, lockedLayout, condition, player):
-      self.lockedLayout = lockedLayout
-      self.lockCondition = condition
-      if self.lockCondition == True and player.isInteracting == True:
-        self.locked = False
-      elif self.lockCondition == True and self.locked != True:
-        self.locked = False
-      else:
-        self.locked = True
+    self.lockedLayout = lockedLayout
+    self.lockCondition = condition
+    if self.lockCondition == True and player.isInteracting == True:
+      self.locked = False
+    elif self.lockCondition == True and self.locked != True:
+      self.locked = False
+    else:
+      self.locked = True
 
   def lockConditionCheck(self, player):
       if self.lockCondition == True:
         self.locked = False
 
   def setRoomInfo(self, firstTime, secondTime):
-      self.roomInfoFirst = firstTime
-      self.roomInfoSecond = secondTime
+    self.roomInfoFirst = firstTime
+    self.roomInfoSecond = secondTime
 
   def displayRoomInfo(self):
     from Maingame import stdscr

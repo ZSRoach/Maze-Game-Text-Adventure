@@ -1,1 +1,1 @@
-[{"Used": false}, {"Used": false}, {"Used": true, "XP": 0, "Health": 0, "Attack": 0, "Defense": 0, "Speed": 0, "Name": "bob", "Mana": 20, "Spells": 0, "ManaRegen": 5, "SpellDamage": 1}]
+[{"Used": true, "Sorcerer": true, "XP": 0, "Health": 0, "Attack": 0, "Defense": 0, "Speed": 0, "Name": "Bob", "Mana": 20, "Spells": 0, "ManaRegen": 5, "SpellDamage": 1}, {"Used": false}, {"Used": false}]

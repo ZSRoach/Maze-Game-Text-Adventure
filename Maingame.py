@@ -64,8 +64,17 @@ if __name__ == "__main__":
   import charactermaking
 
   def playerSet(saves, currentSaveFile):
-
-
+    try:
+      if saves[currentSaveFile]["Sorcerer"] == True:
+        return Entities.Sorcerer(saves[currentSaveFile]["Name"])
+      if saves[currentSaveFile]["Warrior"] == True:
+        return Entities.Warrior(saves[currentSaveFile]["Name"])
+      if saves[currentSaveFile]["Rogue"] == True:
+        return Entities.Rogue(saves[currentSaveFile]["Name"])
+      if saves[currentSaveFile]["Necromancer"] == True:
+        return Entities.Necromancer(saves[currentSaveFile]["Name"])
+    except:
+      worry = 1
   with open("saves", "r") as reading:
     try:
       saves = json.loads(reading.read())
@@ -83,23 +92,94 @@ if __name__ == "__main__":
 
   def saveInfo(player, currentRoom, saves, saveFile):
     try:
+      if player.isSorcerer == 1:
+        saves[saveFile]["Sorcerer"] = True
+    except AttributeError as err:
+      worry = 1
+    try:
+      if player.isWarrior == 1:
+        saves[saveFile]["Warrior"] = True
+    except AttributeError as err:
+      worry = 1
+    try:
+      if player.isNecromancer == 1:
+        saves[saveFile]["Necromancer"] = True
+    except AttributeError as err:
+      worry = 1
+    try:
+      if player.isRogue == 1:
+        saves[saveFile]["Rogue"] = True
+    except AttributeError as err:
+      worry = 1
+    try:
       saves[saveFile]["XP"] = player.xp
+    except AttributeError as err:
+      worry = 1
+    try:
       saves[saveFile]["Health"] = player.health
+    except AttributeError as err:
+      worry = 1
+    try:
       saves[saveFile]["Attack"] = player.attack
+    except AttributeError as err:
+      worry = 1
+    try:
       saves[saveFile]["Defense"] = player.defense
+    except AttributeError as err:
+      worry = 1
+    try:
       saves[saveFile]["Speed"] = player.speed
+    except AttributeError as err:
+      worry = 1
+    try:
       saves[saveFile]["Name"] = player.name
+    except AttributeError as err:
+      worry = 1
+    try:
       saves[saveFile]["Mana"] = player.mana
+    except AttributeError as err:
+      worry = 1
+    try:
       saves[saveFile]["Spells"] = player.spells
+    except AttributeError as err:
+      worry = 1
+    try:
       saves[saveFile]["ManaRegen"] = player.manaRegen
+    except AttributeError as err:
+      worry = 1
+    try:
       saves[saveFile]["SpellDamage"] = player.spellDamage
+    except AttributeError as err:
+      worry = 1
+    try:
       saves[saveFile]["TwoHanded"] = player.twoHanded
+    except AttributeError as err:
+      worry = 1
+    try:
       saves[saveFile]["EvadeChance"] = player.evadeChance
+    except AttributeError as err:
+      worry = 1
+    try:
       saves[saveFile]["Stealth"] = player.stealth
+    except AttributeError as err:
+      worry = 1
+    try:
       saves[saveFile]["MaxMinions"] = player.maxMinions
+    except AttributeError as err:
+      worry = 1
+    try:
       saves[saveFile]["MinionsAlive"] = player.currentMinionsAlive
+    except AttributeError as err:
+      worry = 1
+    try:
       saves[saveFile]["CurrentMinionCount"] = player.currentMinions
+    except AttributeError as err:
+      worry = 1
+    try:
       saves[saveFile]["MinionHealth"] = player.minionHealth
+    except AttributeError as err:
+      worry = 1
+    try:
       saves[saveFile]["MinionAttack"] = player.minionAttack
     except AttributeError as err:
       worry = 1
@@ -313,6 +393,7 @@ if __name__ == "__main__":
             currentSaveFile = 0
             nextLine()
             stdscr.addstr("You have selected file 1", curses.color_pair(1))
+            player = playerSet(saves, currentSaveFile)
             loadScreen = False
           else:
             nextLine()
@@ -323,6 +404,7 @@ if __name__ == "__main__":
             currentSaveFile = 1
             nextLine()
             stdscr.addstr("You have selected file 2", curses.color_pair(1))
+            player = playerSet(saves, currentSaveFile)
             loadScreen = False
           else:
             nextLine()
@@ -333,7 +415,7 @@ if __name__ == "__main__":
             currentSaveFile = 2
             nextLine()
             stdscr.addstr("You have selected file 3", curses.color_pair(1))
-
+            player = playerSet(saves, currentSaveFile)
             loadScreen = False
           else:
             nextLine()
@@ -367,6 +449,7 @@ if __name__ == "__main__":
   interactables = 4
   while gameRunning == True or battling == True:
     while gameRunning:
+      stdscr.addstr(currentRoom.__name__)
       saveInfo(player, currentRoom, saves, currentSaveFile)
       roomInfoException = "There is no room info"
       rooms.conditionCheckAll(player)
