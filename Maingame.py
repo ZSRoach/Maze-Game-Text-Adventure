@@ -92,7 +92,6 @@ if __name__ == "__main__":
       })
   
   def saveInfo(player, currentRoom, playercoords, saves, saveFile):
-    saves[saveFile]["coords"] = playercoords
     try:
       if player.isSorcerer == 1:
         saves[saveFile]["Sorcerer"] = True

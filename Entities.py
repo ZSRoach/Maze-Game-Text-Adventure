@@ -9,7 +9,14 @@ class Entity():
     
   #definition of basic entity methods 
   def basicAttack(attacker, target):
-    dmg = (random.randint(3,attacker.attack))
+    attackChance = random.randint(1,attacker.attack)
+    if attackChance >= target.defense:
+      dmg = (attacker.attack * 3) - target.defense
+    else:
+      dmg = attacker.attack - (target.defense * 0.5)
+    if target.isBlocking == True:
+      dmg *= .75
+    dmg = int(dmg)
     target.health -= dmg
   pass
 
@@ -104,6 +111,17 @@ class Skeleton(Entity):
   attack = 15
   defense = 20
   speed = 10
+  def rangedAttack(skeleton,player):
+    attackChance = random.randint(1,skeleton.attack + 5)
+    if attackChance >= player.defense:
+      dmg = (skeleton.attack + 5) - player.defense
+    else:
+      dmg = skeleton.attack + 5 - (player.defense * .5)
+      dmg = int(dmg)
+    missChance = random.randint(1,player.speed)
+    if missChance >= skeleton.speed:
+      dmg = 0
+    player.health -= dmg
 #Def of zombie - Stronger version of Goblin - (Inherits from entity) - Enemy class type
 class Zombie(Entity):
   hostile = False
@@ -112,6 +130,11 @@ class Zombie(Entity):
   attack = 25
   defense = 25
   speed = 12
+  def bite(attacker, player):
+    biteChance = random.randint(1,attacker.speed + 8)
+    missChance = random.randint(1,player.speed)
+    if biteChance >= missChance:
+      player.health -= (1/5) * player.health
 #Def of Golem - Stronger version of Zombie - (Inherits from Entity) - enemy class type
 class Golem(Entity):
   hostile = False
@@ -120,6 +143,8 @@ class Golem(Entity):
   attack = 32
   defense = 35
   speed = 15
+  def strength(attacker, player):
+    print("Placeholder")
 class Boss(Entity):
   def __init__(self, health, attack, defense, speed, name):
     self.health = health
