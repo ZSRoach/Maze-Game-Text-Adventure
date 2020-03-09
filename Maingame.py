@@ -36,7 +36,6 @@ mapInfo = [" ",
 "δ - enemy",
 "Ω - boss",
 ]
-
 def nextLine():
   pos = stdscr.getyx()
   ypos = pos[0]
@@ -90,8 +89,27 @@ if __name__ == "__main__":
       saves.insert(2,{
         "Used": False,
       })
+
+  def checkName(saves, currentSaveFile):
+    import rooms
+    for i in range (len(rooms.Room.roomCount)):
+      if saves[currentSaveFile]["currentRoomName"] == rooms.Room.roomCount[i]:
+        toBeCurrentRoom = rooms.Room.roomCount[i]
+        return toBeCurrentRoom
+      
+  def setCurrentRoom(toBeRoom):
+    if toBeRoom == rooms.Room.roomCount[0]:
+      currentRoom = rooms.startRoom
+      return currentRoom
+    if toBeRoom == rooms.Room.roomCount[1]:
+      currentRoom = rooms.room2
+      return currentRoom
   
-  def saveInfo(player, currentRoom, playercoords, saves, saveFile):
+  def saveInfo(player, currentRoom, saves, saveFile):
+    try:
+      saves[saveFile]["currentRoomName"] = currentRoom.name
+    except AttributeError as err:
+      worry = 1
     try:
       if player.isSorcerer == 1:
         saves[saveFile]["Sorcerer"] = True
@@ -461,11 +479,12 @@ if __name__ == "__main__":
   interactables = 4
   while gameRunning == True or battling == True:
     while gameRunning:
-      saveInfo(player, currentRoom, saves, playercoords, currentSaveFile)
+      saveInfo(player, currentRoom, saves, currentSaveFile)
       rooms.Room.roomSaveAll(saves, currentSaveFile)
       roomInfoException = "There is no room info"
       rooms.conditionCheckAll(player)
       currentRoom.printRoom(playercoords)
+      stdscr.addstr(str(saves[currentSaveFile]["roomInfo"].get(0+1)))
       nextLine()
       currentRoom.displayRoomInfo()
       for i in range (len(mapInfo)):

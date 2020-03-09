@@ -10,6 +10,7 @@ except:
 
 
 class Room:
+  roomCount = []
   def __init__(self, roomName, layout, chestRoom, tRE, bossRoom, restRoom):
     self.layout = layout
     self.south = None
@@ -32,7 +33,8 @@ class Room:
     self.chestLooted = False
     self.chestLocation = None
     self.setChestLocation()
-  
+    Room.roomCount.append(roomName)
+
   def roomInfoSave(self, saves, currentSaveFile):
     try:
       saves[currentSaveFile]["roomInfo"][self.roomName] = {}

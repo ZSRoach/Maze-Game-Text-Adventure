@@ -1,4 +1,5 @@
 import random
+import math
 xpPerLevel = ["100","100","150","200","300","400","500","600","700","800","900","1000","1150","1300","1550","1750","1900","2000","2600"]
 xpAtLevel = ["0","100","200","350","550","850","1250","2350","3050","3850","4750","5750","6900","8200","9750","11500","13400","15400","18000"]
 class Entity():
@@ -18,6 +19,29 @@ class Entity():
       dmg *= .75
     dmg = int(dmg)
     target.health -= dmg
+  def hunt(player, enemy):
+    playerSpot = playercoords
+    enemySpot = enemy.enemycoords
+    if abs(playerSpot[0] - enemySpot[0]) < 3:
+      if enemy.isGoblin == 1:
+       battle(Player, Goblin)
+      elif enemy.isSkeleton == 1:
+        battle(Player, Skeleton)
+      elif enemy.isZombie == 1:
+        battle(Player, Zombie)
+      else:
+        battle(Player, Golem)
+    elif abs(playerSpot[1] - enemySpot[1]) < 3:
+      if enemy.isGoblin == 1:
+       battle(Player, Goblin)
+      elif enemy.isSkeleton == 1:
+        battle(Player, Skeleton)
+      elif enemy.isZombie == 1:
+        battle(Player, Zombie)
+      else:
+        battle(Player, Golem)
+    else:
+      calm = 1
   pass
 
 #definition of main player class (inherits traits from entity) - user character
@@ -97,6 +121,10 @@ class Minion(Entity):
 
 #definition of goblin - main throwaway generic enemy - (inherits from entity) - enemy class type
 class Goblin(Entity):
+  def __init__(self, level):
+    self.level = random.randint(level - 1, level + 1)
+  isGoblin = 1
+  enemycoords = [1,1]
   hostile = False
   name = "Goblini"
   health = 50
@@ -105,6 +133,10 @@ class Goblin(Entity):
   speed = 5
 #Definition of skeleton - ranged enemy - (Inherits from entitiy) - Enemy class type
 class Skeleton(Entity):
+  def __init__(self, level):
+    self.level = random.randint(level - 1, level + 1)
+  isSkeleton = 1
+  enemycoords = [1,1]
   hostile = False
   name = "Skeletini"
   health = 75
@@ -124,6 +156,10 @@ class Skeleton(Entity):
     player.health -= dmg
 #Def of zombie - Stronger version of Goblin - (Inherits from entity) - Enemy class type
 class Zombie(Entity):
+  def __init__(self, level):
+    self.level = random.randint(level - 1, level + 1)
+  isZombie = 1
+  enemycoords = [1,1]
   hostile = False
   name = "Zombini"
   health = 115
@@ -137,6 +173,10 @@ class Zombie(Entity):
       player.health -= (1/5) * player.health
 #Def of Golem - Stronger version of Zombie - (Inherits from Entity) - enemy class type
 class Golem(Entity):
+  def __init__(self, level):
+    self.level = random.randint(level - 1, level + 1)
+  isGolem = 1
+  enemycoords = [1,1]
   hostile = False
   name = "Golini"
   health = 250
