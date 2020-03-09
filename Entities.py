@@ -145,6 +145,16 @@ class Golem(Entity):
   speed = 15
   def strength(attacker, player):
     print("Placeholder")
+    strengthMultiplier = random.randint(1,4)
+    attackChance = random.randint(1,attacker.attack + 10)
+    if attackChance >= player.defense:
+      dmg = (attacker.attack + 10) - player.defense
+      dmg *= strengthMultiplier
+    else:
+      dmg = attacker.attack - (player.defense * .75)
+      dmg = int(dmg)
+      dmg *= strengthMultiplier
+    player.health -= dmg
 class Boss(Entity):
   def __init__(self, health, attack, defense, speed, name):
     self.health = health
