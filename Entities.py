@@ -207,3 +207,17 @@ class Boss(Entity):
 #name2 = "Parmesan Tortellini"
 #name3 = "Spinach Fettuccine"
 #final = "Spicy Pasta Linguine"
+  hostile = False
+  name = "Goblini"
+#Definition of skeleton - ranged enemy - (Inherits from entitiy) - Enemy class type
+class Skeleton(Entity):
+  hostile = False
+  name = "Skeletini"
+#Def of zombie - Stronger version of Goblin - (Inherits from entity) - Enemy class type
+class Zombie(Entity):
+  hostile = False
+  name = "Zomboni"
+#Def of Ogre - Stronger version of Zombie - (Inherits from Entity) - enemy class type
+class Ogre(Entity):
+  hostile = False
+  name = "Shrek"
