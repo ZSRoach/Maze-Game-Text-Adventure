@@ -10,7 +10,8 @@ except:
 
 
 class Room:
-  def __init__(self, layout, chestRoom, tRE, bossRoom, restRoom):
+  roomCount = []
+  def __init__(self, roomName, layout, chestRoom, tRE, bossRoom, restRoom):
     self.layout = layout
     self.south = None
     self.north = None
@@ -20,6 +21,7 @@ class Room:
     self.westEntrance = None
     self.southEntrance = None
     self.northEntrance = None
+    self.roomName = roomName
     self.chestRoom = chestRoom
     self.tRE = tRE
     self.bossRoom = bossRoom
@@ -31,31 +33,91 @@ class Room:
     self.chestLooted = False
     self.chestLocation = None
     self.setChestLocation()
+    Room.roomCount.append(roomName)
+
+  def roomInfoSave(self, saves, currentSaveFile):
+    try:
+      saves[currentSaveFile]["roomInfo"][self.roomName] = {}
+    except KeyError as err:
+      saves[currentSaveFile]["roomInfo"] = {}
+      saves[currentSaveFile]["roomInfo"][self.roomName] = {}
+    saves[currentSaveFile]["roomInfo"][self.roomName]["hasBeenVisited"] = self.hasBeenVisited
+    try:
+      saves[currentSaveFile]["roomInfo"][self.roomName]["locked"] = self.locked
+    except AttributeError as err:
+      worry = 1
+    try:
+      saves[currentSaveFile]["roomInfo"][self.roomName]["chestLooted"] = self.chestLooted
+    except AttributeError as err:
+      worry = 1
+
+  def roomSaveAll(saves, currentSaveFile):
+    startRoom.roomInfoSave(saves, currentSaveFile)
+    room2.roomInfoSave(saves, currentSaveFile)
+    room3.roomInfoSave(saves, currentSaveFile)
+    room4.roomInfoSave(saves, currentSaveFile)
+    room5.roomInfoSave(saves, currentSaveFile)
+    room6.roomInfoSave(saves, currentSaveFile)
+    room7.roomInfoSave(saves, currentSaveFile)
+    room8.roomInfoSave(saves, currentSaveFile)
+    room9.roomInfoSave(saves, currentSaveFile)
+    room10.roomInfoSave(saves, currentSaveFile)
+    room11.roomInfoSave(saves, currentSaveFile)
+    room12.roomInfoSave(saves, currentSaveFile)
+    room13.roomInfoSave(saves, currentSaveFile)
+    room14.roomInfoSave(saves, currentSaveFile)
+    room15.roomInfoSave(saves, currentSaveFile)
+    room16.roomInfoSave(saves, currentSaveFile)
+    room17.roomInfoSave(saves, currentSaveFile)
+
+  def roomInfoLoad(self, saves, currentSaveFile):
+    self.hasBeenVisited = saves[currentSaveFile]["roomInfo"][self.roomName]["hasBeenVisited"]
+    self.locked = saves[currentSaveFile]["roomInfo"][self.roomName]["locked"]
+    self.chestLooted = saves[currentSaveFile]["roomInfo"][self.roomName]["chestLooted"]
+
+  def roomLoadAll(saves, currentSaveFile):
+    startRoom.roomInfoLoad(saves, currentSaveFile)
+    room2.roomInfoLoad(saves, currentSaveFile)
+    room3.roomInfoLoad(saves, currentSaveFile)
+    room4.roomInfoLoad(saves, currentSaveFile)
+    room5.roomInfoLoad(saves, currentSaveFile)
+    room6.roomInfoLoad(saves, currentSaveFile)
+    room7.roomInfoLoad(saves, currentSaveFile)
+    room8.roomInfoLoad(saves, currentSaveFile)
+    room9.roomInfoLoad(saves, currentSaveFile)
+    room10.roomInfoLoad(saves, currentSaveFile)
+    room11.roomInfoLoad(saves, currentSaveFile)
+    room12.roomInfoLoad(saves, currentSaveFile)
+    room13.roomInfoLoad(saves, currentSaveFile)
+    room14.roomInfoLoad(saves, currentSaveFile)
+    room15.roomInfoLoad(saves, currentSaveFile)
+    room16.roomInfoLoad(saves, currentSaveFile)
+    room17.roomInfoLoad(saves, currentSaveFile)
 
   def setChestLocation(self):
-      for lineno, line in enumerate(self.layout):
-        for i in range(len(line)):
-          space = line[i]
-          if space == "■":
-            self.chestLocation = [i,lineno]
+    for lineno, line in enumerate(self.layout):
+      for i in range(len(line)):
+        space = line[i]
+        if space == "■":
+          self.chestLocation = [i,lineno]
 
   def hasLockedDoor(self, lockedLayout, condition, player):
-      self.lockedLayout = lockedLayout
-      self.lockCondition = condition
-      if self.lockCondition == True and player.isInteracting == True:
-        self.locked = False
-      elif self.lockCondition == True and self.locked != True:
-        self.locked = False
-      else:
-        self.locked = True
+    self.lockedLayout = lockedLayout
+    self.lockCondition = condition
+    if self.lockCondition == True and player.isInteracting == True:
+      self.locked = False
+    elif self.lockCondition == True and self.locked != True:
+      self.locked = False
+    else:
+      self.locked = True
 
   def lockConditionCheck(self, player):
       if self.lockCondition == True:
         self.locked = False
 
   def setRoomInfo(self, firstTime, secondTime):
-      self.roomInfoFirst = firstTime
-      self.roomInfoSecond = secondTime
+    self.roomInfoFirst = firstTime
+    self.roomInfoSecond = secondTime
 
   def displayRoomInfo(self):
     from Maingame import stdscr
@@ -66,36 +128,20 @@ class Room:
       nextLine()
       stdscr.addstr("Room Info:", curses.color_pair(1))
       try:
-        for i in range (len(self.roomInfoSecond) - len("Room Info:")):
-          stdscr.addstr(" ", curses.color_pair(1))
         nextLine()
         stdscr.addstr (self.roomInfoSecond, curses.color_pair(1))
-        for i in range (len(self.roomInfoSecond) - len(self.roomInfoSecond)):
-          stdscr.addstr(" ", curses.color_pair(1))
       except AttributeError as err:
-        for i in range (len(max(mapInfo, key=len)) - len("Room Info")):
-          stdscr.addstr(" ", curses.color_pair(1))
         nextLine()
         stdscr.addstr("There is no room info", curses.color_pair(1))
-        for i in range (len(max(mapInfo, key=len)) - len("There is no room info")):
-          stdscr.addstr(" ", curses.color_pair(1))
     else:
       nextLine()
       stdscr.addstr("Room Info:", curses.color_pair(1))
       try:
-        for i in range (len(self.roomInfoFirst) - len("Room Info:")):
-          stdscr.addstr(" ", curses.color_pair(1))
         nextLine()
         stdscr.addstr (self.roomInfoFirst, curses.color_pair(1))
-        for i in range (len(self.roomInfoFirst) - len(self.roomInfoFirst)):
-          stdscr.addstr(" ", curses.color_pair(1))
       except AttributeError as err:
-        for i in range (len(max(mapInfo, key=len)) - len("Room Info")):
-          stdscr.addstr(" ", curses.color_pair(1))
         nextLine()
         stdscr.addstr("There is no room info", curses.color_pair(1))
-        for i in range (len(max(mapInfo, key=len)) - len("There is no room info")):
-          stdscr.addstr(" ", curses.color_pair(1))
 
   def setDoorSouth(self,adjacentRoom):
       self.south = adjacentRoom
@@ -339,7 +385,7 @@ class Room:
 #═══════════ ║║║║║║║║║║║║║║║║║║║║
 #All rooms go here:
 #left of 2, below 8, above 9
-startRoom = Room([
+startRoom = Room("startRoom", [
     "|--------------|",
     "|              |",
     "|       ☼      |",
@@ -347,7 +393,7 @@ startRoom = Room([
     "|--------------|",
     ], False, False, False, True)
 #right of 1, below 7, above 6, left of 3
-room2 = Room([
+room2 = Room("room2",[
     "|--------------|",
     "|              ]",
     "|          |   |",
@@ -355,7 +401,7 @@ room2 = Room([
     "|-------_------|",
     ], False, False, False, False)
 #right of 2, above 4, below 5
-room3 = Room([
+room3 = Room("room3",[
     "|---------------~-|",
     "[    |            |",
     "| ---|    |       |",
@@ -365,7 +411,7 @@ room3 = Room([
     ], False, False, False, False)
 
 #below 3, above 10, right of 6
-room4 = Room([
+room4 = Room("room4",[
     "|--------~--------|",
     "|                 |",
     "|                 |",
@@ -374,7 +420,7 @@ room4 = Room([
     "|--------_--------|",
     ], False, False, False, False)
 #TRE above 3, right of 7
-room5 = Room([
+room5 = Room("room5",[
     "|-----------------|",
     "|                 |",
     "|   |             |",
@@ -383,7 +429,7 @@ room5 = Room([
     "|---------------_-|",
     ], False, True, False, False)
 # above 11, right of 9, left of 4, below 2
-room6 = Room([
+room6 = Room("room6",[
     "|--------~--------|",
     "|----|            |",
     "[    |   |-|----| |",
@@ -392,7 +438,7 @@ room6 = Room([
     "|-----------------|",
     ], True, False, False, False)
 #above 2, below 14, right of 8, left of 5
-room7 = Room([
+room7 = Room("room7",[
     "|-------------~---|",
     "|                 |",
     "|■                |",
@@ -402,7 +448,7 @@ room7 = Room([
     "|-----------------|",
     ], True, False, False, False)
 #left of 7, above start, below 13
-room8 = Room([
+room8 = Room("room8",[
     "|--------------~--|",
     "|                 |",
     "|                 |",
@@ -412,7 +458,7 @@ room8 = Room([
     "|-----------------|",
     ], False, False, False, False)
 #above 12, below start, left of 6
-room9 = Room([
+room9 = Room("room9",[
     "|-----------------|",
     "|                 |",
     "|                 ]",
@@ -421,7 +467,7 @@ room9 = Room([
     "|-_---------------|",
     ], False, False, True, False)
 #below 4, right of 11
-room10 = Room([
+room10 = Room("room10",[
     "|--------~--------|",
     "|                 |",
     "|                 |",
@@ -430,7 +476,7 @@ room10 = Room([
     "|-----------------|",
     ], False, False, False, False)
 #below 6, right of 12, left of 10
-room11 = Room([
+room11 = Room("room11",[
     "|-----------------|",
     "[                 |",
     "|                 |",
@@ -439,7 +485,7 @@ room11 = Room([
     "|-----------------|",
     ], False, False, False, False)
 #below 9, left of 11
-room12 = Room([
+room12 = Room("room12",[
     "|-~---------------|",
     "|                 ]",
     "|                 |",
@@ -448,7 +494,7 @@ room12 = Room([
     "|-----------------|",
     ], False, False, False, False)
 #above 8, left of 14
-room13 = Room([
+room13 = Room("room13",[
     "|-----------------|",
     "|                 ]",
     "|                 |",
@@ -456,7 +502,7 @@ room13 = Room([
     "|--------------_--|",
     ], False, False, False, False)
 #right of 13, above 7
-room14 = Room([
+room14 = Room("room14",[
     "|-----------------|",
     "[                 |",
     "|                 |",
@@ -464,7 +510,7 @@ room14 = Room([
     "|-------------_---|",
     ], False, False, False, False)
 #Left of 9, right of 16
-room15 = Room([
+room15 = Room("room15",[
     "|-----------------|",
     "[         |       |",
     "|                 |",
@@ -473,7 +519,7 @@ room15 = Room([
     "|-----------------|",
     ], False, False, False, False)
 #Left of 15, above 3-hall hallway
-room16 = Room([
+room16 = Room("room16",[
     "|-----------------|",
     "|                 ]",
     "|        |        |",
@@ -482,7 +528,7 @@ room16 = Room([
     "|---------_-------|",
     ], False, False, False, False)
 #below 16
-room17 = Room([
+room17 = Room("room17",[
     "|---------~----------|",
     "|     |        |     |",
     "|     |        |     |",

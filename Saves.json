@@ -1,7 +1,7 @@
 Experimental save file
 
 import json
-from pprint import pprint
+
 with open("spaghetti", "r") as reading:
   try:
     saves = json.loads(reading.read())
