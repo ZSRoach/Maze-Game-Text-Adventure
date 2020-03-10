@@ -64,19 +64,20 @@ class Player(Entity):
     stdscr.addstr("you've been fooled "+fooled.name)
   def normalAttack(player, enemy):
     from Maingame import stdscr
-    attackChance = random.randint(1,player.attack)
-    defenseChance = enemy.defense
-    if attackChance >= defenseChance:
-      damage = player.attack * 3
-      damage -= enemy.defense
-      if enemy.isBlocking == True:
-        damage *= 0.75
-        damage = int(damage)
-      enemy.health -= damage
-    else:
-      damage = player.attack - (enemy.defense / 2)
-      enemy.health -= damage
-    stdscr.addstr("You attacked the "+enemy.name+" for "+str(damage)+" damage!")
+    if self.isBlocking == False:
+      attackChance = random.randint(1,player.attack)
+      defenseChance = enemy.defense
+      if attackChance >= defenseChance:
+        damage = player.attack * 3
+        damage -= enemy.defense
+        if enemy.isBlocking == True:
+          damage *= 0.75
+          damage = int(damage)
+        enemy.health -= damage
+      else:
+        damage = player.attack - (enemy.defense / 2)
+        enemy.health -= damage
+      stdscr.addstr("You attacked the "+enemy.name+" for "+str(damage)+" damage!")
   def block(player):
     from Maingame import stdscr
     from Maingame import getchar

@@ -4,7 +4,6 @@ stdscr.clear()
 curses.start_color()
 curses.init_pair(1, curses.COLOR_BLACK, curses.COLOR_WHITE)
 stdscr.bkgd(" ", curses.color_pair(1))
-curses.noecho()
 stdscr.keypad(True)
 import random
 import sys
@@ -104,12 +103,63 @@ if __name__ == "__main__":
     if toBeRoom == rooms.Room.roomCount[1]:
       currentRoom = rooms.room2
       return currentRoom
+    if toBeRoom == rooms.Room.roomCount[2]:
+      currentRoom = rooms.room3
+      return currentRoom
+    if toBeRoom == rooms.Room.roomCount[3]:
+      currentRoom = rooms.room4
+      return currentRoom
+    if toBeRoom == rooms.Room.roomCount[4]:
+      currentRoom = rooms.room5
+      return currentRoom
+    if toBeRoom == rooms.Room.roomCount[5]:
+      currentRoom = rooms.room6
+      return currentRoom
+    if toBeRoom == rooms.Room.roomCount[6]:
+      currentRoom = rooms.room7
+      return currentRoom
+    if toBeRoom == rooms.Room.roomCount[7]:
+      currentRoom = rooms.room8
+      return currentRoom
+    if toBeRoom == rooms.Room.roomCount[8]:
+      currentRoom = rooms.room9
+      return currentRoom
+    if toBeRoom == rooms.Room.roomCount[9]:
+      currentRoom = rooms.room10
+      return currentRoom
+    if toBeRoom == rooms.Room.roomCount[10]:
+      currentRoom = rooms.room11
+      return currentRoom
+    if toBeRoom == rooms.Room.roomCount[11]:
+      currentRoom = rooms.room12
+      return currentRoom
+    if toBeRoom == rooms.Room.roomCount[12]:
+      currentRoom = rooms.room13
+      return currentRoom
+    if toBeRoom == rooms.Room.roomCount[13]:
+      currentRoom = rooms.room14
+      return currentRoom
+    if toBeRoom == rooms.Room.roomCount[14]:
+      currentRoom = rooms.room15
+      return currentRoom
+    if toBeRoom == rooms.Room.roomCount[15]:
+      currentRoom = rooms.room16
+      return currentRoom
+    if toBeRoom == rooms.Room.roomCount[16]:
+      currentRoom = rooms.room17
+      return currentRoom
   
-  def saveInfo(player, currentRoom, saves, saveFile):
+  def saveInfo(player, playercoords, currentRoom, saves, saveFile):
     try:
-      saves[saveFile]["currentRoomName"] = currentRoom.name
+      saves[saveFile]["Coords"] = {}
+      saves[saveFile]["Coords"]["ypos"] = playercoords[1]
+      saves[saveFile]["Coords"]["xpos"] = playercoords[0]
     except AttributeError as err:
       worry = 1
+    try:
+      saves[saveFile]["currentRoomName"] = currentRoom.roomName
+    except AttributeError as err:
+      stdscr.addstr("no room name")
     try:
       if player.isSorcerer == 1:
         saves[saveFile]["Sorcerer"] = True
@@ -465,26 +515,26 @@ if __name__ == "__main__":
 
   stdscr.clear()
   #player start position
-  """
-  if loadedFile != 1:
-    playercoords = [1,1]
-    """
-  playercoords = [1,1]
-  tobeplayercoords = copy(playercoords)
 
-  currentRoom = rooms.startRoom
+  if loadedFile == 1:
+    x = checkName(saves, currentSaveFile)
+    currentRoom = setCurrentRoom(x)
+    playercoords = [saves[currentSaveFile]["Coords"]["xpos"],saves[currentSaveFile]["Coords"]["ypos"]]
+  else:
+    playercoords = [1,1]
+    currentRoom = rooms.startRoom
+  tobeplayercoords = copy(playercoords)
 
   #Main Game Loop
   firstClear = 1
   interactables = 4
   while gameRunning == True or battling == True:
     while gameRunning:
-      saveInfo(player, currentRoom, saves, currentSaveFile)
+      saveInfo(player, playercoords, currentRoom, saves, currentSaveFile)
       rooms.Room.roomSaveAll(saves, currentSaveFile)
       roomInfoException = "There is no room info"
       rooms.conditionCheckAll(player)
       currentRoom.printRoom(playercoords)
-      stdscr.addstr(str(saves[currentSaveFile]["roomInfo"].get(0+1)))
       nextLine()
       currentRoom.displayRoomInfo()
       for i in range (len(mapInfo)):
