@@ -591,6 +591,7 @@ room5.setRoomInfo("Who","WHO!")
 room6.setRoomInfo("When","When!?!")
 room7.setRoomInfo("Zach","Roach")
 room8.setRoomInfo("spa", "ghet")
+room9.setRoomInfo("Moving into this room, you feel the presence of a large creature.","It's the place you defeated the first boss, Turkey Panini. Returning, you feel as though there are others like him waiting for you deeper in the maze.")
 #Door declarations:
 startRoom.setDoorEast(room2)
 room2.setDoorEast(room3)

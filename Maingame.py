@@ -40,7 +40,7 @@ def nextLine():
   ypos = pos[0]
   xpos= pos[1]
   stdscr.move(ypos+1,0)
-#uses old 1970"s programming crap to not buffer inputs from keyboard
+#uses old 1970's programming crap to not buffer inputs from keyboard
 def getchar():
   if sys.platform == "win32":
     return msvcrt.getch().decode("utf-8")

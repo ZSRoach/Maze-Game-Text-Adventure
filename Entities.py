@@ -92,6 +92,9 @@ class Player(Entity):
 #definition of sorcerer - player subclass - (inherits from entity, and player) - user class type
 class Sorcerer(Player):
   isSorcerer = 1
+  isWarrior = 0
+  isRogue = 0
+  isNecromancer = 0
   mana = 20
   spells = 0
   manaRegen = 5
@@ -99,17 +102,26 @@ class Sorcerer(Player):
 
 #definition of warrior - player subclass - (inherits from entity, and player) - user class type
 class Warrior(Player):
+  isSorcerer = 0
   isWarrior = 1
+  isRogue = 0
+  isNecromancer = 0
   twoHanded = False
 
 #definition of rogue - player subclass - (inherits from entity, and player) - user class type
 class Rogue(Player):
+  isSorcerer = 0
+  isWarrior = 0
   isRogue = 1
+  isNecromancer = 0
   evadeChance = 3 #evasion calculation: random number 1 - 100; if random number  >= 100-evadechance, take no dmg
   stealth = 1
     
 #definition of necromancer - player subclass - (inherits from entity, and player) - user class type
 class Necromancer(Player):
+  isSorcerer = 0
+  isWarrior = 0
+  isRogue = 0
   isNecromancer = 1
   maxMinions = 0
   currentMinions = 0
@@ -203,10 +215,10 @@ class Boss(Entity):
     self.defense = defense
     self.speed = speed
     self.name = name
-#name1 = "Turkey Panini"
-#name2 = "Parmesan Tortellini"
-#name3 = "Spinach Fettuccine"
-#final = "Spicy Pasta Linguine"
+  #name1 = "Turkey Panini"
+  #name2 = "Parmesan Tortellini"
+  #name3 = "Spinach Fettuccine"
+  #final = "Spicy Pasta Linguine"
   hostile = False
   name = "Goblini"
 #Definition of skeleton - ranged enemy - (Inherits from entitiy) - Enemy class type
