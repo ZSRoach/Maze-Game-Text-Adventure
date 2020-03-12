@@ -11,8 +11,10 @@ except:
 
 class Room:
   roomCount = []
+  roomNames = []
   def __init__(self, roomName, layout, chestRoom, tRE, bossRoom, restRoom):
     self.layout = layout
+    self.spawnedEnemies = False
     self.south = None
     self.north = None
     self.east = None
@@ -34,6 +36,7 @@ class Room:
     self.chestLocation = None
     self.setChestLocation()
     Room.roomCount.append(roomName)
+    Room.roomNames.append(self)
 
   def roomInfoSave(self, saves, currentSaveFile):
     try:
@@ -50,25 +53,13 @@ class Room:
       saves[currentSaveFile]["roomInfo"][self.roomName]["chestLooted"] = self.chestLooted
     except AttributeError as err:
       worry = 1
-
+    try:
+      saves[currentSaveFile]["roomInfo"][self.roomName]["spawnedEnemies"] = self.spawnedEnemies
+    except AttributeError as err:
+      worry = 1
   def roomSaveAll(saves, currentSaveFile):
-    startRoom.roomInfoSave(saves, currentSaveFile)
-    room2.roomInfoSave(saves, currentSaveFile)
-    room3.roomInfoSave(saves, currentSaveFile)
-    room4.roomInfoSave(saves, currentSaveFile)
-    room5.roomInfoSave(saves, currentSaveFile)
-    room6.roomInfoSave(saves, currentSaveFile)
-    room7.roomInfoSave(saves, currentSaveFile)
-    room8.roomInfoSave(saves, currentSaveFile)
-    room9.roomInfoSave(saves, currentSaveFile)
-    room10.roomInfoSave(saves, currentSaveFile)
-    room11.roomInfoSave(saves, currentSaveFile)
-    room12.roomInfoSave(saves, currentSaveFile)
-    room13.roomInfoSave(saves, currentSaveFile)
-    room14.roomInfoSave(saves, currentSaveFile)
-    room15.roomInfoSave(saves, currentSaveFile)
-    room16.roomInfoSave(saves, currentSaveFile)
-    room17.roomInfoSave(saves, currentSaveFile)
+    for roomNum, roomNameth in enumerate(Room.roomNames):
+      roomNameth.roomInfoSave(saves, currentSaveFile)
 
   def roomInfoLoad(self, saves, currentSaveFile):
     self.hasBeenVisited = saves[currentSaveFile]["roomInfo"][self.roomName]["hasBeenVisited"]
@@ -76,23 +67,8 @@ class Room:
     self.chestLooted = saves[currentSaveFile]["roomInfo"][self.roomName]["chestLooted"]
 
   def roomLoadAll(saves, currentSaveFile):
-    startRoom.roomInfoLoad(saves, currentSaveFile)
-    room2.roomInfoLoad(saves, currentSaveFile)
-    room3.roomInfoLoad(saves, currentSaveFile)
-    room4.roomInfoLoad(saves, currentSaveFile)
-    room5.roomInfoLoad(saves, currentSaveFile)
-    room6.roomInfoLoad(saves, currentSaveFile)
-    room7.roomInfoLoad(saves, currentSaveFile)
-    room8.roomInfoLoad(saves, currentSaveFile)
-    room9.roomInfoLoad(saves, currentSaveFile)
-    room10.roomInfoLoad(saves, currentSaveFile)
-    room11.roomInfoLoad(saves, currentSaveFile)
-    room12.roomInfoLoad(saves, currentSaveFile)
-    room13.roomInfoLoad(saves, currentSaveFile)
-    room14.roomInfoLoad(saves, currentSaveFile)
-    room15.roomInfoLoad(saves, currentSaveFile)
-    room16.roomInfoLoad(saves, currentSaveFile)
-    room17.roomInfoLoad(saves, currentSaveFile)
+    for roomNum, roomNameth in enumerate(Room.roomNames):
+      roomNameth.roomInfoLoad(saves, currentSaveFile)
 
   def setChestLocation(self):
     for lineno, line in enumerate(self.layout):
@@ -381,6 +357,8 @@ class Room:
     from Maingame import nextLine
     nextLine()
     stdscr.addstr ("this is temporary holder", curses.color_pair(1))
+    for roomNum, roomName in enumerate(Room.roomNames):
+      roomName.spawnedEnemies = False
 
 #═══════════ ║║║║║║║║║║║║║║║║║║║║
 #All rooms go here:
@@ -592,6 +570,12 @@ room6.setRoomInfo("When","When!?!")
 room7.setRoomInfo("Zach","Roach")
 room8.setRoomInfo("spa", "ghet")
 room9.setRoomInfo("Moving into this room, you feel the presence of a large creature.","It's the place you defeated the first boss, Turkey Panini. Returning, you feel as though there are others like him waiting for you deeper in the maze.")
+room10.setRoomInfo("You notice the enemies getting stronger as you venture through the maze.","Returning, you wonder if the enemies are guiding you to the exit.")
+room11.setRoomInfo("You feel a pull towards the northwest. It's as if something is waiting for you there.","Am I lost? I should've taken the shortcut.")
+room12.setRoomInfo("You feel the pull to the North getting stronger. Something is in that next room.","Why have you returned to this room?")
+room13.setRoomInfo("As you run into more enemies, you feel your power over the maze growing.","You now realize that there is still much to learn about your predicament")
+room14.setRoomInfo("You feel something is pulling you to the South. It feels valuable to have.","Returning here, you ask yourself why you didn't take the shortcut to the South of the chest room.")
+
 #Door declarations:
 startRoom.setDoorEast(room2)
 room2.setDoorEast(room3)

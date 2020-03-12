@@ -18,21 +18,21 @@ def enemyMove(enemy, player):
   elif enemy.isSkeleton == 1:
     move = random.randint(1,2)
     if move == 1:
-      basicAttack(enemy, player)
+      Entity.basicAttack(enemy, player)
     else:
-      rangedAttack(enemy, player)
+      Entity.rangedAttack(enemy, player)
   elif enemy.isZombie == 1:
     move = random.randint(1,2)
     if move == 1:
-      basicAttack(enemy, player)
+      Entity.basicAttack(enemy, player)
     else:
-      bite(enemy, player)
+      Entity.bite(enemy, player)
   else:
     move = random.randint(1,2)
     if move == 1:
-      basicAttack(enemy, player)
+      Entity.basicAttack(enemy, player)
     else:
-      strength(enemy, player)
+      Entity.strength(enemy, player)
 def battle(player, enemy):
   while player.health > 0 and enemy.health > 0:
     if player.speed > enemy.speed:

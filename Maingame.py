@@ -1,3 +1,8 @@
+"""we should work together on coming up with the way to do the Entities.py file because you have a lot of
+things written that won't work with a specific enemy, only with a general class
+we also should set playercoords as a player attribute, not a variable because it makes it easier for attacking functions
+"""
+
 import curses
 stdscr = curses.initscr()
 stdscr.clear()
@@ -39,7 +44,11 @@ def nextLine():
   pos = stdscr.getyx()
   ypos = pos[0]
   xpos= pos[1]
-  stdscr.move(ypos+1,0)
+  try:
+    stdscr.move(ypos+1,0)
+  except curses.error as err:
+    stdscr.move(ypos-1,0)
+    stdscr.deleteln()
 #uses old 1970's programming crap to not buffer inputs from keyboard
 def getchar():
   if sys.platform == "win32":
@@ -97,57 +106,9 @@ if __name__ == "__main__":
         return toBeCurrentRoom
       
   def setCurrentRoom(toBeRoom):
-    if toBeRoom == rooms.Room.roomCount[0]:
-      currentRoom = rooms.startRoom
-      return currentRoom
-    if toBeRoom == rooms.Room.roomCount[1]:
-      currentRoom = rooms.room2
-      return currentRoom
-    if toBeRoom == rooms.Room.roomCount[2]:
-      currentRoom = rooms.room3
-      return currentRoom
-    if toBeRoom == rooms.Room.roomCount[3]:
-      currentRoom = rooms.room4
-      return currentRoom
-    if toBeRoom == rooms.Room.roomCount[4]:
-      currentRoom = rooms.room5
-      return currentRoom
-    if toBeRoom == rooms.Room.roomCount[5]:
-      currentRoom = rooms.room6
-      return currentRoom
-    if toBeRoom == rooms.Room.roomCount[6]:
-      currentRoom = rooms.room7
-      return currentRoom
-    if toBeRoom == rooms.Room.roomCount[7]:
-      currentRoom = rooms.room8
-      return currentRoom
-    if toBeRoom == rooms.Room.roomCount[8]:
-      currentRoom = rooms.room9
-      return currentRoom
-    if toBeRoom == rooms.Room.roomCount[9]:
-      currentRoom = rooms.room10
-      return currentRoom
-    if toBeRoom == rooms.Room.roomCount[10]:
-      currentRoom = rooms.room11
-      return currentRoom
-    if toBeRoom == rooms.Room.roomCount[11]:
-      currentRoom = rooms.room12
-      return currentRoom
-    if toBeRoom == rooms.Room.roomCount[12]:
-      currentRoom = rooms.room13
-      return currentRoom
-    if toBeRoom == rooms.Room.roomCount[13]:
-      currentRoom = rooms.room14
-      return currentRoom
-    if toBeRoom == rooms.Room.roomCount[14]:
-      currentRoom = rooms.room15
-      return currentRoom
-    if toBeRoom == rooms.Room.roomCount[15]:
-      currentRoom = rooms.room16
-      return currentRoom
-    if toBeRoom == rooms.Room.roomCount[16]:
-      currentRoom = rooms.room17
-      return currentRoom
+    for roomNum, roomNameth in enumerate(rooms.Room.roomNames):
+      if toBeRoom == roomNameth.roomName:
+        return roomNameth
   
   def saveInfo(player, playercoords, currentRoom, saves, saveFile):
     try:
@@ -528,9 +489,11 @@ if __name__ == "__main__":
   #Main Game Loop
   firstClear = 1
   interactables = 4
+  currentRoom.spawnedEnemies = True
   while gameRunning == True or battling == True:
     while gameRunning:
       saveInfo(player, playercoords, currentRoom, saves, currentSaveFile)
+      stdscr.addstr(str(currentRoom.spawnedEnemies), curses.color_pair(1))
       rooms.Room.roomSaveAll(saves, currentSaveFile)
       roomInfoException = "There is no room info"
       rooms.conditionCheckAll(player)

@@ -19,9 +19,9 @@ class Entity():
       dmg *= .75
     dmg = int(dmg)
     target.health -= dmg
-  def hunt(player, enemy):
+  def hunt(player, enemy, playercoords):
     playerSpot = playercoords
-    enemySpot = enemy.enemycoords
+    enemySpot = enemy.coords
     if abs(playerSpot[0] - enemySpot[0]) < 3:
       if enemy.isGoblin == 1:
        battle(Player, Goblin)
@@ -57,7 +57,8 @@ class Player(Entity):
   isBlocking = False
   def levelUp(leveler):
     from Maingame import stdscr
-    stdscr.addstr ("You leveled up to level "+str((leveler.level)+1)+"!!")
+    from Maingame import curses
+    stdscr.addstr ("You leveled up to level "+str((leveler.level)+1)+"!!", curses.color_pair(1))
     leveler.level += 1
   def fool(self, fooled):
     from Maingame import stdscr
@@ -77,13 +78,15 @@ class Player(Entity):
       else:
         damage = player.attack - (enemy.defense / 2)
         enemy.health -= damage
+
+      #add alternate path in event of 0 damage or negative
       stdscr.addstr("You attacked the "+enemy.name+" for "+str(damage)+" damage!")
   def block(player):
     from Maingame import stdscr
     from Maingame import getchar
     from Maingame import curses
-    stdscr.addstr("Do you want to block? You'll take 3/4 damage but can't attack",curses.color_pair(1))
-    stdscr.addstr("1 if you want to block")
+    stdscr.addstr("Do you want to block? You'll take 1/4 damage but can't attack",curses.color_pair(1))
+    stdscr.addstr("1 to block, anything else to not")
     block = getchar()
     if block == 1:
       player.isBlocking = True
@@ -134,8 +137,10 @@ class Minion(Entity):
 
 #definition of goblin - main throwaway generic enemy - (inherits from entity) - enemy class type
 class Goblin(Entity):
-  def __init__(self, level):
-    self.level = random.randint(level - 1, level + 1)
+  def __init__(self, playerLevel, coords):
+    self.level = random.randint(playerLevel - 1, playerLevel + 1)
+    self.coords = coords
+    self.toBeCoords = coords
   isGoblin = 1
   enemycoords = [1,1]
   hostile = False
@@ -146,10 +151,12 @@ class Goblin(Entity):
   speed = 5
 #Definition of skeleton - ranged enemy - (Inherits from entitiy) - Enemy class type
 class Skeleton(Entity):
-  def __init__(self, level):
-    self.level = random.randint(level - 1, level + 1)
+  def __init__(self, playerLevel, coords):
+    self.level = random.randint(playerLevel - 1, playerLevel + 1)
+    self.coords = coords
+    self.toBeCoords = coords
+
   isSkeleton = 1
-  enemycoords = [1,1]
   hostile = False
   name = "Skeletini"
   health = 75
@@ -169,10 +176,11 @@ class Skeleton(Entity):
     player.health -= dmg
 #Def of zombie - Stronger version of Goblin - (Inherits from entity) - Enemy class type
 class Zombie(Entity):
-  def __init__(self, level):
-    self.level = random.randint(level - 1, level + 1)
+  def __init__(self, playerLevel, coords):
+    self.level = random.randint(playerLevel - 1, playerLevel + 1)
+    self.coords = coords
+    self.toBeCoords = coords
   isZombie = 1
-  enemycoords = [1,1]
   hostile = False
   name = "Zombini"
   health = 115
@@ -186,10 +194,11 @@ class Zombie(Entity):
       player.health -= (1/5) * player.health
 #Def of Golem - Stronger version of Zombie - (Inherits from Entity) - enemy class type
 class Golem(Entity):
-  def __init__(self, level):
-    self.level = random.randint(level - 1, level + 1)
+  def __init__(self, playerLevel, coords):
+    self.level = random.randint(playerLevel - 1, playerLevel + 1)
+    self.coords = coords
+    self.toBeCoords = coords
   isGolem = 1
-  enemycoords = [1,1]
   hostile = False
   name = "Golini"
   health = 250
@@ -209,27 +218,16 @@ class Golem(Entity):
       dmg *= strengthMultiplier
     player.health -= dmg
 class Boss(Entity):
-  def __init__(self, health, attack, defense, speed, name):
+  def __init__(self, coords, health, attack, defense, speed, name):
     self.health = health
     self.attack = attack
     self.defense = defense
     self.speed = speed
     self.name = name
+    self.coords = coords
+    self.toBeCoords = coords
+    hostile = False
   #name1 = "Turkey Panini"
   #name2 = "Parmesan Tortellini"
   #name3 = "Spinach Fettuccine"
   #final = "Spicy Pasta Linguine"
-  hostile = False
-  name = "Goblini"
-#Definition of skeleton - ranged enemy - (Inherits from entitiy) - Enemy class type
-class Skeleton(Entity):
-  hostile = False
-  name = "Skeletini"
-#Def of zombie - Stronger version of Goblin - (Inherits from entity) - Enemy class type
-class Zombie(Entity):
-  hostile = False
-  name = "Zomboni"
-#Def of Ogre - Stronger version of Zombie - (Inherits from Entity) - enemy class type
-class Ogre(Entity):
-  hostile = False
-  name = "Shrek"
