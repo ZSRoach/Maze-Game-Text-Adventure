@@ -493,11 +493,10 @@ if __name__ == "__main__":
   while gameRunning == True or battling == True:
     while gameRunning:
       saveInfo(player, playercoords, currentRoom, saves, currentSaveFile)
-      stdscr.addstr(str(currentRoom.spawnedEnemies), curses.color_pair(1))
       rooms.Room.roomSaveAll(saves, currentSaveFile)
       roomInfoException = "There is no room info"
       rooms.conditionCheckAll(player)
-      currentRoom.printRoom(playercoords)
+      currentRoom.printRoom(playercoords, [3,2], [4,1])
       nextLine()
       currentRoom.displayRoomInfo()
       for i in range (len(mapInfo)):

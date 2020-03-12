@@ -188,9 +188,9 @@ class Room:
             for xval, char in enumerate(line):
               if coordsList[i][0] == xval:
                 playerline_parts.append("Ö")
+                stdscr.addstr(coordsList[i][0])
               else:
                 playerline_parts.append(char)
-            playerline = "".join(playerline_parts)
           else:
             playerline_partscopy = copy(playerline_parts)
             for xval, char in enumerate (playerline_parts):
@@ -200,7 +200,31 @@ class Room:
                 playerline_partscopy.append(char)
             playerline_parts = copy(playerline_partscopy)
         playerline = "".join(playerline_parts)
+        nextLine()
+        stdscr.addstr(playerline, curses.color_pair(1))
     else:
+      for lineno, line in enumerate(self.layout):
+        playerline = line
+        playerline_parts = []
+        for i in range (len(coordsList)):
+          if coordsList[i][1] == lineno:
+            if i == 0:
+              for xval, char in enumerate(line):
+                if coordsList[i][0] == xval:
+                  playerline_parts.append("Ö")
+                else:
+                  playerline_parts.append(char)
+            else:
+              playerline_partscopy = copy(playerline_parts)
+              for xval, char in enumerate (playerline_partscopy):
+                if coordsList[i][0] == xval:
+                  playerline_partscopy.append("δ")
+                else:
+                  playerline_partscopy.append(char)
+              playerline_parts = copy(playerline_partscopy)
+        playerline = "".join(playerline_parts) 
+        nextLine()
+        stdscr.addstr(playerline, curses.color_pair(1))
     """
     if self.locked == True:
       for lineno, line in enumerate(self.lockedLayout):
