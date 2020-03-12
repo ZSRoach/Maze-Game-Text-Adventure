@@ -12,3 +12,12 @@ white = boss room
 ------------
 https://pypi.org/project/termcolor/
 https://www.alt-codes.net/ ∞§§Θ ☼ΦΩ
+ebic
+i failed at making a sword
+The perfect human
+ Ö    
+/|\    
+ |   
+/ \   
+
+So we'll have 9 sprites total (4 Enemies, 4 bosses, player)

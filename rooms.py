@@ -37,6 +37,7 @@ class Room:
     self.setChestLocation()
     Room.roomCount.append(roomName)
     Room.roomNames.append(self)
+    self.getRoomBoundary()
 
   def roomInfoSave(self, saves, currentSaveFile):
     try:
@@ -76,6 +77,10 @@ class Room:
         space = line[i]
         if space == "■":
           self.chestLocation = [i,lineno]
+
+  def getRoomBoundary(self):
+    self.width = len(self.layout[0])
+    self.height = len(self.layout)
 
   def hasLockedDoor(self, lockedLayout, condition, player):
     self.lockedLayout = lockedLayout
@@ -160,10 +165,43 @@ class Room:
                   if space == "]":
                       self.eastEntrance = [i-1,lineno]
 
-  def printRoom(self, playercoords):
+  def printRoom(self, playercoords, enemy1coords = None, enemy2coords = None, enemy3coords = None, enemy4coords = None):
     from Maingame import stdscr
     from Maingame import curses
     from Maingame import nextLine
+    coordsList = []
+    coordsList.append(playercoords)
+    if enemy1coords != None:
+      coordsList.append(enemy1coords)
+    if enemy2coords != None:
+      coordsList.append(enemy2coords)
+    if enemy3coords != None:
+      coordsList.append(enemy3coords)
+    if enemy4coords != None:
+      coordsList.append(enemy4coords)
+    if self.locked == True:
+      for lineno, line in enumerate(self.lockedLayout):
+        playerline = line
+        for i in range (len(coordsList)):
+          playerline_parts = []
+          if i == 0:
+            for xval, char in enumerate(line):
+              if coordsList[i][0] == xval:
+                playerline_parts.append("Ö")
+              else:
+                playerline_parts.append(char)
+            playerline = "".join(playerline_parts)
+          else:
+            playerline_partscopy = copy(playerline_parts)
+            for xval, char in enumerate (playerline_parts):
+              if coordsList[i][0] == xval:
+                playerline_partscopy.append("δ")
+              else:
+                playerline_partscopy.append(char)
+            playerline_parts = copy(playerline_partscopy)
+        playerline = "".join(playerline_parts)
+    else:
+    """
     if self.locked == True:
       for lineno, line in enumerate(self.lockedLayout):
           playerline = line
@@ -190,6 +228,7 @@ class Room:
               playerline = "".join(playerline_parts)
           nextLine()
           stdscr.addstr(playerline, curses.color_pair(1))
+  """
 
   def roomSwitch(self, playercoords, tobeplayercoords, currentRoom):
     if self.locked == True:
