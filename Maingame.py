@@ -219,8 +219,6 @@ if __name__ == "__main__":
   titleScreen = True
   newScreen = False
   loadScreen = False
-  gameRunning = True
-  battling = False
   cursorPos = 1
   #erases screen before running
   stdscr.refresh()
@@ -319,6 +317,7 @@ if __name__ == "__main__":
             stdscr.addstr("You have selected file 1", curses.color_pair(1))
             player = charactermaking.classChoice()
             newScreen = False
+            break
           else:
             nextLine()
             stdscr.addstr("That file already has a save in it", curses.color_pair(1))
@@ -331,6 +330,7 @@ if __name__ == "__main__":
             stdscr.addstr("You have selected file 2", curses.color_pair(1))
             player = charactermaking.classChoice()
             newScreen = False
+            break
           else:
             nextLine()
             stdscr.addstr("That file already has a save in it", curses.color_pair(1))
@@ -343,6 +343,7 @@ if __name__ == "__main__":
             stdscr.addstr("You have selected file 3", curses.color_pair(1))
             player = charactermaking.classChoice()
             newScreen = False
+            break
           else:
             nextLine()
             stdscr.addstr("That file already has a save in it", curses.color_pair(1))
@@ -351,6 +352,7 @@ if __name__ == "__main__":
           titleScreen = True
           newScreen = False
           loadScreen = False
+          break
 
       elif newMovement == "\x1b":
         gameRunning = False
@@ -489,14 +491,17 @@ if __name__ == "__main__":
   #Main Game Loop
   firstClear = 1
   interactables = 4
-  currentRoom.spawnedEnemies = True
-  while gameRunning == True or battling == True:
+  gameRunning = True
+  battling = False
+  
+  stdscr.clear()
+  while gameRunning or battling:
     while gameRunning:
       saveInfo(player, playercoords, currentRoom, saves, currentSaveFile)
       rooms.Room.roomSaveAll(saves, currentSaveFile)
       roomInfoException = "There is no room info"
-      rooms.conditionCheckAll(player)
-      currentRoom.printRoom(playercoords, [3,2], [4,1])
+      rooms.conditionCheckAll(player, currentRoom)
+      currentRoom.printRoom(playercoords)
       nextLine()
       currentRoom.displayRoomInfo()
       for i in range (len(mapInfo)):

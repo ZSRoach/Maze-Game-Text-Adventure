@@ -34,6 +34,7 @@ class Room:
     self.lockCondition = None
     self.chestLooted = False
     self.chestLocation = None
+    self.hasBeenLeft = False
     self.setChestLocation()
     Room.roomCount.append(roomName)
     Room.roomNames.append(self)
@@ -58,6 +59,11 @@ class Room:
       saves[currentSaveFile]["roomInfo"][self.roomName]["spawnedEnemies"] = self.spawnedEnemies
     except AttributeError as err:
       worry = 1
+    try:
+      saves[currentSaveFile]["roomInfo"][self.roomName]["hasBeenLeft"] = self.hasBeenLeft
+    except AttributeError as err:
+      worry = 1
+
   def roomSaveAll(saves, currentSaveFile):
     for roomNum, roomNameth in enumerate(Room.roomNames):
       roomNameth.roomInfoSave(saves, currentSaveFile)
@@ -66,6 +72,7 @@ class Room:
     self.hasBeenVisited = saves[currentSaveFile]["roomInfo"][self.roomName]["hasBeenVisited"]
     self.locked = saves[currentSaveFile]["roomInfo"][self.roomName]["locked"]
     self.chestLooted = saves[currentSaveFile]["roomInfo"][self.roomName]["chestLooted"]
+    self.hasBeenLeft = saves[currentSaveFile]["roomInfo"][self.roomName]["hasBeenLeft"]
 
   def roomLoadAll(saves, currentSaveFile):
     for roomNum, roomNameth in enumerate(Room.roomNames):
@@ -82,12 +89,14 @@ class Room:
     self.width = len(self.layout[0])
     self.height = len(self.layout)
 
-  def hasLockedDoor(self, lockedLayout, condition, player):
+  def hasLockedDoor(self, lockedLayout, condition, player, currentRoom):
     self.lockedLayout = lockedLayout
     self.lockCondition = condition
     if self.lockCondition == True and player.isInteracting == True:
       self.locked = False
-    elif self.lockCondition == True and self.locked != True:
+    elif self.lockCondition and currentRoom.roomName != self.roomName:
+      self.locked = False
+    elif self.lockCondition and self.locked != True:
       self.locked = False
     else:
       self.locked = True
@@ -95,6 +104,10 @@ class Room:
   def lockConditionCheck(self, player):
       if self.lockCondition == True:
         self.locked = False
+
+  def beenLeftCheck(self, currentRoom):
+    if self.hasBeenVisited and currentRoom.roomName != self.roomName:
+      self.hasBeenLeft = True
 
   def setRoomInfo(self, firstTime, secondTime):
     self.roomInfoFirst = firstTime
@@ -105,7 +118,7 @@ class Room:
     from Maingame import curses
     from Maingame import nextLine
     from Maingame import mapInfo
-    if self.hasBeenVisited == True:
+    if self.hasBeenLeft:
       nextLine()
       stdscr.addstr("Room Info:", curses.color_pair(1))
       try:
@@ -114,6 +127,8 @@ class Room:
       except AttributeError as err:
         nextLine()
         stdscr.addstr("There is no room info", curses.color_pair(1))
+    elif self.hasBeenVisited:
+      nextLine()
     else:
       nextLine()
       stdscr.addstr("Room Info:", curses.color_pair(1))
@@ -179,81 +194,55 @@ class Room:
       coordsList.append(enemy3coords)
     if enemy4coords != None:
       coordsList.append(enemy4coords)
-    if self.locked == True:
+    if self.locked:
       for lineno, line in enumerate(self.lockedLayout):
-        playerline = line
-        for i in range (len(coordsList)):
-          playerline_parts = []
-          if i == 0:
-            for xval, char in enumerate(line):
-              if coordsList[i][0] == xval:
-                playerline_parts.append("Ö")
-                stdscr.addstr(coordsList[i][0])
-              else:
-                playerline_parts.append(char)
-          else:
-            playerline_partscopy = copy(playerline_parts)
-            for xval, char in enumerate (playerline_parts):
-              if coordsList[i][0] == xval:
-                playerline_partscopy.append("δ")
-              else:
-                playerline_partscopy.append(char)
-            playerline_parts = copy(playerline_partscopy)
-        playerline = "".join(playerline_parts)
+        #get the room, written out in lines
+        lineParts = []
+        #checks character by character to append to line_parts
+        for xval, char in enumerate(line):
+          characterPrinted = False
+          #Gets the line written out in characters
+          #checking to see if there is an entity on any character in the line
+          for i in range(len(coordsList)):
+            if lineno == coordsList[i][1] and xval == coordsList[i][0] and i == 0:
+              #checks to see if player coords
+              lineParts.append("Ö")
+              characterPrinted = True
+            elif lineno == coordsList[i][1] and xval == coordsList[i][0] and i != 0:
+              #checks to see if enemy coords
+              lineParts.append("δ")
+              characterPrinted = True
+          if not characterPrinted:
+            lineParts.append(char)
+        printingLine = "".join(lineParts)
         nextLine()
-        stdscr.addstr(playerline, curses.color_pair(1))
+        stdscr.addstr(printingLine,curses.color_pair(1))
     else:
       for lineno, line in enumerate(self.layout):
-        playerline = line
-        playerline_parts = []
-        for i in range (len(coordsList)):
-          if coordsList[i][1] == lineno:
-            if i == 0:
-              for xval, char in enumerate(line):
-                if coordsList[i][0] == xval:
-                  playerline_parts.append("Ö")
-                else:
-                  playerline_parts.append(char)
-            else:
-              playerline_partscopy = copy(playerline_parts)
-              for xval, char in enumerate (playerline_partscopy):
-                if coordsList[i][0] == xval:
-                  playerline_partscopy.append("δ")
-                else:
-                  playerline_partscopy.append(char)
-              playerline_parts = copy(playerline_partscopy)
-        playerline = "".join(playerline_parts) 
+        #get the room, written out in lines
+        lineParts = []
+        #checks character by character to append to line_parts
+        for xval, char in enumerate(line):
+          characterPrinted = False
+          #Gets the line written out in characters
+          #checking to see if there is an entity on any character in the line
+          for i in range(len(coordsList)):
+            if lineno == coordsList[i][1] and xval == coordsList[i][0] and i == 0:
+              #checks to see if player coords
+              lineParts.append("Ö")
+              characterPrinted = True
+            elif lineno == coordsList[i][1] and xval == coordsList[i][0] and i != 0:
+              #checks to see if enemy coords
+              lineParts.append("δ")
+              characterPrinted = True
+          if not characterPrinted:
+            lineParts.append(char)
+        printingLine = "".join(lineParts)
         nextLine()
-        stdscr.addstr(playerline, curses.color_pair(1))
-    """
-    if self.locked == True:
-      for lineno, line in enumerate(self.lockedLayout):
-          playerline = line
-          if playercoords[1] == lineno:
-              playerline_parts = []
-              for xval, char in enumerate(line):
-                  if playercoords[0] == xval:
-                      playerline_parts.append("Ö")
-                  else:
-                      playerline_parts.append(char)
-              playerline = "".join(playerline_parts)
-          nextLine()
-          stdscr.addstr(playerline, curses.color_pair(1))
-    else:
-      for lineno, line in enumerate(self.layout):
-          playerline = line
-          if playercoords[1] == lineno:
-              playerline_parts = []
-              for xval, char in enumerate(line):
-                  if playercoords[0] == xval:
-                      playerline_parts.append("Ö")
-                  else:
-                      playerline_parts.append(char)
-              playerline = "".join(playerline_parts)
-          nextLine()
-          stdscr.addstr(playerline, curses.color_pair(1))
-  """
+        stdscr.addstr(printingLine,curses.color_pair(1))
 
+
+  
   def roomSwitch(self, playercoords, tobeplayercoords, currentRoom):
     if self.locked == True:
       line_player_is_on = self.lockedLayout[tobeplayercoords[1]]
@@ -583,7 +572,27 @@ room17 = Room("room17",[
 
 # ════════════════════════        ║║║║║║║║║║║║║║║║║║║║
 #doors with locks:
-def conditionCheckAll(player):
+def conditionCheckAll(player, currentRoom):
+
+  startRoom.beenLeftCheck(currentRoom)
+  room2.beenLeftCheck(currentRoom)
+  room3.beenLeftCheck(currentRoom)
+  room4.beenLeftCheck(currentRoom)
+  room5.beenLeftCheck(currentRoom)
+  room6.beenLeftCheck(currentRoom)
+  room7.beenLeftCheck(currentRoom)
+  room8.beenLeftCheck(currentRoom)
+  room9.beenLeftCheck(currentRoom)
+  room10.beenLeftCheck(currentRoom)
+  room11.beenLeftCheck(currentRoom)
+  room12.beenLeftCheck(currentRoom)
+  room13.beenLeftCheck(currentRoom)
+  room14.beenLeftCheck(currentRoom)
+  room15.beenLeftCheck(currentRoom)
+  room16.beenLeftCheck(currentRoom)
+  room17.beenLeftCheck(currentRoom)
+
+
 
   room3.hasLockedDoor([
     "|---------------~-|",
@@ -592,7 +601,7 @@ def conditionCheckAll(player):
     "|      |--|       |",
     "|      |          |",
     "|--------═--------|",
-  ], room7.chestLooted, player)
+  ], room7.chestLooted, player, currentRoom)
 
   room7.hasLockedDoor([
     "|-------------~---|",
@@ -602,7 +611,7 @@ def conditionCheckAll(player):
     "|                 |",
     "[                 ]",
     "|-----------------|",
-  ], room7.chestLooted, player)
+  ], room7.chestLooted, player,currentRoom)
 
   room2.hasLockedDoor([
     "|--------------|",
@@ -610,7 +619,7 @@ def conditionCheckAll(player):
     "|          |   |",
     "[  |           |",
     "|-------═------|",
-  ], room6.chestLooted, player)
+  ], room6.chestLooted, player,currentRoom)
 
   room6.hasLockedDoor([
     "|--------═--------|",
@@ -619,20 +628,20 @@ def conditionCheckAll(player):
     "|    |   |■|----| |",
     "|        |        |",
     "|-----------------|",
-  ], room6.chestLooted, player)
+  ], room6.chestLooted, player,currentRoom)
 
 
 
 #room info section
-startRoom.setRoomInfo("You awake in a dark room. You see a small fire in the center, along with a door on the East wall.", "It's the room you first awoke in. The fire seems to still be burning. Maybe you should rest a while.")
-room2.setRoomInfo("You travel to the next room, and see another door on the East wall and a locked door on the South wall. Where could it lead?", "Returning here, you feel the pull of the campfire drawing you to rest.")
+startRoom.setRoomInfo("You wake up to the crackling of a fire. Your head hurts, but you get up, eager to escape wherever you may be.", "It's the room you first awoke in. The fire seems to still be burning. Maybe you should rest a while.")
+room2.setRoomInfo("You open the door and notice another door on your left and on on the opposite wall. Where could they lead?", "Returning here, you smell the campfire burning in the room across the way.")
 room3.setRoomInfo("What","What?")
 room4.setRoomInfo("Why","Why?!?")
 room5.setRoomInfo("Who","WHO!")
 room6.setRoomInfo("When","When!?!")
 room7.setRoomInfo("Zach","Roach")
 room8.setRoomInfo("spa", "ghet")
-room9.setRoomInfo("Moving into this room, you feel the presence of a large creature.","It's the place you defeated the first boss, Turkey Panini. Returning, you feel as though there are others like him waiting for you deeper in the maze.")
+room9.setRoomInfo("A large bird stares at you from the other side of the room. Prepare for a fight.","You shiver as you step back into the room, the gargantuan carcass rotting in front of you.")
 room10.setRoomInfo("You notice the enemies getting stronger as you venture through the maze.","Returning, you wonder if the enemies are guiding you to the exit.")
 room11.setRoomInfo("You feel a pull towards the northwest. It's as if something is waiting for you there.","Am I lost? I should've taken the shortcut.")
 room12.setRoomInfo("You feel the pull to the North getting stronger. Something is in that next room.","Why have you returned to this room?")
